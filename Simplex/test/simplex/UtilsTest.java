@@ -7,10 +7,8 @@ package simplex;
 
 import org.junit.After;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
 
 /**
  *
@@ -41,14 +39,14 @@ public class UtilsTest {
     /**
      * Test of somaDeValores method, of class Utils.
      */
-    @Test
-    public void testSomaDeValores() {
-        System.out.println("somaDeValores");
-        int a = 1;
-        int b = 1;
-        int expResult = 2;
-        int result = Utils.somaDeValores(a, b);
-        assertEquals(expResult, result);
-    }
-    
+//    @Test
+//    public void testSomaDeValores() {
+//        Syste m.out.println("somaDeValores");
+//        int a = 1;
+//        int b = 1;
+//        int expResult = 2;
+//        int result = Utils.somaDeValores(a, b);
+//        assertEquals(expResult, result);
+//    }
+//    
 }
