@@ -37,7 +37,8 @@ public class Simplex {
             int[] indicesDoPivot = encontraNumPivot();
             
             passarLinhaPivotParaUm(indicesDoPivot[0]);
-                    
+                   
+            // Olá
             for(int linha = 0; linha < matrizSimplex.length; linha++){
             
                 if(linha != indicesDoPivot[0]){
