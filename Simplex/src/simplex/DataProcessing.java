@@ -6,7 +6,8 @@
 package simplex;
 
 /**
- *
+ * TODO: Intrepertar operadores
+ * 
  * @author Dinis
  */
 public class DataProcessing {
@@ -23,8 +24,10 @@ public class DataProcessing {
     
     //</editor-fold>
     
+    //<editor-fold defaultstate="" desc="LER 1ª LINHA">
+    
     /**
-     * O outpur vai ser um array que contem 3 valores por variavel encontrada
+     * O output vai ser um array que contem 3 valores por variavel encontrada
      * [nome da variavel] [qunatidade] [simbolo de positivo ou negativo]
      * @param linha
      * @return 
@@ -45,15 +48,13 @@ public class DataProcessing {
                                         
                     if(eUmaLetra(caracter) && depoisDeUmIgual(linha,charIndex)){
                       
-                        charIndex = extrairVariavel(charIndex, linha, output);
-                        
+                        output = Utils.expandirArray(output);
+                        extrairValorDaVariavel(charIndex, linha, output);
+                        charIndex = extrairNomeDaVariavel(charIndex, linha, output); 
                     }   
                     charIndex++;
                 }
-            
-// "Z = 3X1 + 5X2"
-            }
-            
+            }       
         }
         return output;
     }
@@ -65,62 +66,109 @@ public class DataProcessing {
         if(String.valueOf(caracter).matches("[A-z]")){
 
             output = true;
-        }
-        
+        }       
         return output;
     }
 
-    public static int extrairVariavel(int charIndex, String linha, String[][] variaveisEncontradas) {
-    
-        //TODO: extrair método
-        //<editor-fold defaultstate="collapsed" desc="Adiciona mais uma posição ao array">
+    public static int extrairNomeDaVariavel(int charIndex, String linha, String[][] variaveisEncontradas) {
         
-        if(variaveisEncontradas == null){
+        int idx = charIndex;
+        String nome = "";
+        char carater = linha.charAt(idx);
         
-            variaveisEncontradas = new String[1][3];
-                    
-        }else{
-        
-            int numDeVariaveisJaEncontradas = variaveisEncontradas.length;
+        while(!nomeDaVariavelTerminou(carater) && idx < linha.length()){
             
-            String[][] tempArray = new String[numDeVariaveisJaEncontradas + 1][3];
+            carater = linha.charAt(idx);
             
-            for(int i = 0; i < numDeVariaveisJaEncontradas; i++){
-                
-                tempArray[i] = variaveisEncontradas[i];         
-            } 
-            variaveisEncontradas = tempArray;
-        }
+            if(String.valueOf(carater).matches("[0-z]")){  
+                nome += carater;
+            }            
+            idx++;
+        }   
         
-        //</editor-fold>
+        int indexsOndeInserirVariavel = variaveisEncontradas.length - 1;
+        variaveisEncontradas[indexsOndeInserirVariavel][0] = nome;
         
-        int idx = charIndex-1;
-        String quantidade = "";
-        char espaco = ' ';
-        while(linha.charAt(idx) != espaco){
-            
-            char carater = linha.charAt(idx);
-            if(String.valueOf(carater).matches("[0-9]")){
-                
-                quantidade = carater + quantidade;
-                
-            }else if(carater == MENOS){
-                //TODO: é negativo
-                break;
-            }else{
-                //TODO é positvo
-            }
-            idx--;
-        }    
-        return charIndex;
+        return charIndex + nome.length() - 1;
     }
 
     public static boolean depoisDeUmIgual(String linha, int charIndex) {
         
         int idx = linha.indexOf(String.valueOf(IGUAL));
-        System.out.println(idx);
         boolean output = idx > -1 && idx < charIndex;
         
         return output;
     }
+
+    public static boolean nomeDaVariavelTerminou(char caracter) {
+        
+        boolean output = true;
+        
+        String car = String.valueOf(caracter);
+        
+        if(!car.matches("\\s+")){
+      
+            boolean eOperador = false;
+            
+            for (String MAIOR_OU_IGUAL1 : MAIOR_OU_IGUAL) {
+                if (car.equals(MAIOR_OU_IGUAL1)) {
+                    eOperador = true;
+                    break;
+                }     
+            }
+            
+            if(!eOperador){    
+                
+                for (String MENOR_OU_IGUAL1 : MENOR_OU_IGUAL) {
+                    if (car.equals(MENOR_OU_IGUAL1)) {
+                        eOperador = true;
+                        break;
+                    }
+                } 
+                
+                if(!eOperador){
+                 
+                    if(caracter != MAIS && caracter != IGUAL && caracter != MENOS){
+                     
+                        output=false;
+                    }
+                }  
+            }
+        }
+        return output;
+    }
+
+    public static void extrairValorDaVariavel(int charIndex, String linha, String[][] variaveisEncontradas) {
+        
+        int idx = charIndex-1;
+        String numero = "";
+
+        char carater = linha.charAt(idx);
+        
+        while(!nomeDaVariavelTerminou(carater)){
+            
+            carater = linha.charAt(idx);
+            
+            if(String.valueOf(carater).matches("[0-9]")){  
+                numero += carater;
+            }            
+            idx--;
+        }   
+        
+        if(numero.equals("")){
+            numero = "1";
+        }
+        
+        String operador = "+";
+        
+        if(carater == MENOS){
+            operador = "-";
+        }
+        
+        variaveisEncontradas[variaveisEncontradas.length-1][1] = numero;
+        variaveisEncontradas[variaveisEncontradas.length-1][2] = operador;
+        
+    }
+    
+    //</editor-fold>
 }

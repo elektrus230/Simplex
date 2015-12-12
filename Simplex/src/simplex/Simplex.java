@@ -140,7 +140,8 @@ public class Simplex {
     }
 
     private static boolean existemNumerosNegativos(double[] matrizSimplex) {
-        
+        return false;
+        //TODO:
     }
     
 }
