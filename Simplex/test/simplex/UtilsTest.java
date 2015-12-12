@@ -95,6 +95,21 @@ public class UtilsTest {
         fail("The test case is a prototype.");
     }
 
+    /**
+     * Test of arrayContemValor method, of class Utils.
+     */
+    @Test
+    public void testArrayContemValor() {
+        System.out.println("arrayContemValor");
+        String val = "";
+        String[] array = null;
+        boolean expResult = false;
+        boolean result = Utils.arrayContemValor(val, array);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
    
     /**
      * Test of somaDeValores method, of class Utils.
