@@ -8,7 +8,7 @@ package simplex;
  * @author Grupo 9
  */
 public class Utils {
-    
+        
     /**
      * Devolve index do menor numero do array
      * @param array
@@ -49,9 +49,29 @@ public class Utils {
         return output;
     }
     
+    /**
+     * REMOVER
+     * @param a
+     * @param b
+     * @return 
+     */
     public static int somaDeValores(int a, int b){
         
         return a+b;
         
+    }
+        
+    public static boolean arrayContemValor(String val, String[] array){
+    
+        boolean output = false;
+        
+        for (String str : array) {
+            if (str.equals(val)) {
+                output = true;
+                break;
+            }
+        }
+        
+        return output;
     }
 }
