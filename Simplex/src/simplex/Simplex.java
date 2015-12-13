@@ -21,6 +21,7 @@ public class Simplex {
      * um de input, outro de output 
      */
     public static void main(String[] args) {
+        executarSimplex ();
         /**
          * PASSOS:
          * 1 - Ler ficheiro
@@ -32,11 +33,11 @@ public class Simplex {
     
     public static void executarSimplex(){
         
-        while(existemNumerosNegativos(matrizSimplex[0])){
+        //while(existemNumerosNegativos(matrizSimplex[0])){
         
             int[] indicesDoPivot = encontraNumPivot();
             
-            passarLinhaPivotParaUm(indicesDoPivot[0]);
+            passarLinhaPivotParaUm(indicesDoPivot);
                    
             for(int linha = 0; linha < matrizSimplex.length; linha++){
             
@@ -45,9 +46,11 @@ public class Simplex {
                     zerarElementosDaColunaPivot(indicesDoPivot, linha);
                     
                 }
-            }              
+            
+            } 
+            imprimirMatrizSimplexNova ();
         } 
-    }
+//}
 
     
     //NOTA: OS métodos utils não recebem matrizes!!!!!!Q!!!!!QW#"!QWE$#"
@@ -62,8 +65,14 @@ public class Simplex {
         indicesDoPivot[1] = indiceColunaPivot;
         
         double [] colunaPivotRestricoes = criaColunaRestricoes (indiceColunaPivot);
-        double [] ultimaColunaRestricoes = criaColunaRestricoes (matrizSimplex[0].length);
-        
+       // System.out.println(matrizSimplex[0].length-1);
+        for (int i=0; i< colunaPivotRestricoes.length; i++){
+//            System.out.println(colunaPivotRestricoes [i]);
+        }
+        double [] ultimaColunaRestricoes = criaColunaRestricoes (matrizSimplex[0].length-1);
+        for (int i=0; i< ultimaColunaRestricoes.length; i++){
+//            System.out.println(ultimaColunaRestricoes [i]);
+        }
         int indiceLinhaPivot = encontraLinhaPivot(colunaPivotRestricoes, ultimaColunaRestricoes);
         indicesDoPivot[0] = indiceLinhaPivot;
         
@@ -86,32 +95,29 @@ public class Simplex {
         double [] colunaRestricoes = new double [matrizSimplex.length-1];
         
         for (int linha = 1; linha < matrizSimplex.length; linha ++){
-        colunaRestricoes [linha-1] = matrizSimplex [linha][indiceColuna];
+        colunaRestricoes [linha-1] = matrizSimplex [linha][indiceColuna];                 
         }
         return colunaRestricoes;
     }
     
     public static int encontraLinhaPivot (double [] colunaPivotRestricoes, double []ultimaColunaRestricoes){
-        
         double [] quocienteColunas =
                 calculaQuocienteColunas(colunaPivotRestricoes,ultimaColunaRestricoes);
-        
         int indiceLinhaPivot = getIndiceLinhaPivot (quocienteColunas);
-       
         return indiceLinhaPivot;
     }
     
         
     public static double[] calculaQuocienteColunas (double [] colunaPivotRestricoes, double []ultimaColunaRestricoes){
         double [] quocienteColunas = new double [colunaPivotRestricoes.length];
-       
         for (int linha = 0; linha < colunaPivotRestricoes.length; linha ++){
         quocienteColunas [linha]=
                 ultimaColunaRestricoes [linha]/colunaPivotRestricoes [linha];
-                        
-        }
+        
+//            System.out.println(quocienteColunas [linha]);
+        } 
         return quocienteColunas;
-    }
+        }
         
     public static int getIndiceLinhaPivot (double [] quocienteColunas){
         
@@ -131,6 +137,10 @@ public class Simplex {
         }
         else{   
         double menor = quocienteColunas[linha];
+        indiceLinhaPivot = linha+1;
+        
+//        System.out.println(menor);
+//        System.out.println(indiceLinhaPivot);
         
         for (int j = linha+1; j < quocienteColunas.length; j++){
             
@@ -143,32 +153,33 @@ public class Simplex {
         return indiceLinhaPivot;
     }
     
-    public static void passarLinhaPivotParaUm(int indiceDaColunaPivot) {
+    public static void passarLinhaPivotParaUm(int [] indicesDoPivot) {
     //André   
        
-        matrizSimplex [indiceLinhaPivot] = novaLinhaPivot;
-      
+        double [] matriz = {0.5, 1, 0.25, 0, 0, 2.5};  
+        matrizSimplex [indicesDoPivot [0]] = matriz;
     }
 
     public static void zerarElementosDaColunaPivot(int [] indicesDoPivot, int linha) {
         
-        for (int coluna=1; coluna<matrizSimplex[0].length; coluna++){
-            double multiplicador = (-1)* matrizSimplex [linha][indicesDoPivot[1]];
+        double multiplicador = (-1)* matrizSimplex [linha][indicesDoPivot[1]];
+        for (int coluna=0; coluna<matrizSimplex[0].length; coluna++){
+            
             matrizSimplex[linha][coluna]= 
                     multiplicador*matrizSimplex[indicesDoPivot[0]][coluna] + matrizSimplex[linha][coluna];    
         }  
     } 
 
-    public static boolean existemNumerosNegativos(double[] matrizSimplex) {
-   //André
-        return true;   
-    }
+//    public static boolean existemNumerosNegativos(double[] matrizSimplex) {
+//   //André
+//        return true;   
+//    }
       
     // Matriz inicial para testes
     public static double [][] criarMatrizInicial (){
 
        double matrizInicial [][] = {{-3,-5,0,0,0,0}, {2,4,1,0,0,10}, {6,1,0,1,0,20}, {1,-1,0,0,1,30}};
-                
+         System.out.println ("Matriz Inicial");       
         for (int lin = 0; lin < 4; lin++){
             for (int col = 0; col < 6; col++){
             System.out.print("\t " + matrizInicial [lin][col] + " ");                 
@@ -178,4 +189,16 @@ public class Simplex {
         return matrizInicial;       
         
     }
-}
+    
+    //Imprimir matrizSimplexnova, após iteração - para testes
+    public static void imprimirMatrizSimplexNova (){
+        System.out.println ("Matriz Simplex após primeira iteração");
+        for (int linha = 0; linha < matrizSimplex.length; linha++ ){
+            for (int coluna = 0; coluna < matrizSimplex[0].length; coluna ++){
+              System.out.print("\t " + matrizSimplex [linha][coluna] + " ");                 
+            }
+            System.out.println();  
+            }
+        }
+    
+    }
