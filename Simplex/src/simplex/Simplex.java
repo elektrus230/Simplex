@@ -21,7 +21,26 @@ public class Simplex {
      * um de input, outro de output 
      */
     public static void main(String[] args) {
+        
+//        String caminhoDoFicheiroDeInput = args[0];
+//        String caminhoDoFicheiroDeOutput = args[1];
+//        
+//        if(caminhoDoFicheiroDeInput != null
+//                && caminhoDoFicheiroDeOutput != null){
+//        
+//            //do code
+//            
+//        }else{
+//            
+//            System.out.println("Por favor indique os nomes dos ficheiros de "
+//                    + "input e output ao chamar este programa.");
+//        }
+        
+        
         executarSimplex ();
+        
+        
+        
         /**
          * PASSOS:
          * 1 - Ler ficheiro
