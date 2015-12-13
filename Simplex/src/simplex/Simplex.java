@@ -51,10 +51,10 @@ public class Simplex {
     //NOTA: OS métodos utils não recebem matrizes!!!!!!Q!!!!!QW#"!QWE$#"
     //RECEBEM O MINIMO POSSIVEL DE DADOS (OU ESTRUTURAS DED DADOS),
     //PARA PODEREM SER EXECUTADOS
-    
+      
     public static int[] encontraNumPivot() {
         
-        int[] indicesDoPivot = null;
+        int[] indicesDoPivot = new int [2];
         
         int indiceColunaPivot = encontraColunaPivot(matrizSimplex[0]);
         indicesDoPivot[1] = indiceColunaPivot;
@@ -141,8 +141,10 @@ public class Simplex {
         return indiceLinhaPivot;
     }
     
-    public static void passarLinhaPivotParaUm(int indiceDaColunaPivot) {
+    public static double [] passarLinhaPivotParaUm(int indiceDaColunaPivot) {
+    //André   
         
+        return novaLinhaPivot;
     }
 
     public static void zerarElementoDaColunaPivot(int indicesDoPivot) {
@@ -150,7 +152,8 @@ public class Simplex {
     }
 
     public static boolean existemNumerosNegativos(double[] matrizSimplex) {
-     return true;   
+   //André
+        return true;   
     }
-    
+       
 }

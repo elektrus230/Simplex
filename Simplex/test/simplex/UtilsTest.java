@@ -7,6 +7,8 @@ package simplex;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -106,6 +108,20 @@ public class UtilsTest {
         boolean expResult = false;
         boolean result = Utils.arrayContemValor(val, array);
         assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of expandirArray method, of class Utils.
+     */
+    @Test
+    public void testExpandirArray() {
+        System.out.println("expandirArray");
+        String[][] output = null;
+        String[][] expResult = null;
+        String[][] result = Utils.expandirArray(output);
+        assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

@@ -74,4 +74,16 @@ public class Utils {
         
         return output;
     }
+
+    public static String[][] expandirArray(String[][] output) {
+        if (output == null) {
+            output = new String[1][3];
+        } else {
+            int tamanho = output.length;
+            String[][] tempArray = new String[tamanho + 1][3];
+            System.arraycopy(output, 0, tempArray, 0, tamanho);
+            output = tempArray;
+        }
+        return output;
+    }
 }

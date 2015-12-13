@@ -7,7 +7,6 @@ package simplex;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import org.junit.Test;
 
 /**
@@ -19,23 +18,8 @@ public class DataProcessingTest {
     public DataProcessingTest() {
     }
 
-    /**
-     * Test of getVariaveisDaPrimeiraLinha method, of class DataProcessing.
-     */
-    @Test
-    public void testGetVariaveisDaPrimeiraLinha() {
-        System.out.println("getVariaveisDaPrimeiraLinha");
-        
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-        
-        String linha = "";
-        String[][] expResult = null;
-        String[][] result = DataProcessing.getVariaveisDaPrimeiraLinha(linha);
-        assertArrayEquals(expResult, result);
-        
-    }
-
+    //<editor-fold defaultstate="collapsed" desc="E Uma Letra">
+    
     /**
      * Test of eInicioDeUmaVariavel method, of class DataProcessing.
      */
@@ -58,26 +42,9 @@ public class DataProcessingTest {
         assertEquals(expResult,result);
     }
     
+    //</editor-fold>
     
-    /**
-     * Test of extrairVariavel method, of class DataProcessing.
-     */
-    @Test
-    public void testExtrairVariavel() {
-        System.out.println("extrairVariavel");
-        
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-        
-        int charIndex = 0;
-        String linha = "";
-        String[][] variaveisEncontradas = null;
-        int expResult = 0;
-        int result = DataProcessing.extrairVariavel(charIndex, linha, variaveisEncontradas);
-        assertEquals(expResult, result);
-    }
-
-    //<editor-fold defaultstate="" desc="">
+    //<editor-fold defaultstate="collapsed" desc="Depois De Um Igual">
     
     /**
      * Test of depoisDeUmIgual method, of class DataProcessing.
@@ -103,8 +70,92 @@ public class DataProcessingTest {
        
     }
     //</editor-fold>
-    
 
+    //<editor-fold defaultstate="collapsed" desc="Nome da Variavel Terminou">
+    
+    /**
+     * Test of nomeDaVariavelTerminou method, of class DataProcessing.
+     */
+    @Test
+    public void testNomeDaVariavelTerminou() {
+        System.out.println("nomeDaVariavelTerminou");
+        char caracter = ' ';
+        boolean expResult = true;
+        boolean result = DataProcessing.nomeDaVariavelTerminou(caracter);
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void testNomeDaVariavelTerminouOperador() {
+        System.out.println("nomeDaVariavelTerminou");
+        char caracter = '=';
+        boolean expResult = true;
+        boolean result = DataProcessing.nomeDaVariavelTerminou(caracter);
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void testNomeDaVariavelTerminouNumero() {
+        System.out.println("nomeDaVariavelTerminou");
+        char caracter = '5';
+        boolean expResult = false;
+        boolean result = DataProcessing.nomeDaVariavelTerminou(caracter);
+        assertEquals(expResult, result);
+    }
+    
+    //</editor-fold>
+
+    /**
+     * Test of extrairValorDaVariavel method, of class DataProcessing.
+     */
+    @Test
+    public void testExtrairValorDaVariavel() {
+        System.out.println("extrairValorDaVariavel");
+        int charIndex = 5;
+        String linha = "Z = 3X1 + 5X2";
+        String[] expResult = {"X2","3","+"};
+        String[][] variaveisEncontradas = 
+        { 
+            {"X1","",""},
+            {"X2","",""}    
+        };
+        
+        DataProcessing.extrairValorDaVariavel(charIndex, linha, variaveisEncontradas);
+        assertArrayEquals(expResult, variaveisEncontradas[1]);
+    }
+
+    /**
+     * Test of extrairNomeDaVariavel method, of class DataProcessing.
+     */
+    @Test
+    public void testExtrairNomeDaVariavel() {
+        System.out.println("extrairNomeDaVariavel");
+        int charIndex = 5;
+        String linha = "Z = 3X1 + 5X2";
+        String[][] variaveisEncontradas = new String[1][3];
+        int expResult = 6;
+        int result = DataProcessing.extrairNomeDaVariavel(charIndex, linha, variaveisEncontradas);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getVariaveisDaPrimeiraLinha method, of class DataProcessing.
+     */
+    @Test
+    public void testGetVariaveisDaPrimeiraLinha() {
+        System.out.println("getVariaveisDaPrimeiraLinha");
+        String linha = "Z = 3X1 + 5X2";
+        String[][] expResult = 
+        { 
+            {"X1","3","+"},
+            {"X2","5","+"}    
+        };
+        String[][] result = DataProcessing.getVariaveisDaPrimeiraLinha(linha);
+        assertArrayEquals(expResult, result);
+
+    }
+
+    
    
     
 }
