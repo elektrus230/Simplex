@@ -11,8 +11,9 @@ public class Simplex {
 
     //<editor-fold defaultstate="collapsed" desc="Matriz Simplex">
     
-    public static double[][] matrizSimplex;
-    
+    //public static double[][] matrizSimplex;
+ public static double [][] matrizSimplex = criarMatrizInicial();
+ 
     //</editor-fold>
     
     /**
@@ -39,9 +40,10 @@ public class Simplex {
                    
             for(int linha = 0; linha < matrizSimplex.length; linha++){
             
-                if(linha != indicesDoPivot[0]){
+                if((linha != indicesDoPivot[0]) & ((matrizSimplex [linha][indicesDoPivot[1]]) != 0)) {
                 
-                    zerarElementoDaColunaPivot(indicesDoPivot[1]);
+                    zerarElementosDaColunaPivot(indicesDoPivot, linha);
+                    
                 }
             }              
         } 
@@ -141,19 +143,39 @@ public class Simplex {
         return indiceLinhaPivot;
     }
     
-    public static double [] passarLinhaPivotParaUm(int indiceDaColunaPivot) {
+    public static void passarLinhaPivotParaUm(int indiceDaColunaPivot) {
     //André   
-        
-        return novaLinhaPivot;
+       
+        matrizSimplex [indiceLinhaPivot] = novaLinhaPivot;
+      
     }
 
-    public static void zerarElementoDaColunaPivot(int indicesDoPivot) {
+    public static void zerarElementosDaColunaPivot(int [] indicesDoPivot, int linha) {
         
-    }
+        for (int coluna=1; coluna<matrizSimplex[0].length; coluna++){
+            double multiplicador = (-1)* matrizSimplex [linha][indicesDoPivot[1]];
+            matrizSimplex[linha][coluna]= 
+                    multiplicador*matrizSimplex[indicesDoPivot[0]][coluna] + matrizSimplex[linha][coluna];    
+        }  
+    } 
 
     public static boolean existemNumerosNegativos(double[] matrizSimplex) {
    //André
         return true;   
     }
-       
+      
+    // Matriz inicial para testes
+    public static double [][] criarMatrizInicial (){
+
+       double matrizInicial [][] = {{-3,-5,0,0,0,0}, {2,4,1,0,0,10}, {6,1,0,1,0,20}, {1,-1,0,0,1,30}};
+                
+        for (int lin = 0; lin < 4; lin++){
+            for (int col = 0; col < 6; col++){
+            System.out.print("\t " + matrizInicial [lin][col] + " ");                 
+            }
+            System.out.println();
+        }               
+        return matrizInicial;       
+        
+    }
 }
