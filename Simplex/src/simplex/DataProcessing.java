@@ -5,6 +5,8 @@
  */
 package simplex;
 
+import static simplex.Reader.lerFicheiro;
+
 /**
  * TODO: Intrepertar operadores
  * 
@@ -23,6 +25,12 @@ public class DataProcessing {
     public final static char MAIS = '+';
     
     //</editor-fold>
+    
+    public static void mainProcessor(String caminhoDoFicheiroDeInput){
+        
+        String[] array = lerFicheiro(caminhoDoFicheiroDeInput);
+        String[][] variaveisDaPrimeiraLinha = getVariaveisDaPrimeiraLinha(array[0]);
+    }
     
     //<editor-fold defaultstate="" desc="LER 1ª LINHA">
     
@@ -47,7 +55,7 @@ public class DataProcessing {
                     char caracter = linha.charAt(charIndex);
                                         
                     if(eUmaLetra(caracter) && depoisDeUmIgual(linha,charIndex)){
-                      
+                        //Encontrei uma variavel
                         output = Utils.expandirArray(output);
                         extrairValorDaVariavel(charIndex, linha, output);
                         charIndex = extrairNomeDaVariavel(charIndex, linha, output); 

@@ -126,6 +126,10 @@ public class UtilsTest {
         fail("The test case is a prototype.");
     }
 
+    private void assertArrayEquals(String[][] expResult, String[][] result) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
    
     /**
      * Test of somaDeValores method, of class Utils.
