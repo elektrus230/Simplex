@@ -173,5 +173,19 @@ public class SimplexTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
+
+    /**
+     * Test of existemNumerosNegativos method, of class Simplex.
+     */
+    @Test
+    public void testExistemNumerosNegativos() {
+        System.out.println("existemNumerosNegativos");
+        double[] primeiraLinha = null;
+        boolean expResult = false;
+        boolean result = Simplex.existemNumerosNegativos(primeiraLinha);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
     
 }
