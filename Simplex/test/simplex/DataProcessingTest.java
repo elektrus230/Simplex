@@ -5,6 +5,7 @@
  */
 package simplex;
 
+import org.junit.Assert;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -155,7 +156,22 @@ public class DataProcessingTest {
 
     }
 
+    @Test
+    public void testValorPrimeiraLinha() {
+        System.out.println("ValorPrimeiraLinha");
+        int numeroDeColunas = 2;
+        String[][] variaveisDaPrimeiraLinha = 
+        { 
+            {"X1","3","+"},
+            {"X2","5","+"}    
+        };
     
+        double[] expResult = {3.00,5.00};
+        double[] result = DataProcessing.ValorPrimeiraLinha(numeroDeColunas, variaveisDaPrimeiraLinha);
+        Assert.assertArrayEquals(expResult, result, 0);
+        
+    }
+
    
     
 }

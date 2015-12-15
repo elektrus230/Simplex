@@ -32,7 +32,7 @@ public class Simplex {
                 && caminhoDoFicheiroDeOutput != null){
         
             //do code
-             mainProcessor(caminhoDoFicheiroDeInput);
+//             mainProcessor(caminhoDoFicheiroDeInput);
             
         }else{
             

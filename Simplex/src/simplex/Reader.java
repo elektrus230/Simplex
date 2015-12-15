@@ -29,7 +29,7 @@ public class Reader {
                 while(scanner.hasNextLine()){
                 
                     if(!texto.equals("")){
-                        texto+= "#";
+                        texto+= "#";//mete um delimitador no fim da linha 
                     }
                     
                     texto+= scanner.nextLine().trim();
@@ -37,7 +37,7 @@ public class Reader {
                 
                 if(!texto.equals("")){
                 
-                    linhas = texto.split("#");
+                    linhas = texto.split("#");//separa por delimitador e conforme o tamanho do string, conforme o numero de linhas
                 }
             
             }catch (FileNotFoundException fnfe){
