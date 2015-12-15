@@ -10,44 +10,19 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Geral
+ * @author André
  */
 public class SimplexTest {
-    
-    public SimplexTest() {
-    }
-
-    /**
-     * Test of main method, of class Simplex.
-     */
-    @Test
-    public void testMain() {
-        System.out.println("main");
-        String[] args = null;
-        Simplex.main(args);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of executarSimplex method, of class Simplex.
-     */
-    @Test
-    public void testExecutarSimplex() {
-        System.out.println("executarSimplex");
-        Simplex.executarSimplex();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
 
     /**
      * Test of encontraNumPivot method, of class Simplex.
      */
     @Test
-    public void testEncontraNumPivot() {
+   /** public void testEncontraNumPivot() {
         System.out.println("encontraNumPivot");
-        int[] expResult = null;
-        int[] result = Simplex.encontraNumPivot();
+        double[] primeiraLinha = {-3, -5, 5, -2, 0, 0};
+        i expResult = 1;
+        int result = Simplex.encontraNumPivot(primeiraLinha);
         assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -56,35 +31,27 @@ public class SimplexTest {
     /**
      * Test of encontraColunaPivot method, of class Simplex.
      */
-    @Test
+    //@Test
     public void testEncontraColunaPivot() {
         System.out.println("encontraColunaPivot");
-        double[] primeiraLinha = null;
-        int expResult = 0;
-        int result = Simplex.encontraColunaPivot(primeiraLinha);
+        double[] Linha = {-3, -5, 5, -10, 0, 0};
+        int expResult = 3;
+        int result = Simplex.encontraColunaPivot(Linha);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
      * Test of criaColunaRestricoes method, of class Simplex.
      */
     @Test
-    public void testCriaColunaRestricoes() {
-        System.out.println("criaColunaRestricoes");
-        int indiceColuna = 0;
-        double[] expResult = null;
-        double[] result = Simplex.criaColunaRestricoes(indiceColuna);
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+
 
     /**
      * Test of encontraLinhaPivot method, of class Simplex.
      */
-    @Test
+   
+    
     public void testEncontraLinhaPivot() {
         System.out.println("encontraLinhaPivot");
         double[] colunaPivotRestricoes = null;
@@ -102,90 +69,13 @@ public class SimplexTest {
     @Test
     public void testCalculaQuocienteColunas() {
         System.out.println("calculaQuocienteColunas");
-        double[] colunaPivotRestricoes = null;
-        double[] ultimaColunaRestricoes = null;
-        double[] expResult = null;
+        double[] colunaPivotRestricoes = {1, 2, 3, 4, 5, 0} ;
+        double[] ultimaColunaRestricoes = {3, 4, 6, 24, 0, 10};
+        double[] expResult = {3, 2, 2, 6, 0, -10};
         double[] result = Simplex.calculaQuocienteColunas(colunaPivotRestricoes, ultimaColunaRestricoes);
         assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
-    /**
-     * Test of getIndiceLinhaPivot method, of class Simplex.
-     */
-    @Test
-    public void testGetIndiceLinhaPivot() {
-        System.out.println("getIndiceLinhaPivot");
-        double[] quocienteColunas = null;
-        int expResult = 0;
-        int result = Simplex.getIndiceLinhaPivot(quocienteColunas);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of passarLinhaPivotParaUm method, of class Simplex.
-     */
-    @Test
-    public void testPassarLinhaPivotParaUm() {
-        System.out.println("passarLinhaPivotParaUm");
-        int[] indicesDoPivot = null;
-        Simplex.passarLinhaPivotParaUm(indicesDoPivot);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of zerarElementosDaColunaPivot method, of class Simplex.
-     */
-    @Test
-    public void testZerarElementosDaColunaPivot() {
-        System.out.println("zerarElementosDaColunaPivot");
-        int[] indicesDoPivot = null;
-        int linha = 0;
-        Simplex.zerarElementosDaColunaPivot(indicesDoPivot, linha);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of criarMatrizInicial method, of class Simplex.
-     */
-    @Test
-    public void testCriarMatrizInicial() {
-        System.out.println("criarMatrizInicial");
-        double[][] expResult = null;
-        double[][] result = Simplex.criarMatrizInicial();
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of imprimirMatrizSimplexNova method, of class Simplex.
-     */
-    @Test
-    public void testImprimirMatrizSimplexNova() {
-        System.out.println("imprimirMatrizSimplexNova");
-        Simplex.imprimirMatrizSimplexNova();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of existemNumerosNegativos method, of class Simplex.
-     */
-    @Test
-    public void testExistemNumerosNegativos() {
-        System.out.println("existemNumerosNegativos");
-        double[] primeiraLinha = null;
-        boolean expResult = false;
-        boolean result = Simplex.existemNumerosNegativos(primeiraLinha);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-    
 }
