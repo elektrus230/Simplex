@@ -22,14 +22,17 @@ public class Simplex {
      */
     public static void main(String[] args) {
         
-        String caminhoDoFicheiroDeInput = args[0];
-        String caminhoDoFicheiroDeOutput = args[1];
+//        String caminhoDoFicheiroDeInput = args[0];
+//        String caminhoDoFicheiroDeOutput = args[1];
+        String caminhoDoFicheiroDeInput = "testefiles\\inputA.txt";
+        String caminhoDoFicheiroDeOutput = "testefiles\\outputA.txt";
+        
         
         if(caminhoDoFicheiroDeInput != null
                 && caminhoDoFicheiroDeOutput != null){
         
             //do code
-            // mainProcessor(caminhoDoFicheiroDeIpunt)
+             mainProcessor(caminhoDoFicheiroDeInput);
             
         }else{
             

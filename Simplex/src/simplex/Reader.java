@@ -13,11 +13,11 @@ import java.util.Scanner;
  */
 public class Reader { 
     
-    public static String[] lerFicheiro(String caminhoFicheiroInput){
+    public static String[] lerFicheiro(String caminhoDoFicheiroInput){
     
         String[] linhas = null;
         
-        File file = new File(caminhoFicheiroInput);
+        File file = new File(caminhoDoFicheiroInput);
         
         if(file.exists()){
         
