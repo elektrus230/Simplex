@@ -69,18 +69,9 @@ public class UtilsTest {
     /**
      * Test of neutralizarLinha method, of class Utils.
      */
-    @Test
-    public void testNeutralizarLinha() {
-        System.out.println("neutralizarLinha");
-        double[] linhaPivot = null;
-        double[] linha = null;
-        int indexDaColunaPivot = 0;
-        double[] expResult = null;
-        double[] result = Utils.neutralizarLinha(linhaPivot, linha, indexDaColunaPivot);
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+    
+
+    
 
     /**
      * Test of somaDeValores method, of class Utils.

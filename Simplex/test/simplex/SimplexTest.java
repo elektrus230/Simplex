@@ -73,7 +73,7 @@ public class SimplexTest {
         double[] ultimaColunaRestricoes = {3, 4, 6, 24, 0, 10};
         double[] expResult = {3, 2, 2, 6, 0, -10};
         double[] result = Simplex.calculaQuocienteColunas(colunaPivotRestricoes, ultimaColunaRestricoes);
-        assertArrayEquals(expResult, result);
+        assertArrayEquals(expResult, result, 0);
         // TODO review the generated test code and remove the default call to fail.
         
     }
