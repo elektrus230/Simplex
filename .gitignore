@@ -49,3 +49,5 @@ Temporary Items
 /Simplex/build/
 *.properties
 /Simplex/dist/
+*.xml
+*.config
