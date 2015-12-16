@@ -145,10 +145,10 @@ public class DataProcessingTest {
     @Test
     public void testGetVariaveisDaPrimeiraLinha() {
         System.out.println("getVariaveisDaPrimeiraLinha");
-        String linha = "Z = 3X1 + 5X2";
+        String linha = "1X1 + 5X2 <= 5";
         String[][] expResult = 
         { 
-            {"X1","3","+"},
+            {"X1","1","+"},
             {"X2","5","+"}    
         };
         String[][] result = DataProcessing.getVariaveisDaPrimeiraLinha(linha);
@@ -166,11 +166,29 @@ public class DataProcessingTest {
             {"X2","5","+"}    
         };
     
-        double[] expResult = {3.00,5.00};
+        double[] expResult = {-3.00,-5.00};
         double[] result = DataProcessing.ValorPrimeiraLinha(numeroDeColunas, variaveisDaPrimeiraLinha);
         Assert.assertArrayEquals(expResult, result, 0);
         
     }
+
+   
+//    /**
+//     * Test of preencherSlacks method, of class DataProcessing.
+//     */
+//    @Test
+//    public void testPreencherSlacks() {
+//        System.out.println("preencherSlacks");
+//        String[][] variaveisDaPrimeiraLinha = null;
+//        double[][] matrizInicial = null;
+//        for (int i=0;i<matrizInicial.length;i++){
+//            for (int j=0; j< matrizInicial[i].length; j++){
+//                System.out.println(matrizInicial[i][j]);
+//            }
+//        }
+//        DataProcessing.preencherSlacks(variaveisDaPrimeiraLinha, matrizInicial);
+//      
+//    }
 
    
     

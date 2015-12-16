@@ -29,15 +29,15 @@ public class Reader {
                 while(scanner.hasNextLine()){
                 
                     if(!texto.equals("")){
-                        texto+= "#";//mete um delimitador no fim da linha 
-                    }
+                        texto+= "#";//verifica se a linha do texto é vazia senão
+                    }               //for acrescenta um # ao final do String texto
                     
-                    texto+= scanner.nextLine().trim();
+                    texto+= scanner.nextLine().trim();//acrescenta a nova linha ao String texto 
                 }
-                
+//                scanner.close();    // Dinis, não falta aqui fechar o ficheiro??
                 if(!texto.equals("")){
                 
-                    linhas = texto.split("#");//separa por delimitador e conforme o tamanho do string, conforme o numero de linhas
+                    linhas = texto.split("#");//envia para o array linhas o string texto com split #
                 }
             
             }catch (FileNotFoundException fnfe){
