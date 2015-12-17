@@ -48,3 +48,7 @@ Temporary Items
 /Simplex/nbproject/private/
 /Simplex/build/
 /Simplex/dist/
+
+# do nosso projecto
+*.properties
+*.xml
