@@ -26,58 +26,72 @@ public class DataProcessing {
     //</editor-fold>
     public static void mainProcessor(String caminhoDoFicheiroDeInput) {
         String[] array = lerFicheiro(caminhoDoFicheiroDeInput);
-        String[][] variaveisDaPrimeiraLinha = getVariaveisDaPrimeiraLinha(array[0]);
-       
-        
-        
-        int numeroDeLinhas=array.length;
-        int numeroDeColunas = variaveisDaPrimeiraLinha.length+numeroDeLinhas+1;
-        double [][] matrizInicial = new double[numeroDeLinhas][numeroDeColunas];
-        
-        
+
+        String[][] variaveisDaPrimeiraLinha = getVariaveisDaPrimeiraLinha(array[0]);//vai apanhar as variaveis, valores e operadores na primeira linha
+
+        int numeroDeLinhas = array.length;
+        int numeroDeColunas = variaveisDaPrimeiraLinha.length + numeroDeLinhas + 1;
+        int numeroDeVariaveisBase = variaveisDaPrimeiraLinha.length;
+        int numeroDeSlacks = numeroDeLinhas - 1;
+        double[][] matrizInicial = new double[numeroDeLinhas][numeroDeColunas];
+
+        //Preenchimento das slacks
+        preencherSlacks(variaveisDaPrimeiraLinha, matrizInicial);
+
+        //preenchimento da linha de Z
         double[] ValorPrimeiraLinha = ValorPrimeiraLinha(numeroDeColunas, variaveisDaPrimeiraLinha);
-        
-       
-        for (int i = 1 ; i< numeroDeLinhas; i++) { // Preencher as linhas das restrições na posição das Variavéis base
-            for (int j=0; j< variaveisDaPrimeiraLinha.length;j++){
-               ////matrizInicial[i][j]= getValorDaVariavel(); 
+        for (int i = 0; i < numeroDeVariaveisBase; i++) {
+            matrizInicial[i][0] = ValorPrimeiraLinha[i]*-1;
+        }
+
+        // Preencher as linhas das restrições na posição das Variaveis base
+        for (int i = 1; i < numeroDeLinhas; i++) { //começa a ler na linha 1, sendo a 0 a linha de Z
+            String[][] variaveisDasVariaveisBase = getVariaveisDasRestricoes(array[i]);
+            double[] valorPorLinha = new double[variaveisDaPrimeiraLinha.length];
+            for (int j = 0; j < variaveisDaPrimeiraLinha.length; j++) {
+                try {
+                    valorPorLinha[j] = Double.parseDouble(variaveisDasVariaveisBase[j][1]);
+                } catch (NumberFormatException nfe) {
+
+                }
+            }
+
+        }
+
+    }
+
+        // Prencher a coluna do b
+//        for (int i=1; i<numeroDeLinhas;i++){
+//            double[] b= new double [numeroDeLinhas-1];
+//           b[i] = Double.parseDouble(array.substring(array.('MENOR_OU_IGUAL') + 1).trim());
+//            matrizInicial[i][numeroDeColunas]= b[i];
+//       }
+//}
+    public static double[] ValorPrimeiraLinha(int numeroDeColunas, String[][] variaveisDaPrimeiraLinha) {
+        double[] valorPrimeiraLinha = new double[variaveisDaPrimeiraLinha.length];
+        for (int i = 0; i < variaveisDaPrimeiraLinha.length; i++) { //Preencher a linha de Z
+            try {
+                valorPrimeiraLinha[i] = Double.parseDouble(variaveisDaPrimeiraLinha[i][1]);
+            } catch (NumberFormatException nfe) {
+
             }
         }
-        
-        preencherSlacks(variaveisDaPrimeiraLinha, matrizInicial);
-    
-
-    
-        
-        
+        return valorPrimeiraLinha;
     }
-
-    public static double[] ValorPrimeiraLinha(int numeroDeColunas, String[][] variaveisDaPrimeiraLinha) {
-        double[] valorPrimeiraLinha= new double[numeroDeColunas];
-        for (int i=0; i<variaveisDaPrimeiraLinha.length;i++){ //Preencher a linha de Z
-            try{
-            valorPrimeiraLinha[i]=Double.parseDouble(variaveisDaPrimeiraLinha[i][1]);
-        } catch(NumberFormatException nfe){
-                    
-                }
-        }
-    return valorPrimeiraLinha;
-    }
-    
 
     public static void preencherSlacks(String[][] variaveisDaPrimeiraLinha, double[][] matrizInicial) {
-        for (int i=variaveisDaPrimeiraLinha.length+1 ;i<(matrizInicial.length-1); i++) { //preencher os slacks
-            matrizInicial[i][i]=1;
+        for (int i = variaveisDaPrimeiraLinha.length + 1; i < (matrizInicial.length - 1); i++) { //preencher os slacks
+            matrizInicial[i][i] = 1;
         }
     }
-    
+
     //<editor-fold defaultstate="" desc="LER 1ª LINHA">
-    
     /**
      * O output vai ser um array que contem 3 valores por variavel encontrada
-     * [nome da variavel] [qunatidade] [simbolo de positivo ou negativo]
+     * [nome da variavel] [quantidade] [simbolo de positivo ou negativo]
+     *
      * @param linha
-     * @return 
+     * @return
      */
     public static String[][] getVariaveisDaPrimeiraLinha(String linha) {
 
@@ -102,6 +116,36 @@ public class DataProcessing {
                     charIndex++;
                 }
             }
+        }
+        return output;
+    }
+
+    /**
+     * O output vai ser um array que contem 1 valor quantidade
+     *
+     * @param linha
+     * @return
+     */
+    public static String[][] getVariaveisDasRestricoes(String linha) {
+
+        String[][] output = null;
+
+        if (linha != null) {
+            int charIndex = 0;
+
+            while (charIndex < linha.length()) {
+
+                char caracter = linha.charAt(charIndex);
+
+                if (eUmaLetra(caracter) && depoisDeUmIgual(linha, charIndex)) {
+                    //Encontrei uma variavel
+                    output = Utils.expandirArray(output);
+                    extrairValorDaVariavel(charIndex, linha, output);
+                    charIndex = extrairNomeDaVariavel(charIndex, linha, output);
+                }
+                charIndex++;
+            }
+
         }
         return output;
     }
