@@ -47,7 +47,4 @@ Temporary Items
 .apdisk
 /Simplex/nbproject/private/
 /Simplex/build/
-*.properties
 /Simplex/dist/
-*.xml
-*.config
