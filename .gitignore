@@ -50,5 +50,4 @@ Temporary Items
 *.properties
 /Simplex/dist/
 *.xml
-*.config
 Simplex/nbproject/build-impl.xml
