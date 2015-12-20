@@ -3,6 +3,8 @@
  */
 package simplex;
 
+import static simplex.DataProcessing.readFileAndExtractTable;
+
 /**
  *
  * @author Grupo 9
@@ -22,36 +24,21 @@ public class Simplex {
      */
     public static void main(String[] args) {
         
-//        String caminhoDoFicheiroDeInput = args[0];
-//        String caminhoDoFicheiroDeOutput = args[1];
-        String caminhoDoFicheiroDeInput = "testefiles\\inputA.txt";
-        String caminhoDoFicheiroDeOutput = "testefiles\\outputA.txt";
+        String caminhoDoFicheiroDeInput = args[0];
+        String caminhoDoFicheiroDeOutput = args[1];
         
         
         if(caminhoDoFicheiroDeInput != null
                 && caminhoDoFicheiroDeOutput != null){
-        
-            //do code
-//             mainProcessor(caminhoDoFicheiroDeInput);
+
+            matrizSimplex = readFileAndExtractTable(caminhoDoFicheiroDeInput);
+            executarSimplex ();
             
         }else{
             
             System.out.println("Por favor indique os nomes dos ficheiros de "
                     + "input e output ao chamar este programa.");
         }
-        
-        
-        executarSimplex ();
-        
-        
-        
-        /**
-         * PASSOS:
-         * 1 - Ler ficheiro
-         * 2 - Processar dados lidos
-         * 3 - Aplicar método simplex
-         * 4 - Exportar resultados para ficheiro
-         */
     }
     
     public static void executarSimplex(){
@@ -74,23 +61,18 @@ public class Simplex {
         }
     }
 
-    
-    //NOTA: OS métodos utils não recebem matrizes!!!!!!Q!!!!!QW#"!QWE$#"
-    //RECEBEM O MINIMO POSSIVEL DE DADOS (OU ESTRUTURAS DED DADOS),
-    //PARA PODEREM SER EXECUTADOS
       
     public static boolean existemNumerosNegativos(double [] primeiraLinha){
        
         int coluna = 0;
         boolean existemNumNegat;
+        
         while ((primeiraLinha[coluna] >= 0) && (coluna < primeiraLinha.length-1)) {
             coluna++;
         }
-        if (coluna == primeiraLinha.length-1){
-        existemNumNegat = false;
-        }else{
-        existemNumNegat = true;   
-        }
+        
+        existemNumNegat = coluna != primeiraLinha.length-1;
+        
         return existemNumNegat;        
     }
         
@@ -100,15 +82,20 @@ public class Simplex {
         int[] indicesDoPivot = new int [2];
         
         int indiceColunaPivot = encontraColunaPivot(matrizSimplex[0]);
+        
         indicesDoPivot[1] = indiceColunaPivot;
         
         double [] colunaPivotRestricoes = criaColunaRestricoes (indiceColunaPivot);
+        
         for (int i=0; i< colunaPivotRestricoes.length; i++){
         }
         double [] ultimaColunaRestricoes = criaColunaRestricoes (matrizSimplex[0].length-1);
+        
         for (int i=0; i< ultimaColunaRestricoes.length; i++){
         }
+        
         int indiceLinhaPivot = encontraLinhaPivot(colunaPivotRestricoes, ultimaColunaRestricoes);
+        
         indicesDoPivot[0] = indiceLinhaPivot;
         
         return indicesDoPivot;
@@ -118,6 +105,7 @@ public class Simplex {
         
         double menor = matrizSimplex[0][0];
         int indiceColunaPivot = 0;
+        
         for (int coluna = 1; coluna < matrizSimplex[0].length; coluna ++){
             if (matrizSimplex[0][coluna] < menor){
                 menor = matrizSimplex[0][coluna];
@@ -128,11 +116,13 @@ public class Simplex {
     }
 
     public static double [] criaColunaRestricoes (int indiceColuna){
+        
         double [] colunaRestricoes = new double [matrizSimplex.length-1];
         
         for (int linha = 1; linha < matrizSimplex.length; linha ++){
             colunaRestricoes [linha-1] = matrizSimplex [linha][indiceColuna];                 
         }
+        
         return colunaRestricoes;
     }
     

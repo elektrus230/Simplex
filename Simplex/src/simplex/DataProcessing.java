@@ -14,8 +14,6 @@ import static simplex.Reader.lerFicheiro;
  */
 public class DataProcessing {
 
-    public final static String NUMS = "0123456789";
-
     //<editor-fold defaultstate="collapsed" desc="OPERADORES">
     public final static String[] MAIOR_OU_IGUAL = {">=", "=>", "\u2265", "\u2267"};
     public final static String[] MENOR_OU_IGUAL = {"<=", "=<", "\u2264", "\u2266"};
@@ -24,65 +22,159 @@ public class DataProcessing {
     public final static char MAIS = '+';
 
     //</editor-fold>
-    public static void mainProcessor(String caminhoDoFicheiroDeInput) {
-        String[] array = lerFicheiro(caminhoDoFicheiroDeInput);
+    
+    public static double[][] readFileAndExtractTable(String caminhoDoFicheiroDeInput) {
+        
+        String[] linhas = lerFicheiro(caminhoDoFicheiroDeInput);
+        
+        String[][] variaveis = getVariaveisDaPrimeiraLinha(linhas[0]);
+        
+        int nLinhas = linhas.length;
+        int nColunas = variaveis.length + nLinhas + 1;
+        int nVariaveis = variaveis.length;
 
-        String[][] variaveisDaPrimeiraLinha = getVariaveisDaPrimeiraLinha(array[0]);//vai apanhar as variaveis, valores e operadores na primeira linha
+        double[][] matrizOutput = new double[nLinhas][nColunas];
 
-        int numeroDeLinhas = array.length;
-        int numeroDeColunas = variaveisDaPrimeiraLinha.length + numeroDeLinhas + 1;
-        int numeroDeVariaveisBase = variaveisDaPrimeiraLinha.length;
-        int numeroDeSlacks = numeroDeLinhas - 1;
-        double[][] matrizInicial = new double[numeroDeLinhas][numeroDeColunas];
+        matrizOutput[0] = setPrimeiraLinha(nColunas, variaveis);
+        
+        getValoresLinhasDasRestricoes(nLinhas, linhas, nColunas, nVariaveis, variaveis, matrizOutput);
+    
+        return matrizOutput;
+    }
+    
+    public static void getValoresLinhasDasRestricoes(int nLinhas, String[] linhas, int nColunas, int nVariaveis, String[][] variaveis, double[][] matrizOutput) {
+        
+        try {
+            
+            for (int i = 1; i < nLinhas; i++) {
+                
+                String linha = linhas[i];
+                double[] linhaParaMatriz = new double[nColunas];
 
-        //Preenchimento das slacks
-        preencherSlacks(variaveisDaPrimeiraLinha, matrizInicial);
+                //<editor-fold desc="SLACK">
+                int indexSlack = i + nVariaveis;
+                linhaParaMatriz[indexSlack - 1] = 1;
+                //</editor-fold>
 
-        //preenchimento da linha de Z
-        double[] ValorPrimeiraLinha = ValorPrimeiraLinha(numeroDeColunas, variaveisDaPrimeiraLinha);
-        for (int i = 0; i < numeroDeVariaveisBase; i++) {
-            matrizInicial[i][0] = ValorPrimeiraLinha[i]*-1;
-        }
-
-        // Preencher as linhas das restrições na posição das Variaveis base
-        for (int i = 1; i < numeroDeLinhas; i++) { //começa a ler na linha 1, sendo a 0 a linha de Z
-            String[][] variaveisDasVariaveisBase = getVariaveisDasRestricoes(array[i]);
-            double[] valorPorLinha = new double[variaveisDaPrimeiraLinha.length];
-            for (int j = 0; j < variaveisDaPrimeiraLinha.length; j++) {
-                try {
-                    valorPorLinha[j] = Double.parseDouble(variaveisDasVariaveisBase[j][1]);
-                } catch (NumberFormatException nfe) {
+                //<editor-fold desc="Variaveis">
+                double[] valores =  getValoresDasVariaveisEmLinhaDeRestricoes(variaveis, linha);
+                for (int j = 0; j < nVariaveis; j++) {
+                    linhaParaMatriz[j] = valores[j];
 
                 }
+                //</editor-fold>
+                
+                //<editor-fold desc="Ultima Coluna">
+                linhaParaMatriz[nColunas - 1] = getUltimaColuna(linha);
+                //</editor-fold>
+
+                matrizOutput[i] = linhaParaMatriz;
+
             }
-
+        } catch (NumberFormatException nfe) {
+            
+            System.out.println(nfe.getMessage());
         }
-
     }
 
-        // Prencher a coluna do b
-//        for (int i=1; i<numeroDeLinhas;i++){
-//            double[] b= new double [numeroDeLinhas-1];
-//           b[i] = Double.parseDouble(array.substring(array.('MENOR_OU_IGUAL') + 1).trim());
-//            matrizInicial[i][numeroDeColunas]= b[i];
-//       }
-//}
-    public static double[] ValorPrimeiraLinha(int numeroDeColunas, String[][] variaveisDaPrimeiraLinha) {
-        double[] valorPrimeiraLinha = new double[variaveisDaPrimeiraLinha.length];
-        for (int i = 0; i < variaveisDaPrimeiraLinha.length; i++) { //Preencher a linha de Z
+    private static double getUltimaColuna(String linha) {
+
+        //TODO: ver se é preciso fazer tb por =
+        double output;
+        int index = -1;
+
+        for (String charMaior : MAIOR_OU_IGUAL) {
+            if (linha.indexOf(charMaior) > 0) {
+                index = linha.indexOf(charMaior) + charMaior.length();
+                break;
+            }
+        }
+        if (index == -1) {
+            for (String charMenor : MENOR_OU_IGUAL) {
+                if (linha.indexOf(charMenor) > 0) {
+                    index = linha.indexOf(charMenor) + charMenor.length();
+                    break;
+                }
+            }
+        }
+        if (index != -1) {
+            output = Double.parseDouble(linha.substring(index).trim());
+        } else {
+            output = 0;
+        }
+
+        return output;
+    }
+    
+    public static double[] getValoresDasVariaveisEmLinhaDeRestricoes(String[][] variaveis, String linha) {
+        
+        double[] output = new double[variaveis.length];
+        for (int i = 0; i < variaveis.length; i++) {
+            
+            int index = -1;
+            
+            String variavel = variaveis[i][0];
+            
+            if (linha.contains(variavel)) {
+
+                index = linha.indexOf(variavel);
+                
+                String valor =  extrairValorDaVariavel(index,linha)[0];
+                output[i] = Double.parseDouble(valor);
+            }
+        }  
+        return output;
+    }
+
+    public static double[] setPrimeiraLinha(int nColunas, String[][] variaveis) {
+        
+        double[] output = new double[nColunas];
+        for (int i = 0; i < variaveis.length; i++) {
             try {
-                valorPrimeiraLinha[i] = Double.parseDouble(variaveisDaPrimeiraLinha[i][1]);
+                double value = Double.parseDouble(variaveis[i][1]);
+                output[i] = value == 0 ? 0 : value * -1;
+                
             } catch (NumberFormatException nfe) {
 
+                System.out.println(nfe.getMessage());
             }
         }
-        return valorPrimeiraLinha;
+        return output;
     }
+    
+    public static String[] extrairValorDaVariavel(int charIndex, String linha) {
 
-    public static void preencherSlacks(String[][] variaveisDaPrimeiraLinha, double[][] matrizInicial) {
-        for (int i = variaveisDaPrimeiraLinha.length + 1; i < (matrizInicial.length - 1); i++) { //preencher os slacks
-            matrizInicial[i][i] = 1;
+        String[] output = new String[2];
+
+        int idx = charIndex - 1;
+        String numero = "";
+        char carater = idx > -1 ? linha.charAt(idx) : ' ';
+        
+        while (!nomeDaVariavelTerminou(carater)) {
+
+            if (String.valueOf(carater).matches("[0-9]")) {
+
+                numero = carater + numero;
+            }
+
+            idx--;
+
+            carater = idx > -1 ? linha.charAt(idx) : ' ';
         }
+        
+        if (numero.equals("")) {
+            numero = "1";
+        }
+
+        String operador = "+";
+
+        if (carater == MENOS) {
+            operador = "-";
+        }
+
+        output[0] = numero;
+        output[1] = operador;
+        return output;
     }
 
     //<editor-fold defaultstate="" desc="LER 1ª LINHA">
@@ -100,15 +192,15 @@ public class DataProcessing {
         if (linha != null) {
 
             if (linha.contains("=")) {
-
+                
                 int charIndex = 0;
 
                 while (charIndex < linha.length()) {
 
                     char caracter = linha.charAt(charIndex);
-
+                    
                     if (eUmaLetra(caracter) && depoisDeUmIgual(linha, charIndex)) {
-                        //Encontrei uma variavel
+
                         output = Utils.expandirArray(output);
                         extrairValorDaVariavel(charIndex, linha, output);
                         charIndex = extrairNomeDaVariavel(charIndex, linha, output);
@@ -116,36 +208,6 @@ public class DataProcessing {
                     charIndex++;
                 }
             }
-        }
-        return output;
-    }
-
-    /**
-     * O output vai ser um array que contem 1 valor quantidade
-     *
-     * @param linha
-     * @return
-     */
-    public static String[][] getVariaveisDasRestricoes(String linha) {
-
-        String[][] output = null;
-
-        if (linha != null) {
-            int charIndex = 0;
-
-            while (charIndex < linha.length()) {
-
-                char caracter = linha.charAt(charIndex);
-
-                if (eUmaLetra(caracter) && depoisDeUmIgual(linha, charIndex)) {
-                    //Encontrei uma variavel
-                    output = Utils.expandirArray(output);
-                    extrairValorDaVariavel(charIndex, linha, output);
-                    charIndex = extrairNomeDaVariavel(charIndex, linha, output);
-                }
-                charIndex++;
-            }
-
         }
         return output;
     }
@@ -162,13 +224,13 @@ public class DataProcessing {
     }
 
     public static int extrairNomeDaVariavel(int charIndex, String linha, String[][] variaveisEncontradas) {
-
+ 
         int idx = charIndex;
         String nome = "";
         char carater = linha.charAt(idx);
 
         while (!nomeDaVariavelTerminou(carater) && idx < linha.length()) {
-
+         
             carater = linha.charAt(idx);
 
             if (String.valueOf(carater).matches("[0-z]")) {
@@ -201,7 +263,7 @@ public class DataProcessing {
 
             boolean eOperador = false;
 
-            for (String MAIOR_OU_IGUAL1 : MAIOR_OU_IGUAL) {
+            for (String MAIOR_OU_IGUAL1 : MAIOR_OU_IGUAL) {               
                 if (car.equals(MAIOR_OU_IGUAL1)) {
                     eOperador = true;
                     break;
@@ -220,7 +282,6 @@ public class DataProcessing {
                 if (!eOperador) {
 
                     if (caracter != MAIS && caracter != IGUAL && caracter != MENOS) {
-
                         output = false;
                     }
                 }
@@ -228,38 +289,14 @@ public class DataProcessing {
         }
         return output;
     }
-
+    
     public static void extrairValorDaVariavel(int charIndex, String linha, String[][] variaveisEncontradas) {
 
-        int idx = charIndex - 1;
-        String numero = "";
-
-        char carater = linha.charAt(idx);
-
-        while (!nomeDaVariavelTerminou(carater)) {
-
-            carater = linha.charAt(idx);
-
-            if (String.valueOf(carater).matches("[0-9]")) {
-                numero += carater;
-            }
-            idx--;
-        }
-
-        if (numero.equals("")) {
-            numero = "1";
-        }
-
-        String operador = "+";
-
-        if (carater == MENOS) {
-            operador = "-";
-        }
-
-        variaveisEncontradas[variaveisEncontradas.length - 1][1] = numero;
-        variaveisEncontradas[variaveisEncontradas.length - 1][2] = operador;
+        int ultimaVariavelEncontrada = variaveisEncontradas.length - 1;
+        String[] quantOperador = extrairValorDaVariavel(charIndex, linha);
+        variaveisEncontradas[ultimaVariavelEncontrada][1] = quantOperador[0];
+        variaveisEncontradas[ultimaVariavelEncontrada][2] = quantOperador[1];
 
     }
-
     //</editor-fold>
 }

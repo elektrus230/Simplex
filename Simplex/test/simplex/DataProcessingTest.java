@@ -5,10 +5,14 @@
  */
 package simplex;
 
+import java.util.Arrays;
 import org.junit.Assert;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
+import static simplex.DataProcessing.getValoresLinhasDasRestricoes;
+import static simplex.DataProcessing.getVariaveisDaPrimeiraLinha;
+import static simplex.DataProcessing.setPrimeiraLinha;
 
 /**
  *
@@ -145,10 +149,10 @@ public class DataProcessingTest {
     @Test
     public void testGetVariaveisDaPrimeiraLinha() {
         System.out.println("getVariaveisDaPrimeiraLinha");
-        String linha = "1X1 + 5X2 <= 5";
+        String linha = "Z = 3X1 + 5X2";
         String[][] expResult = 
         { 
-            {"X1","1","+"},
+            {"X1","3","+"},
             {"X2","5","+"}    
         };
         String[][] result = DataProcessing.getVariaveisDaPrimeiraLinha(linha);
@@ -159,37 +163,123 @@ public class DataProcessingTest {
     @Test
     public void testValorPrimeiraLinha() {
         System.out.println("ValorPrimeiraLinha");
-        int numeroDeColunas = 2;
-        String[][] variaveisDaPrimeiraLinha = 
+        int nColunas = 2;
+        String[][] vars = 
         { 
             {"X1","3","+"},
             {"X2","5","+"}    
         };
     
         double[] expResult = {-3.00,-5.00};
-        double[] result = DataProcessing.ValorPrimeiraLinha(numeroDeColunas, variaveisDaPrimeiraLinha);
+        double[] result = DataProcessing.setPrimeiraLinha(nColunas, vars);
         Assert.assertArrayEquals(expResult, result, 0);
         
     }
 
-   
-//    /**
-//     * Test of preencherSlacks method, of class DataProcessing.
-//     */
-//    @Test
-//    public void testPreencherSlacks() {
-//        System.out.println("preencherSlacks");
-//        String[][] variaveisDaPrimeiraLinha = null;
-//        double[][] matrizInicial = null;
-//        for (int i=0;i<matrizInicial.length;i++){
-//            for (int j=0; j< matrizInicial[i].length; j++){
-//                System.out.println(matrizInicial[i][j]);
-//            }
-//        }
-//        DataProcessing.preencherSlacks(variaveisDaPrimeiraLinha, matrizInicial);
-//      
-//    }
+    /**
+     * Test of getValoresLinhasDasRestricoes method, of class DataProcessing.
+     */
+    @Test
+    public void testGetValoresLinhasDasRestricoes() {
+        System.out.println("getValoresLinhasDasRestricoes");
+        int nLinhas = 4;
+        String[] linhas = 
+        {        
+            "Z = 3X1 + 5X2",
+            "X1 + 0X2 ≤ 4",
+            "0X1 + 2X2 ≤ 12",
+            "3X1 + 2X2 ≤ 18"
+        };
+        int nVariaveis = 2;
+        int nColunas = nLinhas + nVariaveis + 1;
+        String[][] variaveis = 
+        { 
+            {"X1","3","+"},
+            {"X2","5","+"}    
+        };
+        double[][] matrizOutput = new double[nLinhas][nColunas];
+        DataProcessing.getValoresLinhasDasRestricoes(nLinhas, linhas, nColunas, nVariaveis, variaveis, matrizOutput);
+    }
 
-   
+    /**
+     * Test of valoresDasVariaveisNasRestricoes method, of class DataProcessing.
+     */
+    @Test
+    public void testValoresDasVariaveisNasRestricoes() {
+        System.out.println("valoresDasVariaveisNasRestricoes");
+        String[][] variaveis = 
+        { 
+            {"X1","3","+"},
+            {"X2","5","+"}    
+        };
+        String linha = "X1 + 0X2 ≤ 4";
+        double[] expResult = {1,0};
+        double[] result = DataProcessing.getValoresDasVariaveisEmLinhaDeRestricoes(variaveis, linha);
+        assertArrayEquals(expResult, result,1);
+    }
+
+    /**
+     * Test of setPrimeiraLinha method, of class DataProcessing.
+     */
+    @Test
+    public void testSetPrimeiraLinha() {
+        System.out.println("setPrimeiraLinha");
+        int nColunas = 6;
+         String[][] variaveis = 
+        { 
+            {"X1","3","+"},
+            {"X2","5","+"}    
+        };
+        double[] expResult = {-3,-5,0,0,0,0};
+        double[] result = DataProcessing.setPrimeiraLinha(nColunas, variaveis);
+        assertArrayEquals(expResult, result,1);
+    }  
     
+    /**
+     * Test of setPrimeiraLinha method, of class DataProcessing.
+     */
+    @Test
+    public void testGetTabelaCompleta() {
+        
+        System.out.println("BigTest");
+        
+        String[] linhas = 
+        {        
+            "Z = 20X1 + 0X2",
+            "X1 + 0X2 ≤ 4",
+            "0X1 + 55X2 ≤ 12",
+            "3X1 + 3X2 ≤ 18"
+        };
+        
+        String[][] variaveis = getVariaveisDaPrimeiraLinha(linhas[0]);
+        
+        int nLinhas = linhas.length;
+        int nColunas = variaveis.length + nLinhas;
+        int nVariaveis = variaveis.length;
+
+        double[][] matrizOutput = new double[nLinhas][nColunas];
+
+        matrizOutput[0] = setPrimeiraLinha(nColunas, variaveis);
+        
+        getValoresLinhasDasRestricoes(nLinhas, linhas, nColunas, nVariaveis, variaveis, matrizOutput);
+        
+        double[][] result = matrizOutput;
+        
+        double[][] expResult = 
+        {
+            {-20,0,0,0,0,0},
+            {1,0,1,0,0,4},
+            {0,55,0,1,0,12},
+            {3,3,0,0,1,18},
+        };
+
+        for (double[] result1 : result) {
+            System.out.println(Arrays.toString(result1));
+        }
+        
+        
+        assertArrayEquals(expResult, result);
+    }  
+    
+   
 }
