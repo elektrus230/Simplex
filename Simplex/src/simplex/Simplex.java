@@ -3,7 +3,11 @@
  */
 package simplex;
 
-import static simplex.DataProcessing.readFileAndExtractTable;
+import java.util.Formatter;
+import static simplex.InputDataProcessing.lerDadosEConstruirMatriz;
+import static simplex.Simplex.resultados;
+import static simplex.Writer.escreverResultados;
+import static simplex.Writer.imprimirIteração;
 
 /**
  *
@@ -11,11 +15,14 @@ import static simplex.DataProcessing.readFileAndExtractTable;
  */
 public class Simplex {
 
-    //<editor-fold defaultstate="collapsed" desc="Matriz Simplex">
+    //<editor-fold defaultstate="collapsed" desc="Variaveis Globais">
     
     //public static double[][] matrizSimplex;
- public static double [][] matrizSimplex = criarMatrizInicial();
- 
+    public static double [][] matrizSimplex;
+    public static String[] resultados;
+    public static String[] listaDeVariaveis;
+    
+    public static Formatter escrever = new Formatter(System.out);
     //</editor-fold>
     
     /**
@@ -24,15 +31,26 @@ public class Simplex {
      */
     public static void main(String[] args) {
         
-        String caminhoDoFicheiroDeInput = args[0];
-        String caminhoDoFicheiroDeOutput = args[1];
+        String inputFile = args[0];
+        String outputFile = args[1];
+//        System.out.println("\nin = " + inputFile);
+//        System.out.println("out = " + outputFile+"\n");      
+//        String inputFile = "testfiles\\inputA.txt";
+//        String outputFile = "testfiles\\OutputA.txt";
         
-        
-        if(caminhoDoFicheiroDeInput != null
-                && caminhoDoFicheiroDeOutput != null){
+        if(inputFile != null && outputFile != null){
 
-            matrizSimplex = readFileAndExtractTable(caminhoDoFicheiroDeInput);
-            executarSimplex ();
+            Writer.escreverHeader(outputFile);
+            
+            matrizSimplex = lerDadosEConstruirMatriz(inputFile, outputFile);
+
+            if(matrizSimplex != null){
+            
+                executarSimplex (outputFile);
+            
+            }else{
+                System.out.println("Surgiu um problema ao ler o ficheiro. Por favor verifique se o caminho dos ficheiros foi correctamente inserido.");
+            }
             
         }else{
             
@@ -41,24 +59,42 @@ public class Simplex {
         }
     }
     
-    public static void executarSimplex(){
+    public static void executarSimplex(String outputFile){
         
-      while(existemNumerosNegativos(matrizSimplex[0])){
+        int iteracao = 0;
         
-            int[] indicesDoPivot = encontraNumPivot();
+        while (existemNumerosNegativos(matrizSimplex[0])) {
+
+            imprimirIteração(resultados, matrizSimplex,iteracao,outputFile);
+            
+            int[] indicesDoPivot = encontrarNumPivot();
+
+            //<editor-fold defaultstate="collapsed" desc="Mover variaveis na lista de resultados">
+            int linhaDoPivot = indicesDoPivot[0];
+            int colunaPivot = indicesDoPivot[1];
+            
+            if(colunaPivot < listaDeVariaveis.length){
+                resultados[linhaDoPivot] = listaDeVariaveis[colunaPivot];
+            }
+            //</editor-fold>
             
             passarLinhaPivotParaUm(indicesDoPivot);
-                   
-            for(int linha = 0; linha < matrizSimplex.length; linha++){
-            
-                if((linha != indicesDoPivot[0]) & ((matrizSimplex [linha][indicesDoPivot[1]]) != 0)) {
-                
+
+            for (int linha = 0; linha < matrizSimplex.length; linha++) {
+
+                if ((linha != indicesDoPivot[0]) & ((matrizSimplex[linha][indicesDoPivot[1]]) != 0)) {
+
                     zerarElementosDaColunaPivot(indicesDoPivot, linha);
-                    
                 }
-            } 
-            imprimirMatrizSimplexNova ();
+            }
+            
+            
+            iteracao++;
         }
+        
+        imprimirIteração(resultados, matrizSimplex,iteracao,outputFile);
+        System.out.println("\n\n");
+        escreverResultados(resultados, matrizSimplex, outputFile);
     }
 
       
@@ -72,12 +108,11 @@ public class Simplex {
         }
         
         existemNumNegat = coluna != primeiraLinha.length-1;
-        
         return existemNumNegat;        
     }
         
         
-    public static int[] encontraNumPivot() {
+    public static int[] encontrarNumPivot() {
         
         int[] indicesDoPivot = new int [2];
         
@@ -175,12 +210,12 @@ public class Simplex {
     }
     
     public static void passarLinhaPivotParaUm(int [] indicesDoPivot) {
-    
+
         double valorDoPivot = matrizSimplex[indicesDoPivot[0]][indicesDoPivot[1]];
         
         for (int coluna = 0; coluna < matrizSimplex[indicesDoPivot[0]].length; coluna++) {
 
-            matrizSimplex [indicesDoPivot[0]][coluna] = matrizSimplex[indicesDoPivot[0]][coluna] / valorDoPivot;
+            matrizSimplex[indicesDoPivot[0]][coluna] = matrizSimplex[indicesDoPivot[0]][coluna] / valorDoPivot;
         }
     }
 
@@ -194,9 +229,8 @@ public class Simplex {
         }  
     } 
     
-    // Matriz inicial para testes
+    //<editor-fold defaultstate="collapsed" desc="Teste - dummy matrix">
     public static double [][] criarMatrizInicial (){
-
        double matrizInicial [][] = {{-3,-5,0,0,0,0}, {2,4,1,0,0,10}, {6,1,0,1,0,20}, {1,-1,0,0,1,30}};
          System.out.println ("Matriz Inicial");       
         for (int lin = 0; lin < 4; lin++){
@@ -205,9 +239,9 @@ public class Simplex {
             }
             System.out.println();
         }               
-        return matrizInicial;       
-        
+        return matrizInicial;               
     }
+    //</editor-fold>
     
     //Imprimir matrizSimplexnova, após iteração - para testes
     public static void imprimirMatrizSimplexNova (){

@@ -10,9 +10,9 @@ import org.junit.Assert;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import static simplex.DataProcessing.getValoresLinhasDasRestricoes;
-import static simplex.DataProcessing.getVariaveisDaPrimeiraLinha;
-import static simplex.DataProcessing.setPrimeiraLinha;
+import static simplex.InputDataProcessing.getValoresLinhasDasRestricoes;
+import static simplex.InputDataProcessing.getVariaveisDaPrimeiraLinha;
+import static simplex.InputDataProcessing.setPrimeiraLinha;
 
 /**
  *
@@ -32,7 +32,7 @@ public class DataProcessingTest {
         System.out.println("eInicioDeUmaVariavel");
         boolean expResult = true;
         char caracter = 'X';
-        boolean result = DataProcessing.eUmaLetra(caracter);
+        boolean result = InputDataProcessing.eUmaLetra(caracter);
         assertEquals(expResult,result);
     }
     
@@ -43,7 +43,7 @@ public class DataProcessingTest {
         System.out.println("eInicioDeUmaVariavel");
         boolean expResult = false;
         char caracter = ' ';
-        boolean result = DataProcessing.eUmaLetra(caracter);
+        boolean result = InputDataProcessing.eUmaLetra(caracter);
         assertEquals(expResult,result);
     }
     
@@ -60,7 +60,7 @@ public class DataProcessingTest {
         String linha = "Z = 3X1 + 5X2";
         int charIndex = 3;
         boolean expResult = true;
-        boolean result = DataProcessing.depoisDeUmIgual(linha, charIndex);
+        boolean result = InputDataProcessing.depoisDeUmIgual(linha, charIndex);
         assertEquals(expResult, result);
     }
     
@@ -70,7 +70,7 @@ public class DataProcessingTest {
         String linha = "Z = 3X1 + 5X2";
         int charIndex = 1;
         boolean expResult = false;
-        boolean result = DataProcessing.depoisDeUmIgual(linha, charIndex);
+        boolean result = InputDataProcessing.depoisDeUmIgual(linha, charIndex);
         assertEquals(expResult, result);
        
     }
@@ -86,7 +86,7 @@ public class DataProcessingTest {
         System.out.println("nomeDaVariavelTerminou");
         char caracter = ' ';
         boolean expResult = true;
-        boolean result = DataProcessing.nomeDaVariavelTerminou(caracter);
+        boolean result = InputDataProcessing.nomeDaVariavelTerminou(caracter);
         assertEquals(expResult, result);
     }
     
@@ -95,7 +95,7 @@ public class DataProcessingTest {
         System.out.println("nomeDaVariavelTerminou");
         char caracter = '=';
         boolean expResult = true;
-        boolean result = DataProcessing.nomeDaVariavelTerminou(caracter);
+        boolean result = InputDataProcessing.nomeDaVariavelTerminou(caracter);
         assertEquals(expResult, result);
     }
     
@@ -104,7 +104,7 @@ public class DataProcessingTest {
         System.out.println("nomeDaVariavelTerminou");
         char caracter = '5';
         boolean expResult = false;
-        boolean result = DataProcessing.nomeDaVariavelTerminou(caracter);
+        boolean result = InputDataProcessing.nomeDaVariavelTerminou(caracter);
         assertEquals(expResult, result);
     }
     
@@ -125,7 +125,7 @@ public class DataProcessingTest {
             {"X2","",""}    
         };
         
-        DataProcessing.extrairValorDaVariavel(charIndex, linha, variaveisEncontradas);
+        InputDataProcessing.extrairValorDaVariavel(charIndex, linha, variaveisEncontradas);
         assertArrayEquals(expResult, variaveisEncontradas[1]);
     }
 
@@ -139,7 +139,7 @@ public class DataProcessingTest {
         String linha = "Z = 3X1 + 5X2";
         String[][] variaveisEncontradas = new String[1][3];
         int expResult = 6;
-        int result = DataProcessing.extrairNomeDaVariavel(charIndex, linha, variaveisEncontradas);
+        int result = InputDataProcessing.extrairNomeDaVariavel(charIndex, linha, variaveisEncontradas);
         assertEquals(expResult, result);
     }
 
@@ -155,7 +155,7 @@ public class DataProcessingTest {
             {"X1","3","+"},
             {"X2","5","+"}    
         };
-        String[][] result = DataProcessing.getVariaveisDaPrimeiraLinha(linha);
+        String[][] result = InputDataProcessing.getVariaveisDaPrimeiraLinha(linha);
         assertArrayEquals(expResult, result);
 
     }
@@ -171,7 +171,7 @@ public class DataProcessingTest {
         };
     
         double[] expResult = {-3.00,-5.00};
-        double[] result = DataProcessing.setPrimeiraLinha(nColunas, vars);
+        double[] result = InputDataProcessing.setPrimeiraLinha(nColunas, vars);
         Assert.assertArrayEquals(expResult, result, 0);
         
     }
@@ -198,7 +198,7 @@ public class DataProcessingTest {
             {"X2","5","+"}    
         };
         double[][] matrizOutput = new double[nLinhas][nColunas];
-        DataProcessing.getValoresLinhasDasRestricoes(nLinhas, linhas, nColunas, nVariaveis, variaveis, matrizOutput);
+        InputDataProcessing.getValoresLinhasDasRestricoes(nLinhas, linhas, nColunas, nVariaveis, variaveis, matrizOutput);
     }
 
     /**
@@ -214,7 +214,7 @@ public class DataProcessingTest {
         };
         String linha = "X1 + 0X2 ≤ 4";
         double[] expResult = {1,0};
-        double[] result = DataProcessing.getValoresDasVariaveisEmLinhaDeRestricoes(variaveis, linha);
+        double[] result = InputDataProcessing.getValoresDasVariaveisEmLinhaDeRestricoes(variaveis, linha);
         assertArrayEquals(expResult, result,1);
     }
 
@@ -231,7 +231,7 @@ public class DataProcessingTest {
             {"X2","5","+"}    
         };
         double[] expResult = {-3,-5,0,0,0,0};
-        double[] result = DataProcessing.setPrimeiraLinha(nColunas, variaveis);
+        double[] result = InputDataProcessing.setPrimeiraLinha(nColunas, variaveis);
         assertArrayEquals(expResult, result,1);
     }  
     

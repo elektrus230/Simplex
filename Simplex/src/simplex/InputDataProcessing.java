@@ -12,7 +12,7 @@ import static simplex.Reader.lerFicheiro;
  *
  * @author Dinis
  */
-public class DataProcessing {
+public class InputDataProcessing {
 
     //<editor-fold defaultstate="collapsed" desc="OPERADORES">
     public final static String[] MAIOR_OU_IGUAL = {">=", "=>", "\u2265", "\u2267"};
@@ -21,25 +21,46 @@ public class DataProcessing {
     public final static char MENOS = '-';
     public final static char MAIS = '+';
 
+    public static String[] colunaRefResoltados;
+    public static String[][] variaveis;
     //</editor-fold>
     
-    public static double[][] readFileAndExtractTable(String caminhoDoFicheiroDeInput) {
+    public static double[][] lerDadosEConstruirMatriz(String inputFile, String outputFile) {
         
-        String[] linhas = lerFicheiro(caminhoDoFicheiroDeInput);
+        double[][] matrizOutput = null;
         
-        String[][] variaveis = getVariaveisDaPrimeiraLinha(linhas[0]);
+        String[] linhas = lerFicheiro(inputFile);
         
-        int nLinhas = linhas.length;
-        int nColunas = variaveis.length + nLinhas + 1;
-        int nVariaveis = variaveis.length;
+        if(linhas != null){
+            
+            if(linhas.length > 0){
+                
+                Writer.ImprimirDadosIniciais(linhas, outputFile);
 
-        double[][] matrizOutput = new double[nLinhas][nColunas];
+                variaveis = getVariaveisDaPrimeiraLinha(linhas[0]);
 
-        matrizOutput[0] = setPrimeiraLinha(nColunas, variaveis);
-        
-        getValoresLinhasDasRestricoes(nLinhas, linhas, nColunas, nVariaveis, variaveis, matrizOutput);
-    
+                int nLinhas = linhas.length;
+                int nColunas = variaveis.length + nLinhas + 1;
+                int nVariaveis = variaveis.length;
+                int nSlacks = linhas.length - 1;
+
+                Simplex.resultados = criarColunaRefResultados(nSlacks);
+                Simplex.listaDeVariaveis = getListaDeVariaveis();
+
+                matrizOutput = new double[nLinhas][nColunas];
+
+                matrizOutput[0] = setPrimeiraLinha(nColunas, variaveis);
+
+                getValoresLinhasDasRestricoes(nLinhas, linhas, nColunas, nVariaveis, variaveis, matrizOutput);
+
+            }else{
+                System.out.println("Erro : o ficheiro estava vazio.");
+            }
+        }else{
+                System.out.println("Erro : o ficheiro não foi encontrado.");
+        }
         return matrizOutput;
+        
     }
     
     public static void getValoresLinhasDasRestricoes(int nLinhas, String[] linhas, int nColunas, int nVariaveis, String[][] variaveis, double[][] matrizOutput) {
@@ -69,7 +90,6 @@ public class DataProcessing {
                 //</editor-fold>
 
                 matrizOutput[i] = linhaParaMatriz;
-
             }
         } catch (NumberFormatException nfe) {
             
@@ -158,7 +178,6 @@ public class DataProcessing {
             }
 
             idx--;
-
             carater = idx > -1 ? linha.charAt(idx) : ' ';
         }
         
@@ -220,6 +239,7 @@ public class DataProcessing {
 
             output = true;
         }
+        
         return output;
     }
 
@@ -249,14 +269,12 @@ public class DataProcessing {
 
         int idx = linha.indexOf(String.valueOf(IGUAL));
         boolean output = idx > -1 && idx < charIndex;
-
         return output;
     }
 
     public static boolean nomeDaVariavelTerminou(char caracter) {
 
         boolean output = true;
-
         String car = String.valueOf(caracter);
 
         if (!car.matches("\\s+")) {
@@ -299,4 +317,27 @@ public class DataProcessing {
 
     }
     //</editor-fold>
+
+    public static String[] getListaDeVariaveis(){
+        String[] output = new String[variaveis.length];   
+        for(int i = 0; i < variaveis.length; i++)
+        {
+            output[i] = variaveis[i][0];
+        }
+        return output;
+    }
+    
+    private static String[] criarColunaRefResultados(int nSlacks) { 
+        String[] output = new String[nSlacks + 1];   
+        
+        //Todo mudar o Z para var dinamica
+        output[0] = "Z "; 
+        
+        
+        for(int i = 1; i < nSlacks + 1; i++)
+        {
+            output[i] = "S" + (i);
+        }
+        return output;
+    }
 }

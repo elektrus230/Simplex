@@ -45,6 +45,7 @@ public class Reader {
                 System.out.println("Houve um problema ao ler o ficheiro.");
             }          
         }
+        
         return linhas;
     }
 
