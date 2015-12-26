@@ -27,7 +27,7 @@ public class ReaderTest {
         String caminhoFicheiroInput = "testfiles\\inputA.txt";
         String[] expResult = 
         {
-            "z = 3X1 + 5X2",
+            "z = 8X1 + 6X2",
             "X1 =< 4",
             "2X2 =< 12",
             "3X1 + 2X2 =< 18",
