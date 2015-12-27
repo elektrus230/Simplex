@@ -18,7 +18,7 @@ import java.io.PrintWriter;
  */
 public class Writer {
     
-     public static void ImprimirDadosIniciais(String[] linhas, String caminhoDoFicheiroDeOutput) {
+    public static void ImprimirDadosIniciais(String[] linhas, String caminhoDoFicheiroDeOutput) {
 
         try {
             
@@ -60,7 +60,7 @@ public class Writer {
     public static void imprimirIteração(String[]vars, double[][] matrizSimplex, int cont, String caminhoDoFicheiroDeOutput) {
         
         try {
-
+            
             File resultados = new File((caminhoDoFicheiroDeOutput));
             FileWriter fileWriter = new FileWriter(resultados, true);
             BufferedWriter buffer = new BufferedWriter(fileWriter);
@@ -70,6 +70,7 @@ public class Writer {
                 
                 printWriter.printf("Matriz inicial \n");
                 System.out.printf("Matriz inicial \n");
+                
             } else {
                 
                 printWriter.printf("%nIteração nº %d: \n", cont);
@@ -89,6 +90,8 @@ public class Writer {
                 tamLin = tempp.length();
                 
                 if (linha == 0) {
+                    
+                    printHeader(Simplex.listaDeVariaveis,printWriter,matrizSimplex[0].length);
                     
                     for (int k = 0; k < tamLin + 1; k++) {
                         
@@ -126,6 +129,12 @@ public class Writer {
         }
     }
 
+    /**
+     * 
+     * @param matrizSimplex
+     * @param cont
+     * @param caminhoDoFicheiroDeOutput 
+     */
     public static void ImprimirMatrizesS(String[][] matrizSimplex, int cont, String caminhoDoFicheiroDeOutput) {
         try {
 
@@ -210,6 +219,8 @@ public class Writer {
             int nLinhas = matrizSimplexS.length;
             int nColunas= matrizSimplexS[0].length;
             
+           
+            
             for (int linha = 1; linha < nLinhas; linha++) {
                 System.out.printf("O resultado final de %3s = %s %n", matrizSimplexS[linha][0], matrizSimplexS[linha][nColunas-1]);
                 printWriter.printf("O resultado final de %3s = %s %n", matrizSimplexS[linha][0], matrizSimplexS[linha][nColunas-1]);
@@ -237,9 +248,11 @@ public class Writer {
             int nLinhas = matrizSimplex.length;
             int nColunas= matrizSimplex[0].length;
             
-            for (int linha = 1; linha < nLinhas; linha++) {
-                System.out.printf("O resultado final de %3s = %s %n", heads[linha], matrizSimplex[linha][nColunas-1]);
-                printWriter.printf("O resultado final de %3s = %s %n",heads[linha], matrizSimplex[linha][nColunas-1]);
+            for (int linha = 0; linha < nLinhas; linha++) {
+                
+                String nomeVar = linha == 0 ? "Z" : heads[linha];
+                System.out.printf("O resultado final de %3s = %s %n", nomeVar, matrizSimplex[linha][nColunas-1]);
+                printWriter.printf("O resultado final de %3s = %s %n",nomeVar, matrizSimplex[linha][nColunas-1]);
             }
             
             System.out.printf("------------------------\nPrograma terminado.\n");
@@ -267,4 +280,24 @@ public class Writer {
             System.out.println("Não foi possivel imprimir o header.");
         }
     }
+
+    private static void printHeader(String[] vars, PrintWriter printWriter, int length) {
+        
+        String header = String.format("\n%7s", " ");
+        
+        for (int i = 0; i < vars.length; i++) {
+            header += String.format("%7s", vars[i]);
+        }
+        
+        for (int i = vars.length; i < length - 1; i++) {
+            header += String.format("%8s", "F" + (i - vars.length + 1));
+        }
+        
+        header += String.format("%7s", "B");
+        
+        printWriter.println(header);
+        System.out.println(header);
+    }
+    
+  
 }

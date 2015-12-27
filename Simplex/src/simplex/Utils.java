@@ -8,73 +8,29 @@ package simplex;
  * @author Grupo 9
  */
 public class Utils {
-        
+
     /**
-     * Devolve index do menor numero do array
+     * Pesquisa um array de Strings por um valor
+     * @param val
      * @param array
      * @return 
      */
-    public static int encontarMenorNumEmArray(double[] array){
-        
-        int output = -1;
-        
-        return output;
-    }
-    
-    /**
-     * Devolve index do menor positivo de um numero do array
-     * @param array
-     * @return 
-     */
-    public static int encontrarMenorNumPositivoEmArray(double[] array){
-        
-        int output = -1;
-        
-        return output;
-    }
-    
-    /**
-     * Torna o valor da coluna pivot do array "linha" a 0, pressupondo que este
-     * Devolve a linha resultante da operação, devidamente calculada
-     * @param linhaPivot
-     * @param linha
-     * @param indexDaColunaPivot
-     * @return 
-     */
-    public static double[] neutralizarLinha(double[] linhaPivot, 
-            double[] linha, int indexDaColunaPivot){
-    
-        double[] output = null;
-        
-        return output;
-    }
-    
-    /**
-     * REMOVER
-     * @param a
-     * @param b
-     * @return 
-     */
-    public static int somaDeValores(int a, int b){
-        
-        return a+b;
-        
-    }
-        
     public static boolean arrayContemValor(String val, String[] array){
-    
         boolean output = false;
-        
         for (String str : array) {
             if (str.equals(val)) {
                 output = true;
                 break;
             }
-        }
-        
+        }   
         return output;
     }
 
+    /**
+     * Recebe um array e expande-o, preservando o seu conteudo
+     * @param output
+     * @return 
+     */
     public static String[][] expandirArray(String[][] output) {
         if (output == null) {
             output = new String[1][3];
@@ -85,5 +41,18 @@ public class Utils {
             output = tempArray;
         }
         return output;
+    }
+
+    public static double[] calculaQuocienteColunas(double[] colPivot, double[] ultimaColuna) {
+        double[] quocienteColunas = new double[colPivot.length];
+        for (int linha = 0; linha < colPivot.length; linha++) {
+            if (ultimaColuna[linha] != 0 && colPivot[linha] != 0) {
+              
+                quocienteColunas[linha] = ultimaColuna[linha] / colPivot[linha];
+            } else {
+                quocienteColunas[linha] = 0;
+            }
+        }
+        return quocienteColunas;
     }
 }

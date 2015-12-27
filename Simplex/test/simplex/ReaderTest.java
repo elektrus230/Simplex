@@ -15,6 +15,14 @@ import org.junit.Test;
  */
 public class ReaderTest {
     
+    public static String[] input1 = 
+        {
+            "z = 8X1 + 6X2",
+            "X1 =< 4",
+            "2X2 =< 12",
+            "3X1 + 2X2 =< 18",
+        };
+    
     public ReaderTest() {
     }
 
@@ -25,17 +33,9 @@ public class ReaderTest {
     public void testLerFicheiro() {
         System.out.println("lerFicheiro");
         String caminhoFicheiroInput = "testfiles\\inputA.txt";
-        String[] expResult = 
-        {
-            "z = 8X1 + 6X2",
-            "X1 =< 4",
-            "2X2 =< 12",
-            "3X1 + 2X2 =< 18",
-        };
+        String[] expResult = input1;
         String[] result = Reader.lerFicheiro(caminhoFicheiroInput);
         System.out.println(Arrays.toString(result));
         assertArrayEquals(expResult, result);
-        
     }
-    
 }

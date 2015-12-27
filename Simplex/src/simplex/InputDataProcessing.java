@@ -25,6 +25,12 @@ public class InputDataProcessing {
     public static String[][] variaveis;
     //</editor-fold>
     
+    /**
+     * Le id dados do ficheiro e input e devolve a matriz inicial
+     * @param inputFile
+     * @param outputFile
+     * @return 
+     */
     public static double[][] lerDadosEConstruirMatriz(String inputFile, String outputFile) {
         
         double[][] matrizOutput = null;
@@ -40,7 +46,7 @@ public class InputDataProcessing {
                 variaveis = getVariaveisDaPrimeiraLinha(linhas[0]);
 
                 int nLinhas = linhas.length;
-                int nColunas = variaveis.length + nLinhas + 1;
+                int nColunas = variaveis.length + nLinhas;
                 int nVariaveis = variaveis.length;
                 int nSlacks = linhas.length - 1;
 
@@ -60,9 +66,17 @@ public class InputDataProcessing {
                 System.out.println("Erro : o ficheiro não foi encontrado.");
         }
         return matrizOutput;
-        
     }
     
+    /**
+     * Extrai os valores das variaveis nas linhas das restricoes
+     * @param nLinhas
+     * @param linhas
+     * @param nColunas
+     * @param nVariaveis
+     * @param variaveis
+     * @param matrizOutput 
+     */
     public static void getValoresLinhasDasRestricoes(int nLinhas, String[] linhas, int nColunas, int nVariaveis, String[][] variaveis, double[][] matrizOutput) {
         
         try {
@@ -72,12 +86,12 @@ public class InputDataProcessing {
                 String linha = linhas[i];
                 double[] linhaParaMatriz = new double[nColunas];
 
-                //<editor-fold desc="SLACK">
+                //<editor-fold defaultstate="collapsed" desc="SLACK">
                 int indexSlack = i + nVariaveis;
                 linhaParaMatriz[indexSlack - 1] = 1;
                 //</editor-fold>
 
-                //<editor-fold desc="Variaveis">
+                //<editor-fold defaultstate="collapsed" desc="Variaveis">
                 double[] valores =  getValoresDasVariaveisEmLinhaDeRestricoes(variaveis, linha);
                 for (int j = 0; j < nVariaveis; j++) {
                     linhaParaMatriz[j] = valores[j];
@@ -85,7 +99,7 @@ public class InputDataProcessing {
                 }
                 //</editor-fold>
                 
-                //<editor-fold desc="Ultima Coluna">
+                //<editor-fold defaultstate="collapsed" desc="Ultima Coluna">
                 linhaParaMatriz[nColunas - 1] = getUltimaColuna(linha);
                 //</editor-fold>
 
@@ -97,6 +111,11 @@ public class InputDataProcessing {
         }
     }
 
+    /**
+     * Extrai o valor referente a ultima comluna da matriz final
+     * @param linha
+     * @return 
+     */
     private static double getUltimaColuna(String linha) {
 
         //TODO: ver se é preciso fazer tb por =
@@ -126,6 +145,12 @@ public class InputDataProcessing {
         return output;
     }
     
+    /**
+     * Extrai o valr de todas as variaveis que sao encontradas
+     * @param variaveis
+     * @param linha
+     * @return 
+     */
     public static double[] getValoresDasVariaveisEmLinhaDeRestricoes(String[][] variaveis, String linha) {
         
         double[] output = new double[variaveis.length];
@@ -146,6 +171,12 @@ public class InputDataProcessing {
         return output;
     }
 
+    /**
+     * Coloca a primeira linha na matriz
+     * @param nColunas
+     * @param variaveis
+     * @return 
+     */
     public static double[] setPrimeiraLinha(int nColunas, String[][] variaveis) {
         
         double[] output = new double[nColunas];
@@ -161,7 +192,13 @@ public class InputDataProcessing {
         }
         return output;
     }
-    
+   
+    /**
+     * Extrai o valor de uma variavel
+     * @param charIndex
+     * @param linha
+     * @return 
+     */
     public static String[] extrairValorDaVariavel(int charIndex, String linha) {
 
         String[] output = new String[2];
@@ -196,7 +233,8 @@ public class InputDataProcessing {
         return output;
     }
 
-    //<editor-fold defaultstate="" desc="LER 1ª LINHA">
+    //<editor-fold defaultstate="collapsed" desc="LER 1ª LINHA">
+    
     /**
      * O output vai ser um array que contem 3 valores por variavel encontrada
      * [nome da variavel] [quantidade] [simbolo de positivo ou negativo]
@@ -231,6 +269,11 @@ public class InputDataProcessing {
         return output;
     }
 
+    /**
+     * Verifica se o character é uma letra
+     * @param caracter
+     * @return 
+     */
     public static boolean eUmaLetra(char caracter) {
 
         boolean output = false;
@@ -243,6 +286,13 @@ public class InputDataProcessing {
         return output;
     }
 
+    /**
+     * Extrai o nome de uma variavel
+     * @param charIndex
+     * @param linha
+     * @param variaveisEncontradas
+     * @return 
+     */
     public static int extrairNomeDaVariavel(int charIndex, String linha, String[][] variaveisEncontradas) {
  
         int idx = charIndex;
@@ -265,6 +315,12 @@ public class InputDataProcessing {
         return charIndex + nome.length() - 1;
     }
 
+    /**
+     * Verifica se um index é após um simbolo =
+     * @param linha
+     * @param charIndex
+     * @return 
+     */
     public static boolean depoisDeUmIgual(String linha, int charIndex) {
 
         int idx = linha.indexOf(String.valueOf(IGUAL));
@@ -272,6 +328,11 @@ public class InputDataProcessing {
         return output;
     }
 
+    /**
+     * Verifica se o nome de uma variavel terminou
+     * @param caracter
+     * @return 
+     */
     public static boolean nomeDaVariavelTerminou(char caracter) {
 
         boolean output = true;
@@ -318,6 +379,7 @@ public class InputDataProcessing {
     }
     //</editor-fold>
 
+    
     public static String[] getListaDeVariaveis(){
         String[] output = new String[variaveis.length];   
         for(int i = 0; i < variaveis.length; i++)
@@ -336,7 +398,7 @@ public class InputDataProcessing {
         
         for(int i = 1; i < nSlacks + 1; i++)
         {
-            output[i] = "S" + (i);
+            output[i] = "F" + (i);
         }
         return output;
     }
