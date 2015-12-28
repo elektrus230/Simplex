@@ -32,7 +32,7 @@ public class SimplexTest {
      * Test of encontraLinhaPivot method, of class Simplex.
      */
     @Test
-    public void testEncontraLinhaPivot() {
+    public void testEncontraLinhaPivot() throws Exception {
         System.out.println("encontraLinhaPivot");
         double[] colunaPivotRestricoes = {10,4,6,8,12};
         double[] ultimaColunaRestricoes = {2,2,2,2,2};

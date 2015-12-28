@@ -57,6 +57,15 @@ public class Writer {
         }
     }
 
+    /**
+     * 
+     * @param vars
+     * @param matrizSimplex
+     * @param cont
+     * @param caminhoDoFicheiroDeOutput 
+     */
+    
+    
     public static void imprimirIteração(String[]vars, double[][] matrizSimplex, int cont, String caminhoDoFicheiroDeOutput) {
         
         try {
