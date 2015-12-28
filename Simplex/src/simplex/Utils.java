@@ -9,22 +9,6 @@ package simplex;
  */
 public class Utils {
 
-    /**
-     * Pesquisa um array de Strings por um valor
-     * @param val
-     * @param array
-     * @return 
-     */
-    public static boolean arrayContemValor(String val, String[] array){
-        boolean output = false;
-        for (String str : array) {
-            if (str.equals(val)) {
-                output = true;
-                break;
-            }
-        }   
-        return output;
-    }
 
     /**
      * Recebe um array e expande-o, preservando o seu conteudo

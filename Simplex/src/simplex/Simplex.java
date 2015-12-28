@@ -171,41 +171,7 @@ public class Simplex {
         int indiceLinhaPivot = getIndiceLinhaPivot (quocienteColunas);
         
         return indiceLinhaPivot;
-    }
-    
-//    public static int getIndiceLinhaPivot (double [] quocienteColunas) throws Exception{
-//        
-//        int linha = 0;
-//        int indiceLinhaPivot = -1;
-//        
-//        while (quocienteColunas[linha]<0 & linha < quocienteColunas.length){
-//         linha++; 
-//        }
-//        
-//        if (linha == (quocienteColunas.length)){
-//            
-//            System.out.println ("Problema não tem solução. Todos os quocientes são negativos");
-//            indiceLinhaPivot = -1;
-//            throw new Exception("Problema não tem solução. Todos os quocientes são negativos");
-//            
-//        }else if (quocienteColunas[linha] == 0){
-//            
-//           indiceLinhaPivot = linha+1;   
-//        }else{ 
-//
-//                double menor = quocienteColunas[linha];
-//                indiceLinhaPivot = linha+1;
-//
-//            for (int j = linha+1; j < quocienteColunas.length; j++){
-//
-//                if (quocienteColunas[j] > 0 && quocienteColunas[j] < menor){
-//                    menor = quocienteColunas[j];
-//                    indiceLinhaPivot = j+1;
-//                }
-//            }
-//        }
-//        return indiceLinhaPivot;
-//    }
+    } 
     
     public static int getIndiceLinhaPivot (double [] quocienteColunas) throws Exception{
     

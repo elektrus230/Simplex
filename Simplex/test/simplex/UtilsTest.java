@@ -6,7 +6,6 @@
 package simplex;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 /**
@@ -30,20 +29,7 @@ public class UtilsTest {
         double[] result = Utils.calculaQuocienteColunas(colunaPivot, ultimaColuna);
         assertArrayEquals(expResult, result,1);    
     }
-
-    /**
-     * Test of arrayContemValor method, of class Utils.
-     */
-    @Test
-    public void testArrayContemValor() {
-        System.out.println("arrayContemValor");
-        String val = "X";
-        String[] array = {"S","X","L"};
-        boolean expResult = true;
-        boolean result = Utils.arrayContemValor(val, array);
-        assertEquals(expResult, result);
-    }
-
+    
     /**
      * Test of expandirArray method, of class Utils.
      */

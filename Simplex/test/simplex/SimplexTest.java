@@ -41,5 +41,14 @@ public class SimplexTest {
         assertEquals(expResult, result);
 
     }
+    
+    @Test
+    public void testGetIndiceLinhaPivot() throws Exception {
+        System.out.println("getIndiceLnhaPivot");
+        double[] input = {-3,0,4,8,22};
+        int expResult = 3;
+        int result = Simplex.getIndiceLinhaPivot(input);
+        assertEquals(expResult, result);
+    }
 
 }
