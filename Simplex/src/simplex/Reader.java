@@ -12,6 +12,8 @@ import java.util.Scanner;
  * @author Grupo 9
  */
 public class Reader { 
+
+    
     
     public static String[] lerFicheiro(String caminhoDoFicheiroInput){
     

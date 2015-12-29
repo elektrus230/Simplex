@@ -36,8 +36,8 @@ public class Simplex {
         
 //        System.out.println("\nin = " + inputFile);
 //        System.out.println("out = " + outputFile+"\n");      
-        String inputFile = "testfiles\\inputA.txt";
-        String outputFile = "testfiles\\OutputA.txt";
+        String inputFile = "testfiles\\inputB.txt";
+        String outputFile = "testfiles\\Output.txt";
         
         if(inputFile != null && outputFile != null){
 
