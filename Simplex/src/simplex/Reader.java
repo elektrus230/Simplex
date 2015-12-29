@@ -44,6 +44,7 @@ public class Reader {
                 if(!texto.equals("")){
                 
                     linhas = texto.split("#");//envia para o array linhas o string texto com split #
+                    
                 }
             
             }catch (FileNotFoundException fnfe){
@@ -51,7 +52,9 @@ public class Reader {
                 System.out.println("Houve um problema ao ler o ficheiro.");
             }          
         }
-        
+         for (int i=0;i<linhas.length;i++){
+            linhas[i]=linhas[i].toUpperCase();
+        }
         return linhas;
     }
 
