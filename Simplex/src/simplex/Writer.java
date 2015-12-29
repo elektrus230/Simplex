@@ -21,11 +21,7 @@ public class Writer {
     //<editor-fold desc="Escrever os dados iniciais retirados do Ficheiro de Input">
     /**
      * este método serve para escrever para o ecrâ e para o ficheiro de output
-     * os dados lidos do ficheiro de input, juntamente . como é o principio do
-     * ficheiro, ao criarmos a nova FileWriter, utilizaremos o modo true, pois
-     * desse modo, adiciona ao ficheiro os dados iniciais lembrar que sempre que
-     * saímos temos de fechar o PrintWriter criado
-     *
+     * os dados lidos do ficheiro de input.
      * @param linhas
      * @param caminhoDoFicheiroDeOutput
      */
@@ -69,11 +65,9 @@ public class Writer {
     }
     //</editor-fold>
 
-    //<editor-fold desc="imprimir as matrizes, desde a inicial até à ultima iteração">
+    //<editor-fold defaultstate="collapsed" desc="imprimir as matrizes, desde a inicial até à ultima iteração">
     /**
-     * aqui recebemos as variáveis descobertas, o resultado da matriz em
-     * double's, o contador da iteração, e ainda o caminho do output
-     *
+     * imprimir as matrizes, desde a inicial até à ultima iteração
      * @param vars
      * @param matrizSimplex
      * @param cont
@@ -152,109 +146,9 @@ public class Writer {
     }
     //</editor-fold>
 
-//    /**
-//     *
-//     * @param matrizSimplex
-//     * @param cont
-//     * @param caminhoDoFicheiroDeOutput
-//     */
-//    public static void ImprimirMatrizesS(String[][] matrizSimplex, int cont, String caminhoDoFicheiroDeOutput) {
-//        try {
-//
-//            File resultados = new File((caminhoDoFicheiroDeOutput));
-//            FileWriter fileWriter = new FileWriter(resultados, true);
-//            BufferedWriter buffer = new BufferedWriter(fileWriter);
-//            PrintWriter printWriter = new PrintWriter(buffer);
-//
-//            if (cont == 0) {
-//
-//                printWriter.printf("matriz inicial \n");
-//                System.out.printf("matriz inicial \n");
-//            } else {
-//
-//                printWriter.printf("%nIteração nº %d: \n", cont);
-//                System.out.printf("%nIteração nº %d: \n", cont);
-//            }
-//
-//            int tamLin;
-//
-//            for (int linha = 0; linha < matrizSimplex.length; linha++) {
-//
-//                String tempp = "|" + String.format("%4s|", matrizSimplex[linha][0]);
-//
-//                for (int coluna = 1; coluna < matrizSimplex[linha].length; coluna++) {
-//
-//                    tempp += String.format("%9s", matrizSimplex[linha][coluna]);
-//
-//                }
-//
-//                tamLin = tempp.length();
-//
-//                if (linha == 0 || linha == 1 || linha == 2) {
-//
-//                    for (int k = 0; k < tamLin + 1; k++) {
-//                        System.out.printf("-");
-//                        printWriter.printf("-");
-//                    }
-//
-//                    System.out.printf("\n");
-//                    printWriter.printf("\n");
-//                }
-//
-//                System.out.printf(tempp + "|");
-//                printWriter.printf(tempp + "|");
-//                System.out.print("\n");
-//                printWriter.printf("\n");
-//
-//                tempp = "|";
-//
-//                if (linha == matrizSimplex.length - 1) {
-//
-//                    for (int k = 0; k < tamLin + 1; k++) {
-//
-//                        System.out.printf("-");
-//                        printWriter.printf("-");
-//                    }
-//                }
-//            }
-//
-//            System.out.print("\n");
-//            printWriter.printf("\n");
-//            printWriter.close();
-//
-//        } catch (IOException ioe) {
-//
-//            System.out.println("Ocorreu um problema ao escrever no ficheiro" + ioe.getMessage());
-//        }
-//
-//    }
 
-//    public static void escreverResultados(String[][] matrizSimplexS, String caminhoDoFicheiroDeOutput) {
-//        try {
-//
-//            File resultados = new File((caminhoDoFicheiroDeOutput));
-//            FileWriter fileWriter = new FileWriter(resultados, true);
-//            BufferedWriter buffer = new BufferedWriter(fileWriter);
-//            PrintWriter printWriter = new PrintWriter(buffer);
-//
-//            System.out.printf("Esta foi a ultima Iteração \n");
-//            printWriter.printf("Esta foi a ultima Iteração \n");
-//            int nLinhas = matrizSimplexS.length;
-//            int nColunas = matrizSimplexS[0].length;
-//
-//            for (int linha = 1; linha < nLinhas; linha++) {
-//                System.out.printf("O resultado final de %3s = %s %n", matrizSimplexS[linha][0], matrizSimplexS[linha][nColunas - 1]);
-//                printWriter.printf("O resultado final de %3s = %s %n", matrizSimplexS[linha][0], matrizSimplexS[linha][nColunas - 1]);
-//            }
-//            printWriter.close();
-//
-//        } catch (IOException ioe) {
-//
-//            System.out.println("Ocorreu um problema ao escrever no ficheiro" + ioe.getMessage());
-//        }
-//    }
     
-    //<editor-fold desc="escrita dos resultados finais">
+    //<editor-fold defaultstate="collapsed" desc="escrita dos resultados finais">
     /**
      * Este método serve para apresentar os resultados finais
      * @param heads
@@ -271,16 +165,16 @@ public class Writer {
             PrintWriter printWriter = new PrintWriter(buffer);
 
             System.out.printf("Resultados finais:\n------------------------\n");
-            printWriter.printf("Resultados finais:\n------------------------\n");
+            printWriter.printf("\nResultados finais:\n------------------------\n");
 
             int nLinhas = matrizSimplex.length;
             int nColunas = matrizSimplex[0].length;
 
             for (int linha = 0; linha < nLinhas; linha++) {
-
+                String resultado = String.format("%8.2f",matrizSimplex[linha][nColunas - 1]);
                 String nomeVar = linha == 0 ? "Z" : heads[linha];
-                System.out.printf("O resultado final de %3s = %s %n", nomeVar, matrizSimplex[linha][nColunas - 1]);
-                printWriter.printf("O resultado final de %3s = %s %n", nomeVar, matrizSimplex[linha][nColunas - 1]);
+                System.out.printf("O resultado final de %3s = %s %n", nomeVar, resultado);
+                printWriter.printf("O resultado final de %3s = %s %n", nomeVar, resultado);
             }
 
             System.out.printf("------------------------\nPrograma terminado.\n");
@@ -294,7 +188,7 @@ public class Writer {
     }
     //</editor-fold>
     
-    //<editor-fold desc="criar o cabeçalho do resultado">
+    //<editor-fold defaultstate="collapsed" desc="criar o cabeçalho do resultado">
     /**
      * Este método serve para imprimir o cabeçalho do problema, ao criarmos o
      * FileWriter temos que por false no segundo argumento, pois assim apaga o

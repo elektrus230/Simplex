@@ -240,7 +240,7 @@ public class InputDataProcessing {
 
         int idx = charIndex - 1;
         String numero = "";
-        char carater = idx > -1 ? linha.charAt(idx) : ' ';
+        char carater = idx > 0 ? linha.charAt(idx) : ' ';
 
         while (!nomeDaVariavelTerminou(carater)) {
 

@@ -14,7 +14,11 @@ import java.util.Scanner;
 public class Reader { 
 
     
-    
+    /**
+     * este método serve para ler o ficheiro .txt e passar para uma variável
+     * @param caminhoDoFicheiroInput
+     * @return 
+     */
     public static String[] lerFicheiro(String caminhoDoFicheiroInput){
     
         String[] linhas = null;
