@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 
 /**
  *
- * @author bruno
+ * @author Grupo 9
  */
 public class Writer {
 

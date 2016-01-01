@@ -10,7 +10,7 @@ import org.junit.Test;
 
 /**
  *
- * @author André
+ * @author Grupo 9
  */
 public class SimplexTest {
 

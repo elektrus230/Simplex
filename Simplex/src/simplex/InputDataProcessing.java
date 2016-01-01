@@ -10,7 +10,7 @@ import static simplex.Reader.lerFicheiro;
 /**
  * TODO: Intrepertar operadores
  *
- * @author Dinis
+ * @author Grupo 9
  */
 public class InputDataProcessing {
 

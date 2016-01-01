@@ -10,7 +10,7 @@ import org.junit.Test;
 
 /**
  *
- * @author Dinis
+ * @author Grupo 9
  */
 public class UtilsTest {
     

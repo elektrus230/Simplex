@@ -16,7 +16,7 @@ import static simplex.InputDataProcessing.setPrimeiraLinha;
 
 /**
  *
- * @author Dinis
+ * @author Grupo 9
  */
 public class DataProcessingTest {
     

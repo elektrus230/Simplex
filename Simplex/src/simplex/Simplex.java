@@ -119,13 +119,8 @@ public class Simplex {
         
         double [] colunaPivotRestricoes = criaColunaRestricoes (indiceColunaPivot);
         
-        for (int i=0; i< colunaPivotRestricoes.length; i++){
-        }
         double [] ultimaColunaRestricoes = criaColunaRestricoes (matrizSimplex[0].length-1);
-        
-        for (int i=0; i< ultimaColunaRestricoes.length; i++){
-        }
-        
+       
         int indiceLinhaPivot = encontraLinhaPivot(colunaPivotRestricoes, ultimaColunaRestricoes);
         
         indicesDoPivot[0] = indiceLinhaPivot;
