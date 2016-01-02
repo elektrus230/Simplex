@@ -157,6 +157,8 @@ public class InputDataProcessing {
      */
     public static double[] getValoresDasVariaveisEmLinhaDeRestricoes(String[][] variaveis, String linha) {
 
+    //<editor-fold defaultstate="colapsed" desc="To Review">
+        
 //        double[] output = new double[variaveis.length];
 //        for (int i = 0; i < variaveis.length; i++) {
 //            
@@ -173,6 +175,7 @@ public class InputDataProcessing {
 //                output[i] = Double.parseDouble(valor);
 //            }
 //        }  
+//</editor-fold>
         
         double[] output = new double[variaveis.length];
         int indexInicial = 0;
@@ -282,7 +285,7 @@ public class InputDataProcessing {
 
         if (linha != null) {
 
-            if (linha.contains("=")) {
+            if (linha.contains("=") && !linha.contains(String.valueOf(MENOS))) {
 
                 int charIndex = 0;
 
