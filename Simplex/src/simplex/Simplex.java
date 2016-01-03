@@ -31,13 +31,13 @@ public class Simplex {
      */
     public static void main(String[] args) throws Exception {
         
-//        String inputFile = args[0];
-//        String outputFile = args[1];
+        String inputFile = args[0];
+        String outputFile = args[1];
         
-//        System.out.println("\nin = " + inputFile);
-//        System.out.println("out = " + outputFile+"\n");      
-        String inputFile = "testfiles\\input.txt";
-        String outputFile = "testfiles\\Output.txt";
+////        System.out.println("\nin = " + inputFile);
+////        System.out.println("out = " + outputFile+"\n");      
+//        String inputFile = "testfiles\\input.txt";
+//        String outputFile = "testfiles\\Output.txt";
         
         if(inputFile != null && outputFile != null){
 
