@@ -39,4 +39,48 @@ public class Utils {
         }
         return quocienteColunas;
     }
+    
+    public static boolean stringContemElelmentoDeArray(String str, String[] elementos){
+        boolean output = false;
+        for (int i = 1; i < elementos.length; i++ ) {
+            if (str.contains(elementos[i])) {
+                output = true;
+                break;
+            }
+        }
+        return output;
+    }
+    
+    /**
+     * TODO: Teste unitário
+     * @param matriz
+     * @return 
+     */
+    public static double[][] colocarUltimaLinhaEmPrimeiro(double[][] matriz){
+    
+        double[][] output = new double[matriz.length][matriz[0].length];
+        output[0] = matriz[matriz.length-1];
+        for (int i = 1; i < matriz.length-1; i++) {
+            output[i] = matriz[i-1];
+        }
+        return output;
+    }
+    
+    /**
+     * TODO: Teste unitario
+     * @param matriz
+     * @return 
+     */
+    public static double[][] transporMatriz(double[][] matriz){
+   
+        double[][] output = new double[matriz[0].length][matriz.length];
+        for (int i = 0; i < matriz.length; i++) {
+            
+            for(int j = 0; j < matriz[0].length; j++){
+                
+                output[j][i] = matriz[i][j];   
+            }   
+        }
+        return output;
+    }
 }

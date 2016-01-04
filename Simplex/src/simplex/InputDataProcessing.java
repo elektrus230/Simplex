@@ -6,6 +6,9 @@
 package simplex;
 
 import static simplex.Reader.lerFicheiro;
+import static simplex.Utils.colocarUltimaLinhaEmPrimeiro;
+import static simplex.Utils.stringContemElelmentoDeArray;
+import static simplex.Utils.transporMatriz;
 
 /**
  * TODO: Intrepertar operadores
@@ -13,7 +16,9 @@ import static simplex.Reader.lerFicheiro;
  * @author Grupo 9
  */
 public class InputDataProcessing {
-
+    
+    public static boolean Maximizacao = true;
+    
     //<editor-fold defaultstate="collapsed" desc="OPERADORES">
     public final static String[] MAIOR_OU_IGUAL = {">=", "=>", "\u2265", "\u2267"};
     public final static String[] MENOR_OU_IGUAL = {"<=", "=<", "\u2264", "\u2266"};
@@ -43,22 +48,30 @@ public class InputDataProcessing {
             if (linhas.length > 0) {
 
                 Writer.ImprimirDadosIniciais(linhas, outputFile);
-
+                
                 variaveis = getVariaveisDaPrimeiraLinha(linhas[0]);
-
+                Maximizacao = eProblemaDeMaximizacao(linhas);
+                
                 int nLinhas = linhas.length;
                 int nColunas = variaveis.length + nLinhas;
                 int nVariaveis = variaveis.length;
                 int nSlacks = linhas.length - 1;
+                //Todo: por slacks depois de transpor
+                int nResultadosEsperados = Maximizacao ? nSlacks : nVariaveis;
 
-                Simplex.resultados = criarColunaRefResultados(nSlacks);
+                Simplex.resultados = criarColunaRefResultados(nSlacks); //Actualizar para nResultadosEsperados
                 Simplex.listaDeVariaveis = getListaDeVariaveis();
 
                 matrizOutput = new double[nLinhas][nColunas];
-
-                matrizOutput[0] = setPrimeiraLinha(nColunas, variaveis);
-
+                matrizOutput[0] = setPrimeiraLinha(nColunas, variaveis); //rever
                 getValoresLinhasDasRestricoes(nLinhas, linhas, nColunas, nVariaveis, variaveis, matrizOutput);
+                
+                if(!Maximizacao){
+                    matrizOutput = transporMatriz(matrizOutput);
+                    matrizOutput = colocarUltimaLinhaEmPrimeiro(matrizOutput);
+                    //se for minimizacao apenas ponnho slacks a partir deste ponto
+                }
+                
 
             } else {
                 System.out.println("Erro : o ficheiro estava vazio.");
@@ -86,6 +99,7 @@ public class InputDataProcessing {
             for (int i = 1; i < nLinhas; i++) {
 
                 String linha = linhas[i];
+                
                 double[] linhaParaMatriz = new double[nColunas];
 
                 //<editor-fold defaultstate="collapsed" desc="SLACK">
@@ -284,24 +298,22 @@ public class InputDataProcessing {
         String[][] output = null;
 
         if (linha != null) {
+            
+            int charIndex = 0;
 
-            if (linha.contains("=") && !linha.contains(String.valueOf(MENOS))) {
+            while (charIndex < linha.length()) {
 
-                int charIndex = 0;
+                char caracter = linha.charAt(charIndex);
 
-                while (charIndex < linha.length()) {
+                if (eUmaLetra(caracter) && depoisDeUmIgual(linha, charIndex)) {
 
-                    char caracter = linha.charAt(charIndex);
-
-                    if (eUmaLetra(caracter) && depoisDeUmIgual(linha, charIndex)) {
-
-                        output = Utils.expandirArray(output);
-                        extrairValorDaVariavel(charIndex, linha, output);
-                        charIndex = extrairNomeDaVariavel(charIndex, linha, output);
-                    }
-                    charIndex++;
+                    output = Utils.expandirArray(output);
+                    extrairValorDaVariavel(charIndex, linha, output);
+                    charIndex = extrairNomeDaVariavel(charIndex, linha, output);
                 }
+                charIndex++;
             }
+            
         }
         return output;
     }
@@ -436,6 +448,18 @@ public class InputDataProcessing {
 
         for (int i = 1; i < nSlacks + 1; i++) {
             output[i] = "F" + (i);
+        }
+        return output;
+    }
+
+    private static boolean eProblemaDeMaximizacao(String[] linhas) {
+    
+        boolean output = true;
+        for (String linha : linhas) {
+            if(stringContemElelmentoDeArray(linha, MENOR_OU_IGUAL)){
+                Maximizacao = false;
+                break;
+            }
         }
         return output;
     }
