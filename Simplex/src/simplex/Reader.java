@@ -101,12 +101,16 @@ public static Scanner ler = new Scanner(System.in);
                 System.exit(0);
             }
             if (!output.exists()) {
-                System.out.println("\n\nO ficheiro que introduziu como "
-                        + "ficheiro de escrita não existe \n"
+                System.out.println("\n\nA directória que introduziu como "
+                        + "directória de escrita não existe \n"
                         + "verifique esta situação na próxima vez que\n"
-                        + "chamar o programa.\n"
-                        + "Obrigado desde já:)\n\n\n\n");
-                System.exit(0);
+                        + "chamar o programa, mas não se preocupe,\n"
+                        + "vamos já criar.\n"
+                        + "Obrigado desde já :)\n\n\n\n");
+                String d = new File(caminhoDoFicheiroOutput).getName();
+                String f = caminhoDoFicheiroOutput.replaceAll(d, "");
+                File dir = new File(f);
+                dir.mkdirs();
             }
         }
     }
