@@ -21,6 +21,8 @@ public class Simplex {
     public static double [][] matrizSimplex;
     public static String[] resultados;
     public static String[] listaDeVariaveis;
+    public static String caminhoDoFicheiroInput;
+    public static String caminhoDoFicheiroOutput;
     
     public static Formatter escrever = new Formatter(System.out);
     //</editor-fold>
@@ -31,33 +33,35 @@ public class Simplex {
      */
     public static void main(String[] args) throws Exception {
         
-        String inputFile = args[0];
-        String outputFile = args[1];
+//        String inputFile = args[0];
+//        String outputFile = args[1];
         
 ////        System.out.println("\nin = " + inputFile);
 ////        System.out.println("out = " + outputFile+"\n");      
 //        String inputFile = "testfiles\\input.txt";
 //        String outputFile = "testfiles\\Output.txt";
         
-        if(inputFile != null && outputFile != null){
+//        if(inputFile != null && outputFile != null){
 
-            Writer.escreverHeader(outputFile);
+            simplex.Reader.validacaoParametrosEntrada(args); // serve para validar os argumentos e ficheiros
             
-            matrizSimplex = lerDadosEConstruirMatriz(inputFile, outputFile);
+            Writer.escreverHeader(caminhoDoFicheiroOutput);
+            
+            matrizSimplex = lerDadosEConstruirMatriz(caminhoDoFicheiroInput, caminhoDoFicheiroOutput);
 
             if(matrizSimplex != null){
             
-                executarSimplex (outputFile);
+                executarSimplex (caminhoDoFicheiroOutput);
             
             }else{
                 System.out.println("Surgiu um problema ao ler o ficheiro. Por favor verifique se o caminho dos ficheiros foi correctamente inserido.");
             }
             
-        }else{
+//        }else{
             
-            System.out.println("Por favor indique os nomes dos ficheiros de "
-                    + "input e output ao chamar este programa.");
-        }
+//            System.out.println("Por favor indique os nomes dos ficheiros de "
+//                    + "input e output ao chamar este programa.");
+//        }
     }
     
     public static void executarSimplex(String outputFile) throws Exception{
