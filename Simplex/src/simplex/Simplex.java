@@ -75,11 +75,20 @@ public class Simplex {
             int[] indicesDoPivot = encontrarNumPivot();
 
             //<editor-fold defaultstate="collapsed" desc="Mover variaveis na lista de resultados">
-            int linhaDoPivot = indicesDoPivot[0];
+            int linhaPivot = indicesDoPivot[0];
             int colunaPivot = indicesDoPivot[1];
             
+            if(InputDataProcessing.Maximizacao){
+               // resultados[colunaPivot - nSlacks] = listaDeVariaveis[linhaPivot];
+            }else{
+                resultados[linhaPivot] = listaDeVariaveis[colunaPivot];
+                //No writer, tem de se mudar a atribuicao de valores de resultados.
+                //De momento está-se a ir buscar á ultima coluna.
+                //Tem de se ir buscar á ultima linha
+            }
+            
             if(colunaPivot < listaDeVariaveis.length){
-                resultados[linhaDoPivot] = listaDeVariaveis[colunaPivot];
+                resultados[linhaPivot] = listaDeVariaveis[colunaPivot];
             }
             //</editor-fold>
             

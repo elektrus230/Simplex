@@ -28,7 +28,6 @@ public class Writer {
     public static void ImprimirDadosIniciais(String[] linhas, String caminhoDoFicheiroDeOutput) {
 
         try {
-
             File resultados = new File((caminhoDoFicheiroDeOutput));
             FileWriter fileWriter = new FileWriter(resultados, true);
             BufferedWriter buffer = new BufferedWriter(fileWriter);
@@ -171,6 +170,7 @@ public class Writer {
             int nColunas = matrizSimplex[0].length;
 
             for (int linha = 0; linha < nLinhas; linha++) {
+               
                 String resultado = String.format("%8.2f",matrizSimplex[linha][nColunas - 1]);
                 String nomeVar = linha == 0 ? "Z" : heads[linha];
                 System.out.printf("O resultado final de %3s = %s %n", nomeVar, resultado);

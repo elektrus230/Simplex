@@ -56,10 +56,10 @@ public class InputDataProcessing {
                 int nColunas = variaveis.length + nLinhas;
                 int nVariaveis = variaveis.length;
                 int nSlacks = linhas.length - 1;
-                //Todo: por slacks depois de transpor
+                
                 int nResultadosEsperados = Maximizacao ? nSlacks : nVariaveis;
 
-                Simplex.resultados = criarColunaRefResultados(nSlacks); //Actualizar para nResultadosEsperados
+                Simplex.resultados = criarColunaRefResultados(nResultadosEsperados); //Actualizar para nResultadosEsperados
                 Simplex.listaDeVariaveis = getListaDeVariaveis();
 
                 matrizOutput = new double[nLinhas][nColunas];
@@ -69,11 +69,12 @@ public class InputDataProcessing {
                 if(!Maximizacao){
                     matrizOutput = transporMatriz(matrizOutput);
                     matrizOutput = colocarUltimaLinhaEmPrimeiro(matrizOutput);
-                    //se for minimizacao apenas ponnho slacks a partir deste ponto
                 }
                 
-
+                preencherSlacks(matrizOutput, nVariaveis);
+                
             } else {
+                
                 System.out.println("Erro : o ficheiro estava vazio.");
             }
         } else {
@@ -101,11 +102,6 @@ public class InputDataProcessing {
                 String linha = linhas[i];
                 
                 double[] linhaParaMatriz = new double[nColunas];
-
-                //<editor-fold defaultstate="collapsed" desc="SLACK">
-                int indexSlack = i + nVariaveis;
-                linhaParaMatriz[indexSlack - 1] = 1;
-                //</editor-fold>
 
                 //<editor-fold defaultstate="collapsed" desc="Variaveis">
                 double[] valores = getValoresDasVariaveisEmLinhaDeRestricoes(variaveis, linha);
@@ -440,13 +436,13 @@ public class InputDataProcessing {
         return output;
     }
 
-    private static String[] criarColunaRefResultados(int nSlacks) {
-        String[] output = new String[nSlacks + 1];
+    private static String[] criarColunaRefResultados(int nResultadosEserados) {
+        String[] output = new String[nResultadosEserados + 1];
 
         //Todo mudar o Z para var dinamica
         output[0] = "Z ";
 
-        for (int i = 1; i < nSlacks + 1; i++) {
+        for (int i = 1; i < nResultadosEserados + 1; i++) {
             output[i] = "F" + (i);
         }
         return output;
@@ -462,5 +458,12 @@ public class InputDataProcessing {
             }
         }
         return output;
+    }
+
+    private static void preencherSlacks(double[][] matrizOutput, int nVariaveis) {
+        int linha = 0;
+        for (int coluna = nVariaveis; coluna < matrizOutput.length; coluna++) {
+            matrizOutput[linha][coluna] = 1;
+        }
     }
 }
