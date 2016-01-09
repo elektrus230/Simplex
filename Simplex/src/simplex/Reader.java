@@ -39,15 +39,15 @@ public class Reader {
                 String textoS = "";
                 while (scanner.hasNextLine()) {
                     textoL = scanner.nextLine().trim();
-                    
+
                     /**
                      * validação para verificar se houver linhas vazias, não a
                      * lermos
                      */
-                    if (!textoL.trim().isEmpty()) {
+                    if (!textoL.isEmpty()) {
                         textoS += textoL + "#";
                     }
-                    System.out.println(textoS);
+
 //                    if (!texto.equals("")) {
 //                        texto += "#";//verifica se a linha do texto é vazia senão
 //                    }               //for acrescenta um # ao final do String texto
@@ -122,6 +122,10 @@ public class Reader {
                         + "chamar o programa, mas não se preocupe,\n"
                         + "vamos já criar. ;)\n"
                         + "Obrigado desde já \n\n\n\n");
+                try {
+                    Thread.sleep(2500);
+                } catch (InterruptedException e) {
+                }
                 dir.mkdirs();
             }
         }
