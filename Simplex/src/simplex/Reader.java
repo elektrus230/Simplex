@@ -100,16 +100,16 @@ public static Scanner ler = new Scanner(System.in);
                         + "Obrigado desde já:)\n\n\n\n");
                 System.exit(0);
             }
-            if (!output.exists()) {
+            String d = new File(caminhoDoFicheiroOutput).getName();
+            String f = caminhoDoFicheiroOutput.replace(d, "");
+            File dir = new File(f);
+            if (!dir.exists()) {
                 System.out.println("\n\nA directória que introduziu como "
                         + "directória de escrita não existe \n"
                         + "verifique esta situação na próxima vez que\n"
                         + "chamar o programa, mas não se preocupe,\n"
-                        + "vamos já criar.\n"
-                        + "Obrigado desde já :)\n\n\n\n");
-                String d = new File(caminhoDoFicheiroOutput).getName();
-                String f = caminhoDoFicheiroOutput.replaceAll(d, "");
-                File dir = new File(f);
+                        + "vamos já criar. ;)\n"
+                        + "Obrigado desde já \n\n\n\n");
                 dir.mkdirs();
             }
         }
