@@ -84,9 +84,7 @@ public class Reader {
             String resposta = ler.next();
             switch (resposta) {
                 case "s":
-                    caminhoDoFicheiroInput = "testfiles\\input.txt";
-                    caminhoDoFicheiroOutput = "testfiles\\output.txt";
-                    break;
+
                 case "S":
                     caminhoDoFicheiroInput = "testfiles\\input.txt";
                     caminhoDoFicheiroOutput = "testfiles\\output.txt";
