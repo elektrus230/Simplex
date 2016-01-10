@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Formatter;
 
 /**
  *
@@ -163,7 +164,7 @@ public class Writer {
             BufferedWriter buffer = new BufferedWriter(fileWriter);
             PrintWriter printWriter = new PrintWriter(buffer);
 
-            System.out.printf("Resultados finais:\n------------------------\n");
+            System.out.printf("\n\nResultados finais:\n------------------------\n");
             printWriter.printf("\nResultados finais:\n------------------------\n");
 
             int nLinhas = matrizSimplex.length;
@@ -194,6 +195,7 @@ public class Writer {
      * FileWriter temos que por false no segundo argumento, pois assim apaga o
      * que tiver dentro do ficheiro e escreve o pretendido é preciso lembrar que
      * deve-se sempre acabar com o fecho do PrintWiter ao sair
+     * @param caminhoDoFicheiroDeOutput
      */
     public static void escreverHeader(String caminhoDoFicheiroDeOutput) {
 
@@ -240,4 +242,32 @@ public class Writer {
         System.out.println(header);
     }
     //</editor-fold>
+    
+    /**
+     * Escreve uma mensagem e termina o programa.
+     * @param mensagem
+     * @param formatter 
+     */
+    public static void forcarSaida(String mensagem, Formatter formatter){
+        escreverGenerico(mensagem,formatter);
+        escreverGenerico(StringsLib.Msg_Saida,formatter);
+        if(formatter != null){
+            formatter.close();
+        }
+        System.exit(0);
+    }
+    
+    /**
+     * Escreve uma mensagem para a consola.
+     * Se o formatter recebido existir, 
+     * escreve tambem para um ficheiro
+     * @param mensagem
+     * @param formatter 
+     */
+    public static void escreverGenerico(String mensagem, Formatter formatter){
+        System.out.println(mensagem);
+        if(formatter != null){
+            formatter.format(mensagem);
+        }
+    }
 }

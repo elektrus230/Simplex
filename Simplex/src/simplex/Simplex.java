@@ -4,7 +4,6 @@
 package simplex;
 
 import java.util.Formatter;
-import static simplex.InputDataProcessing.lerDadosEConstruirMatriz;
 import static simplex.Simplex.resultados;
 import static simplex.Writer.escreverResultados;
 import static simplex.Writer.imprimirIteração;
@@ -17,7 +16,7 @@ public class Simplex {
 
     //<editor-fold defaultstate="collapsed" desc="Variaveis Globais">
     
-    //public static double[][] matrizSimplex;
+
     public static double [][] matrizSimplex;
     public static String[] resultados;
     public static String[] listaDeVariaveis;
@@ -26,45 +25,8 @@ public class Simplex {
     
     public static Formatter escrever = new Formatter(System.out);
     //</editor-fold>
-    
-    /**
-     * @param args, Recebe dois caminhos de ficheiros, 
-     * um de input, outro de output 
-     */
-    public static void main(String[] args) throws Exception {
-        
-//        String inputFile = args[0];
-//        String outputFile = args[1];
-        
-////        System.out.println("\nin = " + inputFile);
-////        System.out.println("out = " + outputFile+"\n");      
-//        String inputFile = "testfiles\\input.txt";
-//        String outputFile = "testfiles\\Output.txt";
-        
-//        if(inputFile != null && outputFile != null){
 
-            simplex.Reader.validacaoParametrosEntrada(args); // serve para validar os argumentos e ficheiros
-            
-            Writer.escreverHeader(caminhoDoFicheiroOutput);
-            
-            matrizSimplex = lerDadosEConstruirMatriz(caminhoDoFicheiroInput, caminhoDoFicheiroOutput);
-
-            if(matrizSimplex != null){
-            
-                executarSimplex (caminhoDoFicheiroOutput);
-            
-            }else{
-                System.out.println("Surgiu um problema ao ler o ficheiro. Por favor verifique se o caminho dos ficheiros foi correctamente inserido.");
-            }
-            
-//        }else{
-            
-//            System.out.println("Por favor indique os nomes dos ficheiros de "
-//                    + "input e output ao chamar este programa.");
-//        }
-    }
-    
-    public static void executarSimplex(String outputFile) throws Exception{
+    public static void executarSimplex(String outputFile){
         
         int iteracao = 0;
         
@@ -74,22 +36,21 @@ public class Simplex {
             
             int[] indicesDoPivot = encontrarNumPivot();
 
+            
             //<editor-fold defaultstate="collapsed" desc="Mover variaveis na lista de resultados">
             int linhaPivot = indicesDoPivot[0];
             int colunaPivot = indicesDoPivot[1];
             
+            String variavelPivot;
             if(InputDataProcessing.Maximizacao){
-               // resultados[colunaPivot - nSlacks] = listaDeVariaveis[linhaPivot];
-            }else{
-                resultados[linhaPivot] = listaDeVariaveis[colunaPivot];
-                //No writer, tem de se mudar a atribuicao de valores de resultados.
-                //De momento está-se a ir buscar á ultima coluna.
-                //Tem de se ir buscar á ultima linha
-            }
+                
+                variavelPivot = listaDeVariaveis[colunaPivot];
             
-            if(colunaPivot < listaDeVariaveis.length){
-                resultados[linhaPivot] = listaDeVariaveis[colunaPivot];
+            }else{
+                int nSlacks = matrizSimplex[0].length - listaDeVariaveis.length - 1;
+                variavelPivot = listaDeVariaveis[colunaPivot - nSlacks];
             }
+            resultados[linhaPivot] = variavelPivot;
             //</editor-fold>
             
             passarLinhaPivotParaUm(indicesDoPivot);
@@ -105,7 +66,6 @@ public class Simplex {
         }
         
         imprimirIteração(resultados, matrizSimplex,iteracao,outputFile);
-        System.out.println("\n\n");
         escreverResultados(resultados, matrizSimplex, outputFile);
     }
   
@@ -122,7 +82,7 @@ public class Simplex {
         return existemNumNegat;        
     }
      
-    public static int[] encontrarNumPivot() throws Exception {
+    public static int[] encontrarNumPivot(){
         
         int[] indicesDoPivot = new int [2];
         
@@ -172,7 +132,7 @@ public class Simplex {
      * @param ultimaColuna
      * @return 
      */
-    public static int encontraLinhaPivot (double [] colPivot, double []ultimaColuna) throws Exception{
+    public static int encontraLinhaPivot (double [] colPivot, double []ultimaColuna){
         
         double [] quocienteColunas = Utils.calculaQuocienteColunas(colPivot,ultimaColuna);
         
@@ -181,7 +141,7 @@ public class Simplex {
         return indiceLinhaPivot;
     } 
     
-    public static int getIndiceLinhaPivot (double [] quocienteColunas) throws Exception{
+    public static int getIndiceLinhaPivot (double [] quocienteColunas){
     
         int indiceLinhaPivot = -1;
         int linha = 0;

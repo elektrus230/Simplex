@@ -79,7 +79,7 @@ public class Reader {
          */
         if (args.length <= 1) {
             System.out.printf("Não foram introduzidos correctamente os argumentos\n"
-                    + "quer utilizar os caminhos pré-definidos pelo programa?\n"
+                    + "Pretende utilizar os caminhos pré-definidos pelo programa?\n"
                     + "(s/n)");
             String resposta = ler.next();
             switch (resposta) {
