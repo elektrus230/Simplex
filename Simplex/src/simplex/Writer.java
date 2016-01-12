@@ -19,6 +19,8 @@ import java.util.Formatter;
  */
 public class Writer {
 
+    public static Formatter Escritor;
+    
     //<editor-fold desc="Escrever os dados iniciais retirados do Ficheiro de Input">
     /**
      * este método serve para escrever para o ecrâ e para o ficheiro de output
@@ -73,7 +75,8 @@ public class Writer {
      * @param cont
      * @param caminhoDoFicheiroDeOutput
      */
-    public static void imprimirIteração(String[] vars, double[][] matrizSimplex, int cont, String caminhoDoFicheiroDeOutput) {
+    public static void imprimirIteração(String[] vars, 
+            double[][] matrizSimplex, int cont, String caminhoDoFicheiroDeOutput) {
 
         try {
 
@@ -173,7 +176,7 @@ public class Writer {
             for (int linha = 0; linha < nLinhas; linha++) {
                
                 String resultado = String.format("%8.2f",matrizSimplex[linha][nColunas - 1]);
-                String nomeVar = linha == 0 ? "Z" : heads[linha];
+                String nomeVar = heads[linha];
                 System.out.printf("O resultado final de %3s = %s %n", nomeVar, resultado);
                 printWriter.printf("O resultado final de %3s = %s %n", nomeVar, resultado);
             }

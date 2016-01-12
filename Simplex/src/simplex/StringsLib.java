@@ -7,7 +7,7 @@ package simplex;
 
 /**
  *
- * @author Dinis
+ * @author Grupo 9
  */
 public class StringsLib {
     
@@ -32,6 +32,7 @@ public class StringsLib {
     
     //<editor-fold defaultstate="collapsed" desc="ERROS">
     
+    public static final String Erro_ParseStringParaDouble = "Erro ao converter uma string para double.";
     public static final String Erro_LerVariaveis = "Erro ao ler um valor do ficheiro.";
     public static final String Erro_LerValorFraccao = "Erro ao ler um valor fraccionario do ficheiro.";
     public static final String Erro_FicheiroVazio = "Erro : o ficheiro estava vazio.";
@@ -45,6 +46,15 @@ public class StringsLib {
     public static final String Erro_SemArgs = "Não foram detectados nenhus argumentos."
             + "Para inicializar este programa, por favor indique o caminho do ficheiro"
             + "de entrada e o caminho do ficheiro de saí ao chamar o programa.";
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="OUTROS">
+    public static final String Maximizacao = "maximizacao";
+    public static final String Minimizacao = "minimizacao";
+    public static final String PNG = ".png";
+    public static final String TXT = ".txt";
+    public static final String EPS = ".eps";
+
     //</editor-fold>
 
 }

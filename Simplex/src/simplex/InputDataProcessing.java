@@ -10,7 +10,6 @@ import static simplex.Utils.stringContemElelmentoDeArray;
 import static simplex.Utils.transporMatriz;
 
 /**
- * TODO: Intrepertar operadores
  *
  * @author Grupo 9
  */
@@ -19,8 +18,8 @@ public class InputDataProcessing {
     public static boolean Maximizacao = true;
     
     //<editor-fold defaultstate="collapsed" desc="OPERADORES">
-    public final static String[] MAIOR_OU_IGUAL = {">=", "=>", "\u2265", "\u2267"};
-    public final static String[] MENOR_OU_IGUAL = {"<=", "=<", "\u2264", "\u2266"};
+    public final static String[] MENOR_OU_IGUAL = {">=", "=>", "\u2265", "\u2267"};
+    public final static String[] MAIOR_OU_IGUAL = {"<=", "=<", "\u2264", "\u2266"};
     public final static char IGUAL = '=';
     public final static char MENOS = '-';
     public final static char MAIS = '+';
@@ -54,13 +53,40 @@ public class InputDataProcessing {
                 variaveis = getVariaveisDaPrimeiraLinha(linhas[0]);
                 Maximizacao = eProblemaDeMaximizacao(linhas);
                 
-                int nLinhas = linhas.length;
-                int nColunas = variaveis.length + nLinhas;
+                String tipo;
+                
+                int nLinhas;
+                int nColunas;
+                int colunaInicioSlack;
+                int nSlacks;
+                int nVariaveisBasicas;
+                
                 int nVariaveis = variaveis.length;
-                int nSlacks = linhas.length - 1;
-                int nResultadosEsperados = Maximizacao ? nSlacks : nVariaveis;
+                
+                if(Maximizacao){
 
-                Simplex.resultados = criarColunaRefResultados(nResultadosEsperados);
+                    tipo = StringsLib.Maximizacao;
+                    nLinhas = linhas.length;
+                    nColunas = nVariaveis + linhas.length + 1;
+                    nSlacks = linhas.length - 1;
+                    nVariaveisBasicas = nSlacks;
+                    colunaInicioSlack = nVariaveis;
+                    
+                    
+                }else{
+                    
+                    tipo = StringsLib.Minimizacao;
+                    nLinhas = linhas.length;
+                    nColunas = nVariaveis + 1;
+                    nSlacks = nVariaveis;
+                    nVariaveisBasicas = nVariaveis;
+                    colunaInicioSlack = nLinhas - 1;
+                }
+                
+                String problema = String.format("O problema actual é um problema de %s.\n",tipo);
+                Writer.escreverGenerico(problema,Writer.Escritor);
+                
+                Simplex.resultados = criarColunaRefResultados(nVariaveisBasicas);
                 Simplex.listaDeVariaveis = getListaDeVariaveis();
 
                 matrizOutput = new double[nLinhas][nColunas];
@@ -71,9 +97,13 @@ public class InputDataProcessing {
                 
                 if(!Maximizacao){
                     matrizOutput = transporMatriz(matrizOutput);
+                    int tamMat = matrizOutput.length - 1;
+                    matrizOutput[tamMat] = Utils.negarArray(matrizOutput[tamMat]);
+                    matrizOutput = acrescentarColunasDeSlacks(matrizOutput, nSlacks);
+                    nColunas = nVariaveis + nLinhas;
                 }
                 
-                preencherSlacks(matrizOutput, nVariaveis, nColunas);
+                preencherSlacks(matrizOutput, colunaInicioSlack, nColunas);
                 
             } else {
                 
@@ -95,7 +125,9 @@ public class InputDataProcessing {
      * @param variaveis
      * @param matrizOutput
      */
-    public static void getValoresLinhasDasRestricoes(int nLinhas, String[] linhas, int nColunas, int nVariaveis, String[][] variaveis, double[][] matrizOutput) {
+    public static void getValoresLinhasDasRestricoes(int nLinhas,
+            String[] linhas, int nColunas, int nVariaveis, 
+            String[][] variaveis, double[][] matrizOutput) {
 
         try {
 
@@ -117,7 +149,7 @@ public class InputDataProcessing {
                 linhaParaMatriz[nColunas - 1] = getUltimaColuna(linha);
                 //</editor-fold>
 
-                matrizOutput[i] = linhaParaMatriz;
+                matrizOutput[i-1] = linhaParaMatriz;
             }
         } catch (NumberFormatException nfe) {
 
@@ -161,7 +193,7 @@ public class InputDataProcessing {
     }
 
     /**
-     * Extrai o valr de todas as variaveis que sao encontradas
+     * Extrai o valor de todas as variaveis que sao encontradas
      *
      * @param variaveis
      * @param linha
@@ -209,59 +241,29 @@ public class InputDataProcessing {
     public static double[] setPrimeiraLinha(int nColunas, String[][] variaveis) {
 
         double[] output = new double[nColunas];
+
         for (int i = 0; i < variaveis.length; i++) {
-            try {
-                double value = Double.parseDouble(variaveis[i][1]);
-                output[i] = value == 0 ? 0 : value * -1;
-
-            } catch (NumberFormatException nfe) {
-
-                System.out.println(nfe.getMessage());
+            try{
+            
+                double doubleValue = Double.parseDouble(variaveis[i][1]);
+                output[i] = doubleValue;
+                
+            }catch (NumberFormatException nfe){
+                
+                Writer.forcarSaida(
+                        StringsLib.Erro_ParseStringParaDouble 
+                                + nfe.getMessage(), Writer.Escritor);
             }
         }
+        
+        if(Maximizacao){
+        
+            output = Utils.negarArray(output);
+        }
+        
         return output;
     }
 
-    /**
-     * Extrai o valor de uma variavel
-     * Eliminar
-     * @param charIndex
-     * @param linha
-     * @return
-     *//*
-    public static String[] extrairValorDaVariavel(int charIndex, String linha) {
-
-        String[] output = new String[2];
-
-        int idx = charIndex - 1;
-        String numero = "";
-        char carater = idx > 0 ? linha.charAt(idx) : ' ';
-
-        while (!nomeDaVariavelTerminou(carater)) {
-
-            if (String.valueOf(carater).matches("[0-9]")) {
-
-                numero = carater + numero;
-            }
-
-            idx--;
-            carater = idx > -1 ? linha.charAt(idx) : ' ';
-        }
-
-        if (numero.equals("")) {
-            numero = "1";
-        }
-
-        String operador = "+";
-
-        if (carater == MENOS) {
-            operador = "-";
-        }
-
-        output[0] = numero;
-        output[1] = operador;
-        return output;
-    }*/
 
     //<editor-fold defaultstate="collapsed" desc="LER 1ª LINHA">
     /**
@@ -387,7 +389,7 @@ public class InputDataProcessing {
         varsEncontradas[ultimaVarEncontrada][2] = quantOperador[1];
 
     }
-    //</editor-fold>
+    //</editor-fold> 
 
     /**
      * Rotarna um array com os nomes de todas as variaveis do programa
@@ -427,7 +429,7 @@ public class InputDataProcessing {
         boolean output = true;
         for (String linha : linhas) {
             if(stringContemElelmentoDeArray(linha, MENOR_OU_IGUAL)){
-                Maximizacao = false;
+                output = false;
                 break;
             }
         }
@@ -435,15 +437,16 @@ public class InputDataProcessing {
     }
 
     /**
-     * Preenche os slacks na tabela simplex.
+     * Preenche os slacks na tabela simplex. TODO: alterar conforme 
      * Colaca o valor 1 nos espaços referentes a slacks
      * @param matrizOutput
-     * @param nVariaveis
+     * @param colunaInicio
      * @param nColunas 
      */
-    private static void preencherSlacks(double[][] matrizOutput, int nVariaveis, int nColunas) {
+    private static void preencherSlacks(double[][] matrizOutput,
+            int colunaInicio, int nColunas) {
         int linha = 0;
-        for (int coluna = nVariaveis; coluna < nColunas; coluna++){
+        for (int coluna = colunaInicio; coluna < nColunas - 1; coluna++){
             matrizOutput[linha][coluna] = 1;
             linha++;
         }
@@ -451,27 +454,27 @@ public class InputDataProcessing {
     
     /**
      * Valida e extrai 
-     * @param s
+     * @param string
      * @param inicioDaVariavel
      * @return 
      */
-    public static String[] extrairValorEOperadorDeVariavel(String s, int inicioDaVariavel){
+    public static String[] extrairValorEOperadorDeVariavel(String string, int inicioDaVariavel){
 
         String[] output = new String[2];
         int idx = inicioDaVariavel;
         String valor = "1";
         String operador = "+";
-        char carater = idx > 0 ? s.charAt(idx-1) : ESPACO;
+        char carater = idx > 0 ? string.charAt(idx-1) : ESPACO;
         
         while(carater != ' '){
         
             idx--;
-            carater = idx > 0 ? s.charAt(idx-1) : ESPACO;
+            carater = idx > 0 ? string.charAt(idx-1) : ESPACO;
         }
-;
+
         if(idx != inicioDaVariavel){
         
-            String content = s.substring(idx,inicioDaVariavel);
+            String content = string.substring(idx,inicioDaVariavel);
             
             if(content.contains("/")){
             
@@ -479,7 +482,7 @@ public class InputDataProcessing {
                 
             }else{
                 
-                carater = s.charAt(idx);
+                carater = string.charAt(idx);
                 if(carater == MAIS || carater == MENOS){
                     idx++;
                     if(carater == MENOS){
@@ -488,9 +491,10 @@ public class InputDataProcessing {
                 }
 
                 if(idx < inicioDaVariavel){
-                    String ss = s.substring(idx, inicioDaVariavel);
-                    System.out.println("SS = " + ss);
-                    if(ss.matches("\\d+")){
+                    String ss = string.substring(idx, inicioDaVariavel);
+                    
+                    
+                    if(ss.matches("^\\d+(\\.\\d+)*$")){
                         output[0] = ss;
                     }else{
                          Writer.forcarSaida(StringsLib.Erro_LerVariaveis, null);
@@ -546,7 +550,27 @@ public class InputDataProcessing {
             System.exit(0);
         }
         
+        return output;
+    }
+
+    public static double[][] acrescentarColunasDeSlacks(double[][] matrizOutput, int nSlacks) {
         
+        int linhas = matrizOutput.length;
+        int colunas = matrizOutput[0].length;
+        
+        double[][] output = new double[linhas][colunas + nSlacks];
+        for (int i = 0; i < linhas;i++) {
+            for (int j = 0; j < colunas; j++) {
+                
+                output[i][j] = matrizOutput[i][j];
+            }
+        }
+        
+        for (int i = 0; i < linhas; i++) {
+            output[i][colunas + nSlacks - 1] = output[i][colunas - 1];
+            output[i][colunas - 1] = 0; 
+ 
+        }
         return output;
     }
 }

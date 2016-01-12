@@ -30,26 +30,16 @@ public class Simplex {
         
         int iteracao = 0;
         
-        while (existemNumerosNegativos(matrizSimplex[0])) {
+        while (existemNumerosNegativos(matrizSimplex[matrizSimplex.length - 1])) {
 
             imprimirIteração(resultados, matrizSimplex,iteracao,outputFile);
             
             int[] indicesDoPivot = encontrarNumPivot();
-
             
             //<editor-fold defaultstate="collapsed" desc="Mover variaveis na lista de resultados">
             int linhaPivot = indicesDoPivot[0];
             int colunaPivot = indicesDoPivot[1];
-            
-            String variavelPivot;
-            if(InputDataProcessing.Maximizacao){
-                
-                variavelPivot = listaDeVariaveis[colunaPivot];
-            
-            }else{
-                int nSlacks = matrizSimplex[0].length - listaDeVariaveis.length - 1;
-                variavelPivot = listaDeVariaveis[colunaPivot - nSlacks];
-            }
+            String variavelPivot = listaDeVariaveis[colunaPivot];  
             resultados[linhaPivot] = variavelPivot;
             //</editor-fold>
             
@@ -69,16 +59,16 @@ public class Simplex {
         escreverResultados(resultados, matrizSimplex, outputFile);
     }
   
-    public static boolean existemNumerosNegativos(double [] primeiraLinha){
+    public static boolean existemNumerosNegativos(double [] ultimaLinha){
        
         int coluna = 0;
         boolean existemNumNegat;
         
-        while ((primeiraLinha[coluna] >= 0) && (coluna < primeiraLinha.length-1)) {
+        while ((ultimaLinha[coluna] >= 0) && (coluna < ultimaLinha.length-1)) {
             coluna++;
         }
         
-        existemNumNegat = coluna != primeiraLinha.length-1;
+        existemNumNegat = coluna != ultimaLinha.length-1;
         return existemNumNegat;        
     }
      
@@ -86,7 +76,7 @@ public class Simplex {
         
         int[] indicesDoPivot = new int [2];
         
-        int indiceColunaPivot = encontraColunaPivot(matrizSimplex[0]);
+        int indiceColunaPivot = encontraColunaPivot(matrizSimplex[matrizSimplex.length -1]);
         
         indicesDoPivot[1] = indiceColunaPivot;
         
@@ -101,14 +91,14 @@ public class Simplex {
         return indicesDoPivot;
     }
 
-    public static int encontraColunaPivot (double [] primeiraLinha){
+    public static int encontraColunaPivot (double [] ultimaLinha){
         
-        double menor = primeiraLinha[0];
+        double menor = ultimaLinha[0];
         int indiceColunaPivot = 0;
         
-        for (int coluna = 1; coluna < primeiraLinha.length; coluna ++){
-            if (primeiraLinha[coluna] < menor){
-                menor = primeiraLinha[coluna];
+        for (int coluna = 1; coluna < ultimaLinha.length; coluna ++){
+            if (ultimaLinha[coluna] < menor){
+                menor = ultimaLinha[coluna];
                 indiceColunaPivot = coluna;
             }
         }
@@ -119,8 +109,8 @@ public class Simplex {
         
         double [] colunaRestricoes = new double [matrizSimplex.length-1];
         
-        for (int linha = 1; linha < matrizSimplex.length; linha ++){
-            colunaRestricoes [linha-1] = matrizSimplex [linha][indiceColuna];                 
+        for (int linha = 0; linha < matrizSimplex.length - 1; linha ++){
+            colunaRestricoes [linha] = matrizSimplex [linha][indiceColuna];                 
         }
         
         return colunaRestricoes;
@@ -151,18 +141,18 @@ public class Simplex {
         }
         
         if(linha == quocienteColunas.length){
-            indiceLinhaPivot = linha + 1;
+            indiceLinhaPivot = linha;
             
         }else{
         
             double menor = quocienteColunas[linha];
-            indiceLinhaPivot = linha + 1;
+            indiceLinhaPivot = linha;
                 
             for (int j = linha; j < quocienteColunas.length; j++){
 
                 if (quocienteColunas[j] > 0 && quocienteColunas[j] < menor){
                     menor = quocienteColunas[j];
-                    indiceLinhaPivot = j+1;
+                    indiceLinhaPivot = j;
                 }
             }
             
@@ -199,6 +189,8 @@ public class Simplex {
         }  
     } 
     
+    
+    //TODO: Remover
     //<editor-fold defaultstate="collapsed" desc="Teste - dummy matrix">
     public static double [][] criarMatrizInicial (){
        double matrizInicial [][] = {{-3,-5,0,0,0,0}, {2,4,1,0,0,10}, {6,1,0,1,0,20}, {1,-1,0,0,1,30}};

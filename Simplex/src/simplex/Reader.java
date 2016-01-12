@@ -15,7 +15,7 @@ import static simplex.Simplex.caminhoDoFicheiroOutput;
  */
 public class Reader {
 
-    public static Scanner ler = new Scanner(System.in);
+    public static Scanner Leitor = new Scanner(System.in);
 
     /**
      * este método serve para ler o ficheiro .txt e passar para uma variável
@@ -60,15 +60,17 @@ public class Reader {
                     linhas = textoS.split("#");//envia para o array linhas o string texto com split #
 
                 }
+                
+                 for (int i = 0; i < linhas.length; i++) {
+                    linhas[i] = linhas[i].toUpperCase();
+                }
 
             } catch (FileNotFoundException fnfe) {
 
                 System.out.println("Houve um problema ao ler o ficheiro.");
             }
         }
-        for (int i = 0; i < linhas.length; i++) {
-            linhas[i] = linhas[i].toUpperCase();
-        }
+       
         return linhas;
     }
 
@@ -81,7 +83,7 @@ public class Reader {
             System.out.printf("Não foram introduzidos correctamente os argumentos\n"
                     + "Pretende utilizar os caminhos pré-definidos pelo programa?\n"
                     + "(s/n)");
-            String resposta = ler.next();
+            String resposta = Leitor.next();
             switch (resposta) {
                 case "s":
 

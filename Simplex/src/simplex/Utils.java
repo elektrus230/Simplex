@@ -3,6 +3,8 @@
  */
 package simplex;
 
+import java.util.Arrays;
+
 /**
  *
  * @author Grupo 9
@@ -31,18 +33,18 @@ public class Utils {
         double[] quocienteColunas = new double[colPivot.length];
         for (int linha = 0; linha < colPivot.length; linha++) {
             if (ultimaColuna[linha] != 0 && colPivot[linha] != 0) {
-              
                 quocienteColunas[linha] = ultimaColuna[linha] / colPivot[linha];
             } else {
                 quocienteColunas[linha] = 0;
             }
         }
+        System.out.println("COCIENTE = " + Arrays.toString(quocienteColunas));
         return quocienteColunas;
     }
     
     public static boolean stringContemElelmentoDeArray(String str, String[] elementos){
         boolean output = false;
-        for (int i = 1; i < elementos.length; i++ ) {
+        for (int i = 0; i < elementos.length; i++ ) {
             if (str.contains(elementos[i])) {
                 output = true;
                 break;
@@ -80,6 +82,23 @@ public class Utils {
                 
                 output[j][i] = matriz[i][j];   
             }   
+        }
+        return output;
+    }
+    
+    /**
+     * Multilica os valores de um array por menos 1
+     * Se um dos valores for 0, não multiplica, uma 
+     * vez que doubles aceitam -0, o que tende a 
+     * gerar problemas
+     * @param array
+     * @return 
+     */
+    public static double[] negarArray(double[] array){
+        double[] output = new double[array.length];
+        for (int i = 0; i < array.length; i++) {
+            double value = array[i];
+            output[i] = value == 0 ? 0 : value * -1;
         }
         return output;
     }

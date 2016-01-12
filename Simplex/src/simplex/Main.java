@@ -1,15 +1,16 @@
 /**
- * Valida os dados de entrada e interliga as 
- * várias funcionalidades do programa
+ * TODO: Log File
+ * TODO: StringLib
+ * TODO: Comments
+ * TODO: Testes
+ * TODO: Integrar gnuplot
+ * TODO: Colocar novas validações
  */
 package simplex;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Formatter;
-import java.util.Scanner;
-
-
 
 /**
  *
@@ -17,12 +18,9 @@ import java.util.Scanner;
  */
 public class Main {
     
-    public static Scanner Leitor = new Scanner(System.in);
-    
     public static String inputPath;
     public static String outputPath;
     public static double [][] matrizSimplex;
-    public static Formatter writer;
     
     /**
      * Inicia o programa
@@ -34,14 +32,17 @@ public class Main {
         outputPath = "testfiles\\Output.txt";
 
         //validarInputs(args);
-        Writer.escreverHeader(outputPath);    
-        
+       
+        Writer.escreverHeader(outputPath);
+        //formatoDoGrafico = getFormatoDoGrafico();
+
         Simplex.matrizSimplex = InputDataProcessing.lerDadosEConstruirMatriz(inputPath, outputPath);
         if(Simplex.matrizSimplex != null){
             Simplex.executarSimplex(outputPath);
         }else{
-            Writer.forcarSaida(StringsLib.Msg_SaidaInesperada, writer);
+            Writer.forcarSaida(StringsLib.Msg_SaidaInesperada, Writer.Escritor);
         }
+       
     }
 
     /**
@@ -95,6 +96,7 @@ public class Main {
             if(!inputFile.exists()){
                 Writer.forcarSaida(StringsLib.Erro_FicheiroInputNaoEncontrado, null);
             }else{
+                
                 //<editor-fold defaultstate="collapsed" desc="Validar ficheiro output">
         
                 String outPath;                
@@ -113,7 +115,7 @@ public class Main {
                         outPath = null;
                     }
                 }else{
-                    outPath = getDefaultOutputPath(inputPath);
+                    outPath = getCaminhoFicheiroOutput(inputPath);
                 }
                 if(outPath == null){
                     Writer.forcarSaida(StringsLib.Erro_CriarFileOutput, null);
@@ -125,7 +127,7 @@ public class Main {
         }
         
         try{
-            writer = new Formatter(outputPath);
+            Writer.Escritor = new Formatter(outputPath);
         }catch(FileNotFoundException ex){
             Writer.forcarSaida(StringsLib.Erro_Escrever + "\n" + ex.getMessage(), null);
         }
@@ -139,7 +141,7 @@ public class Main {
      * @param inputPath
      * @return 
      */
-    private static String getDefaultOutputPath(String inputPath) {
+    private static String getCaminhoFicheiroOutput(String inputPath) {
         
         String defaultPath;
         Writer.escreverGenerico(inputPath, null);
