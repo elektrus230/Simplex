@@ -14,10 +14,11 @@ import java.util.Arrays;
 public class Testes {
     
     public static void main(String[] args) {
-        testGetValor();
-        testTransporMatriz();
-        testeCalcularQuocienteColunas();
-        testeAcrescentarColunasDeSlacks();
+        //testGetValor();
+        //testTransporMatriz();
+        //testeCalcularQuocienteColunas();
+        //testeAcrescentarColunasDeSlacks();
+        testeGetValorConvertido();
     }
     
     /**
@@ -215,6 +216,16 @@ public class Testes {
             }
         }
         printTest("testeCalcularQuocienteColunas : ", result);
+    }
+    
+    public static void testeGetValorConvertido(){
         
+        String input = "6.6";
+        double result = InputDataProcessing.getValorConvertido(input);
+        double expResult = 6.6;
+        System.out.println(result);
+        boolean testResult = result == expResult;
+        printTest("Valor 6.6 covertido para boolean", testResult);
+    
     }
 }

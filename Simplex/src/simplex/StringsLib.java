@@ -31,7 +31,7 @@ public class StringsLib {
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="ERROS">
-    
+    public static final String Erro_InconsistenciaOperador = "O ficheiro de input  continha operadores contraditórios nas diferentes linhas com equações de restrição.";
     public static final String Erro_ParseStringParaDouble = "Erro ao converter uma string para double.";
     public static final String Erro_LerVariaveis = "Erro ao ler um valor do ficheiro.";
     public static final String Erro_LerValorFraccao = "Erro ao ler um valor fraccionario do ficheiro.";
@@ -56,5 +56,6 @@ public class StringsLib {
     public static final String EPS = ".eps";
 
     //</editor-fold>
+    
 
 }

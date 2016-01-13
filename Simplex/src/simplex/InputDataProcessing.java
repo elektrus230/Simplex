@@ -264,10 +264,60 @@ public class InputDataProcessing {
         return output;
     }
 
+    public static double[][] convertMatrizLida(String[][] strings){
+        
+        double[][] output = new double[strings.length][strings[0].length];
+        
+        for (int i = 0; i < strings.length; i++) {
+            for (int j = 0; j < strings[0].length; j++) {
+                String valor = strings[i][j];
+                output[i][j] = getValorConvertido(valor);
+            }
+        }
+        
+        return output;
+    }
+    
+    public static String removerOperadorDuplicado(String num, char caracter){
+        String output = num;
+        
+        String operador = String.valueOf(caracter);
+        if(num.indexOf(String.valueOf(operador)) != num.lastIndexOf(String.valueOf(operador))){
+            int posPrimeiroMenos =  num.indexOf(String.valueOf(operador));
+            output = num.substring(posPrimeiroMenos + 1); 
+        }
+        
+        return output;
+    }
+    
+    public static double getValorConvertido(String valor){
+    
+        double output = 0;
+        
+        try {
 
+            valor = valor.replace("\\s+","");
+
+            valor = removerOperadorDuplicado(valor,MENOS);
+            valor = removerOperadorDuplicado(valor,MAIS);
+
+            if(valor.matches("\\d+")){
+                output = Double.parseDouble(valor);
+            }else if(valor.contains("/")){
+                output = Double.parseDouble(getValorFraccao(valor));
+            }
+            
+        } catch (NumberFormatException ex) {
+            Writer.forcarSaida(StringsLib.Erro_ParseStringParaDouble + "\n" + ex, Writer.Escritor);
+        }
+        
+        
+        
+        return output;
+    }
+    
     //<editor-fold defaultstate="collapsed" desc="LER 1ª LINHA">
     /**
-     * DELETE
      * O output vai ser um array que contem 3 valores por variavel encontrada
      * [nome da variavel] [quantidade] [simbolo de positivo ou negativo]
      *
@@ -422,17 +472,40 @@ public class InputDataProcessing {
 
     /**
      * Determina se o problema em questão é de maximização ou de minimização
+     * Se detetar uma inconsitencia de simbolos nas linhas, forca o programa a parar
      * @param linhas
      * @return 
      */
     private static boolean eProblemaDeMaximizacao(String[] linhas) {
     
         boolean output = true;
-        for (String linha : linhas) {
-            if(stringContemElelmentoDeArray(linha, MENOR_OU_IGUAL)){
-                output = false;
-                break;
-            }
+        int trigger = 0;
+        for (int i = 1; i < linhas.length; i++) {
+            
+            if(trigger == 0){
+                if(stringContemElelmentoDeArray(linhas[i], MAIOR_OU_IGUAL)){
+                    output = true;
+                    trigger = 1;
+                }else if(stringContemElelmentoDeArray(linhas[i], MENOR_OU_IGUAL)){
+                    output = false;
+                    trigger = 2;
+                }
+            }else{
+            
+                if(trigger == 1){
+                
+                    if(stringContemElelmentoDeArray(linhas[i], MENOR_OU_IGUAL)){
+                        Writer.forcarSaida(StringsLib.Erro_InconsistenciaOperador, Writer.Escritor);
+                    }
+                    
+                }else{
+                
+                                    
+                    if(stringContemElelmentoDeArray(linhas[i], MAIOR_OU_IGUAL)){
+                        Writer.forcarSaida(StringsLib.Erro_InconsistenciaOperador, Writer.Escritor);
+                    }
+                }
+            }   
         }
         return output;
     }
@@ -479,7 +552,7 @@ public class InputDataProcessing {
             
             if(content.contains("/")){
             
-                output = getValorFraccao(content);
+                output[0] = getValorFraccao(content);
                 
             }else{
                 
@@ -519,9 +592,9 @@ public class InputDataProcessing {
      * @param content
      * @return 
      */
-    private static String[] getValorFraccao(String content) {
+    private static String getValorFraccao(String content) {
         
-        String[] output = new String[2];
+        String output = "";
         int indexBarra = content.indexOf(String.valueOf(BARRA));
         
         if(content.length() < 3){
@@ -530,7 +603,7 @@ public class InputDataProcessing {
             
         }
         
-        if(!content.matches("[0-9+-/]*")){
+        if(!content.matches("[0-9+-/\\.]*")){
             
             Writer.forcarSaida(StringsLib.Erro_LerValorFraccao, null);
             System.exit(0);
@@ -543,17 +616,24 @@ public class InputDataProcessing {
             double preBarraDouble = Double.parseDouble(preBarra);
             double posBarraDouble = Double.parseDouble(posBarra);
             double valorAAdicionar = preBarraDouble / posBarraDouble;
-            output[0] = String.valueOf(valorAAdicionar);
+            output = String.valueOf(valorAAdicionar);
             
         }catch (Exception ex){
             
-            Writer.forcarSaida(StringsLib.Erro_LerValorFraccao, null);
+            Writer.forcarSaida(StringsLib.Erro_LerValorFraccao + "\n" + ex, null);
             System.exit(0);
         }
         
         return output;
     }
 
+    /**
+     * Processo necessário para a minimização
+     * Acrescenta colunas entre antes da ultima coluna
+     * @param matrizOutput
+     * @param nSlacks
+     * @return 
+     */
     public static double[][] acrescentarColunasDeSlacks(double[][] matrizOutput, int nSlacks) {
         
         int linhas = matrizOutput.length;
