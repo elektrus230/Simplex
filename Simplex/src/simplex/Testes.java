@@ -14,10 +14,10 @@ import java.util.Arrays;
 public class Testes {
     
     public static void main(String[] args) {
-        //testGetValor();
-        //testTransporMatriz();
+        testGetValor();
+        testTransporMatriz();
         testeCalcularQuocienteColunas();
-        //testeAcrescentarColunasDeSlacks();
+        testeAcrescentarColunasDeSlacks();
     }
     
     /**

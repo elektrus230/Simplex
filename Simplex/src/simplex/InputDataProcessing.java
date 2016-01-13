@@ -153,7 +153,7 @@ public class InputDataProcessing {
             }
         } catch (NumberFormatException nfe) {
 
-            System.out.println(nfe.getMessage());
+            System.out.println(nfe);
         }
     }
 
@@ -267,6 +267,7 @@ public class InputDataProcessing {
 
     //<editor-fold defaultstate="collapsed" desc="LER 1ª LINHA">
     /**
+     * DELETE
      * O output vai ser um array que contem 3 valores por variavel encontrada
      * [nome da variavel] [quantidade] [simbolo de positivo ou negativo]
      *

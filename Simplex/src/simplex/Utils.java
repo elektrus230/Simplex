@@ -3,8 +3,6 @@
  */
 package simplex;
 
-import java.util.Arrays;
-
 /**
  *
  * @author Grupo 9
@@ -38,7 +36,6 @@ public class Utils {
                 quocienteColunas[linha] = 0;
             }
         }
-        System.out.println("COCIENTE = " + Arrays.toString(quocienteColunas));
         return quocienteColunas;
     }
     

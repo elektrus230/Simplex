@@ -1,5 +1,4 @@
 /**
- * TODO: Log File
  * TODO: StringLib
  * TODO: Comments
  * TODO: Testes
@@ -28,7 +27,7 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        inputPath = "testfiles\\input.txt";
+        inputPath = "testfiles\\input2.txt";
         outputPath = "testfiles\\Output.txt";
 
         //validarInputs(args);
