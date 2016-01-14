@@ -14,91 +14,16 @@ import java.util.Arrays;
 public class Testes {
     
     public static void main(String[] args) {
-        //testGetValor();
-        //testTransporMatriz();
-        //testeCalcularQuocienteColunas();
-        //testeAcrescentarColunasDeSlacks();
-        testeGetValorConvertido();
+        
+        Main.TEST_MODE = true;
+
+        testTransporMatriz();
+        testeCalcularQuocienteColunas();
+        testeAcrescentarColunasDeSlacks();
+        testeAumentarArray();
+        testeAumentarMatriz();
     }
-    
-    /**
-     * Test metodo get valor
-     */
-    public static void testGetValor(){
-    
-        boolean testResult;
-        
-        String teste = "z = x1 + 3x2 + -6x3";
-        int indexVar = 4;       
-        String[] result = InputDataProcessing.extrairValorEOperadorDeVariavel(teste, indexVar);
-        String[] expResult = new String[] {"1","+"};
-        testResult = expResult[0].equals(result[0]);
-        printTest("Ler valor de variavel : valor nulo.", testResult);
-        
-        teste = "z = -x1 + 3x2 + -6x3";
-        indexVar = 5;       
-        result = InputDataProcessing.extrairValorEOperadorDeVariavel(teste, indexVar);
-        expResult = new String[] {"1","-"};
-        testResult = expResult[0].equals(result[0]);
-        printTest("Ler valor de variavel : valor nulo negativo.", testResult);
-        
-        teste = "z = 123x1 + 3x2 + -6x3";
-        indexVar = 7;       
-        result = InputDataProcessing.extrairValorEOperadorDeVariavel(teste, indexVar);
-        expResult = new String[] {"123","+"};
-        testResult = expResult[0].equals(result[0]);
-        printTest("Ler valor de variavel : valor 123.", testResult);
-        
-        teste = "z = -123x1 + 3x2 + -6x3";
-        indexVar = 8;       
-        result = InputDataProcessing.extrairValorEOperadorDeVariavel(teste, indexVar);
-        expResult = new String[] {"123","-"};
-        testResult = expResult[0].equals(result[0]);
-        printTest("Ler valor de variavel : valor -123.", testResult);
-        
-        teste = "z = 0x1 + 3x2 + -6x3";
-        indexVar = 5;       
-        result = InputDataProcessing.extrairValorEOperadorDeVariavel(teste, indexVar);
-        expResult = new String[] {"0","+"};
-        testResult = expResult[0].equals(result[0]);
-        printTest("Ler valor de variavel : valor 0.", testResult);
-        
-        teste = "z = 1/2x1 + 3x2 + -6x3";
-        indexVar = 7;       
-        result = InputDataProcessing.extrairValorEOperadorDeVariavel(teste, indexVar);
-        expResult = new String[] {"0.5","+"};
-        testResult = expResult[0].equals(result[0]);
-        printTest("Ler valor de variavel : valor 1/2.", testResult);
-        
-        teste = "z = -1/2x1 + 3x2 + -6x3";
-        indexVar = 8;       
-        result = InputDataProcessing.extrairValorEOperadorDeVariavel(teste, indexVar);
-        expResult = new String[] {"-0.5","-"};
-        testResult = expResult[0].equals(result[0]);
-        printTest("Ler valor de variavel : valor -1/2.", testResult);
-        
-        teste = "z = 1/-2x1 + 3x2 + -6x3";
-        indexVar = 8;       
-        result = InputDataProcessing.extrairValorEOperadorDeVariavel(teste, indexVar);
-        expResult = new String[] {"-0.5","-"};
-        testResult = expResult[0].equals(result[0]);
-        printTest("Ler valor de variavel : valor 1/-2.", testResult);
-        
-        teste = "z = -1/-2x1 + 3x2 + -6x3";
-        indexVar = 9;       
-        result = InputDataProcessing.extrairValorEOperadorDeVariavel(teste, indexVar);
-        expResult = new String[] {"0.5","+"};
-        testResult = expResult[0].equals(result[0]);
-        printTest("Ler valor de variavel : valor -1/-2.", testResult);
-        
-        teste = "z = 0.52x1 + 3x2 + -6x3";
-        indexVar = 7;       
-        result = InputDataProcessing.extrairValorEOperadorDeVariavel(teste, indexVar);
-        expResult = new String[] {"0.5","+"};
-        testResult = expResult[0].equals(result[0]);
-        printTest("Ler valor de variavel : valor 0.5.", testResult);
-    }
-    
+
     /**
      * Imprime um resultado de um teste
      * @param testName
@@ -217,15 +142,22 @@ public class Testes {
         }
         printTest("testeCalcularQuocienteColunas : ", result);
     }
+
+    public static void testeAumentarArray(){
+        int cont = 4;
+        String[] input = new String[3];
+        int expResult = 4;      
+        String[] output = Utils.aumentoDeArray(cont, input);
+        boolean result = output.length == expResult;
+        printTest("testAumentarArray", result);
+    }
     
-    public static void testeGetValorConvertido(){
-        
-        String input = "6.6";
-        double result = InputDataProcessing.getValorConvertido(input);
-        double expResult = 6.6;
-        System.out.println(result);
-        boolean testResult = result == expResult;
-        printTest("Valor 6.6 covertido para boolean", testResult);
-    
+    public static void testeAumentarMatriz(){
+        int cont = 4;
+        String[][] input = new String[3][3];
+        int expResult = 4;      
+        String[][] output = Utils.aumentaColunasMatriz(cont,input);
+        boolean result = output[0].length == expResult;
+        printTest("testAumentarArray", result);
     }
 }

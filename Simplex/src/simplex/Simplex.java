@@ -19,7 +19,7 @@ public class Simplex {
 
     public static double [][] matrizSimplex;
     public static String[] resultados;
-    public static String[] listaDeVariaveis;
+    public static String[] listaVariaveis;
     public static String caminhoDoFicheiroInput;
     public static String caminhoDoFicheiroOutput;
     
@@ -39,7 +39,7 @@ public class Simplex {
             //<editor-fold defaultstate="collapsed" desc="Mover variaveis na lista de resultados">
             int linhaPivot = indicesDoPivot[0];
             int colunaPivot = indicesDoPivot[1];
-            String variavelPivot = listaDeVariaveis[colunaPivot];  
+            String variavelPivot = listaVariaveis[colunaPivot];  
             resultados[linhaPivot] = variavelPivot;
             //</editor-fold>
             
@@ -187,32 +187,6 @@ public class Simplex {
             matrizSimplex[linha][coluna]= 
                     multiplicador*matrizSimplex[indicesDoPivot[0]][coluna] + matrizSimplex[linha][coluna];    
         }  
-    } 
-    
-    
-    //TODO: Remover
-    //<editor-fold defaultstate="collapsed" desc="Teste - dummy matrix">
-    public static double [][] criarMatrizInicial (){
-       double matrizInicial [][] = {{-3,-5,0,0,0,0}, {2,4,1,0,0,10}, {6,1,0,1,0,20}, {1,-1,0,0,1,30}};
-         System.out.println ("Matriz Inicial");       
-        for (int lin = 0; lin < 4; lin++){
-            for (int col = 0; col < 6; col++){
-            System.out.print("\t " + matrizInicial [lin][col] + " ");                 
-            }
-            System.out.println();
-        }               
-        return matrizInicial;               
     }
-    //</editor-fold>
-    //Imprimir matrizSimplexnova, após iteração - para testes
-    public static void imprimirMatrizSimplexNova (){
-        System.out.println ("Matriz Simplex após primeira iteração");
-        for (int linha = 0; linha < matrizSimplex.length; linha++ ){
-            for (int coluna = 0; coluna < matrizSimplex[0].length; coluna ++){
-              System.out.print("\t " + matrizSimplex [linha][coluna] + " ");                 
-            }
-            System.out.println();  
-            }
-        }
       
     }

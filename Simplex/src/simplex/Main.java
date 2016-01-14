@@ -4,22 +4,28 @@
  * TODO: Testes
  * TODO: Integrar gnuplot
  * TODO: Colocar novas validações
+ * TODO: log - add linhas a ficheiro com 
  */
 package simplex;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Formatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
  * @author Grupo 9
  */
 public class Main {
-    
+
     public static String inputPath;
     public static String outputPath;
     public static double [][] matrizSimplex;
+    public static double [][] matrizSimplexInicial;
+    public static boolean TEST_MODE = false;
+
     
     /**
      * Inicia o programa
@@ -27,21 +33,40 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        inputPath = "testfiles\\input2.txt";
+        inputPath = "testfiles\\inputC.txt";
         outputPath = "testfiles\\Output.txt";
 
         //validarInputs(args);
        
         Writer.escreverHeader(outputPath);
+        
         //formatoDoGrafico = getFormatoDoGrafico();
+        
+        String[] linhasFicheiro = Reader.lerFicheiro(inputPath);
+        
+        validarLinhas(linhasFicheiro);
+        
+        matrizSimplexInicial = InputDataProcessing.extrairValoresDasLinhas(linhasFicheiro);
+        
+        if(InputDataProcessing.MAXIMIZACAO){
+        
+            matrizSimplex = InputDataProcessing.criarMatrizComFolgas(matrizSimplexInicial);
 
-        Simplex.matrizSimplex = InputDataProcessing.lerDadosEConstruirMatriz(inputPath, outputPath);
-        if(Simplex.matrizSimplex != null){
-            Simplex.executarSimplex(outputPath);
         }else{
+            
+            matrizSimplex = InputDataProcessing.criarMatrizComFolgas(
+                    Utils.transporMatriz(matrizSimplexInicial));
+        }
+        
+        if(Simplex.matrizSimplex != null){
+            System.out.println("here");
+            Simplex.executarSimplex(outputPath);
+            
+        }else{
+
+            //TODO fix messages
             Writer.forcarSaida(StringsLib.Msg_SaidaInesperada, Writer.Escritor);
         }
-       
     }
 
     /**
@@ -152,6 +177,58 @@ public class Main {
         return defaultPath;
     }
         
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="" desc="Validacoes a linhas do ficheiro">
+    public static void validarLinhas(String[] linhas){
+        validarEquacoes(linhas);
+        //TODO: add other validations
+    }
+    
+    public static boolean validarEquacoes(String[] leitura) {
+        boolean op = false;
+        String linhaFuncao = leitura[0];
+
+        String[] linhasRestricao = new String[leitura.length - 1];
+        for (int i = 0; i < linhasRestricao.length; i++) {
+            linhasRestricao[i] = leitura[i + 1];
+        }
+        if (validacaoPrimeiraLinha(linhaFuncao) == true && validacaoLinhaRestricoes(linhasRestricao) == true) {
+            op = true;
+        }else {
+            op=false;
+            System.exit(0);
+        }
+        return op;
+    }
+    
+    public static boolean validacaoPrimeiraLinha(String linha) {
+        boolean op = false;
+        Simplex.listaVariaveis = new String[2];
+
+        Pattern p1linha = Pattern.compile(StringsLib.Regex_ValidaPrimeiraLinha);
+        Matcher m = p1linha.matcher(linha);
+        op = m.matches();
+        
+//        System.out.println("a linha função é "+op);
+
+        return op;
+    }
+    
+    public static boolean validacaoLinhaRestricoes(String[] linhas) {
+        boolean op = false;
+        Pattern linhaVariaveis = Pattern.compile(StringsLib.Regex_ValidaLinhaRestricoes);
+        for (String linha : linhas) {
+            Matcher m = linhaVariaveis.matcher(linha);
+            op = m.matches();
+            if (op == false) {
+                Writer.forcarSaida(StringsLib.Erro_RestricoesInvalidas, Writer.Escritor);
+            }
+        }
+//        System.out.println("as linhas de restrições são "+op);
+        return op;
+    }
+   
     //</editor-fold>
 
 }

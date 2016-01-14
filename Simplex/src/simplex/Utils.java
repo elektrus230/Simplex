@@ -51,21 +51,6 @@ public class Utils {
     }
     
     /**
-     * TODO: Teste unitário
-     * @param matriz
-     * @return 
-     */
-    public static double[][] colocarUltimaLinhaEmPrimeiro(double[][] matriz){
-    
-        double[][] output = new double[matriz.length][matriz[0].length];
-        output[0] = matriz[matriz.length-1];
-        for (int i = 1; i < matriz.length-1; i++) {
-            output[i] = matriz[i-1];
-        }
-        return output;
-    }
-    
-    /**
      * TODO: Teste unitario
      * @param matriz
      * @return 
@@ -99,4 +84,28 @@ public class Utils {
         }
         return output;
     }
+    
+    public static String[][] aumentaColunasMatriz(int cont, String[][] matriz) {
+        String[][] output = matriz;
+        int cols = matriz[0].length;
+        int lins = matriz.length;
+        if (cols - 1 <= cont) {
+            output = new String[lins][cols + 1];
+            for (int i = 0; i < lins; i++) {
+                System.arraycopy(matriz[i], 0, output[i], 0, cols);
+            }
+        }
+        return output;
+    }
+
+    public static String[] aumentoDeArray(int cont, String[] array) {
+        String[] output = array;
+        if (array.length <= cont) {
+            int tamanho = array.length;
+            output = new String[tamanho + 1];
+            System.arraycopy(array, 0, output, 0, tamanho);
+        }
+        return output;
+    }
+    
 }

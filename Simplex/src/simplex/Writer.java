@@ -110,7 +110,7 @@ public class Writer {
 
                 if (linha == 0) {
 
-                    printHeader(Simplex.listaDeVariaveis, printWriter, matrizSimplex[0].length);
+                    printHeader(Simplex.listaVariaveis, printWriter, matrizSimplex[0].length);
 
                     for (int k = 0; k < tamLin + 1; k++) {
 
@@ -257,8 +257,34 @@ public class Writer {
         if(formatter != null){
             formatter.close();
         }
-        System.exit(0);
+        if(Main.TEST_MODE){
+            return;
+        }else{
+            System.exit(0);
+            
+        }
     }
+    
+    /**
+     * Escreve uma mensagem e termina o programa.
+     * @param mensagem
+     * @param formatter 
+     */
+//    public static void forcarSaida(String mensagem, int linha, Class cls, String method){
+//        escreverGenerico(mensagem,fileprinter);
+//        escreverGenerico(StringsLib.Msg_Saida,fileprinter);
+//        if(fileprinter != null){
+//            fileprinter.close();
+//        }
+//        
+//        
+//        if(Main.TEST_MODE){
+//            return;
+//        }else{
+//            System.exit(0);
+//            
+//        }
+//    }
     
     /**
      * Escreve uma mensagem para a consola.
