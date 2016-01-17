@@ -35,9 +35,7 @@ public class Main {
         inputPath = "testfiles\\TEST_INPUT_MIN_VALID_A.txt";
         outputPath = "testfiles\\Output.txt";
 
-        //validarInputs(args);
-        String a = new File(outputPath).getName();
-        logPath=outputPath.replace(a,"");
+        tirarNomeParaLog();
         Writer.escreverHeader(outputPath); //ver com o Dinis
         
         String[] linhasFicheiro = Reader.lerFicheiro(inputPath);
@@ -58,6 +56,12 @@ public class Main {
             //TODO fix messages
             Writer.forcarSaida(StringsLib.Msg_SaidaInesperada, Writer.Escritor);
         }
+    }
+
+    public static void tirarNomeParaLog() {
+        //validarInputs(args);
+        String a = new File(outputPath).getName();
+        logPath=outputPath.replace(a,"")+"log.txt";
     }
 
     /**

@@ -271,7 +271,7 @@ public class Writer {
      * @param mensagem
      * @param formatter 
      */
-    public static void forcarSaida(String mensagem, Formatter formatter){
+        public static void forcarSaida(String mensagem, Formatter formatter){
         escreverGenerico(mensagem,formatter);
         escreverGenerico(StringsLib.Msg_Saida,formatter);
         if(formatter != null){

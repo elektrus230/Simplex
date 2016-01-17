@@ -16,8 +16,8 @@ import static simplex.StringsLib.PNG;
 import static simplex.StringsLib.TXT;
 
 /**
- * Classe responsável pela gestão das 
- * funcionalidades relativas ao gráfico
+ * Classe responsável pela gestão das funcionalidades relativas ao gráfico
+ *
  * @author Grupo 9
  */
 public class Grafico {
@@ -28,24 +28,30 @@ public class Grafico {
     public static boolean GRAPH_MODE = false;
 
     /**
-     * Pede ao utilizador para definir o tipo de ficheiro do grafico.
-     * Existem 3 possibilidfades : PNG , EPS e TXT
-     * O formato PNG é o formato predefinido caso o utilizador
-     * não selecione uma opção correcta
+     * Pede ao utilizador para definir o tipo de ficheiro do grafico. Existem 3
+     * possibilidfades : PNG , EPS e TXT O formato PNG é o formato predefinido
+     * caso o utilizador não selecione uma opção correcta
+     *
      * @return
      */
     public static void setFormatoDoGrafico() {
 
         String formato = PNG;
-        
+
         Writer.escreverGenerico(StringsLib.Menu_TipoGráfico, null);
 
         String opcao = Reader.Leitor.next();
 
         switch (opcao) {
-            case "1": formato = PNG; break;
-            case "2": formato = TXT; break;
-            case "3": formato = EPS; break;
+            case "1":
+                formato = PNG;
+                break;
+            case "2":
+                formato = TXT;
+                break;
+            case "3":
+                formato = EPS;
+                break;
             default:
                 Writer.escreverGenerico(StringsLib.Msg_DefaultGrafico, null);
                 break;
@@ -53,19 +59,20 @@ public class Grafico {
 
         Writer.escreverGenerico(
                 String.format(
-                        StringsLib.Msg_FormatoGraficoSelecionado,formato), null);
-        
+                        StringsLib.Msg_FormatoGraficoSelecionado, formato), null);
+
         formatoDoGrafico = formato;
     }
 
     /**
      * TODO COMMENT UNIT TEST
+     *este método serve para criar o script com o qual o gnuplot vai trabalhar
+     * pois decidimos trabalhar com funções paramétricas e assim o script 
      * @param iteracao
-     * @param valoresZ 
+     * @param valoresZ
      */
     public static void gerarScript(int iteracao, double[] valoresZ) {
 
-      
         try {
 
             FileWriter fileWriter = new FileWriter(script, false);
@@ -96,14 +103,18 @@ public class Grafico {
 
             printWriter.println("set parametric");
             printWriter.println("set style fill empty");
-            printWriter.println("set title \"Solução Gráfica\"");
+            if (!formatoDoGrafico.equalsIgnoreCase(EPS)) {
+                printWriter.println("set title \"Solução Gráfica\"");
+            } else {
+                printWriter.println("set title \"Solucao Grafica\"");
+            }
             printWriter.println("set xl \"X1\"");
             printWriter.println("set yl \"X2\"");
             printWriter.println("set key outside right ");
             printWriter.println("set grid front");
 
             for (int i = 0; i < matrizSimplexInicial.length - 1; i++) {
-                
+
                 /**
                  * esta parte serve para arranjar o gráfico em termos de eixos
                  */
@@ -173,36 +184,62 @@ public class Grafico {
                     } else {
                         printWriter.printf("f%d1(t),f%d2(t) ti \"\" w filledcurves above x1 lt 1 lc \"white\",\\%n", i, i);
                     }
+
                 }
             }
             if (!formatoDoGrafico.equalsIgnoreCase(TXT)) {
                 //reemprime as retas das restriçoes com outra cor
                 for (int j = 0; j < matrizSimplexInicial.length - 1; j++) {
                     int n = j + 1;
-                    if (iteracao != 0 || j != matrizSimplexInicial.length - 1) {
-                        printWriter.printf("f%d1(t),f%d2(t) ti \"restrição %d\" lt 1 lw 3.5,\\%n", j, j, n);
+
+                    if (!formatoDoGrafico.equalsIgnoreCase(EPS)) {
+                        if (iteracao != 0 || j != matrizSimplexInicial.length - 1) {
+                            printWriter.printf("f%d1(t),f%d2(t) ti \"restrição %d\" lt 1 lw 3.5,\\%n", j, j, n);
+                        } else {
+                            printWriter.printf("f%d1(t),f%d2(t) ti \"restrição %d\" lt 1 lw 3.5 %n", j, j, n);
+                        }
                     } else {
-                        printWriter.printf("f%d1(t),f%d2(t) ti \"restrição %d\" lt 1 lw 3.5 %n", j, j, n);
+                        if (iteracao != 0 || j != matrizSimplexInicial.length - 1) {
+                            printWriter.printf("f%d1(t),f%d2(t) ti \"restricao %d\" lt 1 lw 3.5,\\%n", j, j, n);
+                        } else {
+                            printWriter.printf("f%d1(t),f%d2(t) ti \"restricao %d\" lt 1 lw 3.5 %n", j, j, n);
+                        }
                     }
                 }
 
                 //cria as retas provenientes das iterações, cujos valores sao passados para um array 
                 for (int k = 0; k < valoresZ.length; k++) {
                     int i = k + 1;
-                    if (k != valoresZ.length - 1) {
-                        printWriter.printf("g%d1(t),g%d2(t) ti \"iteração %d\" with lines linewidth 4,\\%n", k, k, i);
+                    if (!formatoDoGrafico.equalsIgnoreCase(EPS)) {
+                        if (k != valoresZ.length - 1) {
+                            printWriter.printf("g%d1(t),g%d2(t) ti \"iteração %d\" with lines linewidth 4,\\%n", k, k, i);
+                        } else {
+                            printWriter.printf("g%d1(t),g%d2(t) ti \"iteração %d\"with lines linewidth 4\n", k, k, i);
+                        }
                     } else {
-                        printWriter.printf("g%d1(t),g%d2(t) ti \"iteração %d\"with lines linewidth 4\n", k, k, i);
+                        if (k != valoresZ.length - 1) {
+                            printWriter.printf("g%d1(t),g%d2(t) ti \"iteracao %d\" with lines linewidth 4,\\%n", k, k, i);
+                        } else {
+                            printWriter.printf("g%d1(t),g%d2(t) ti \"iteracao %d\"with lines linewidth 4\n", k, k, i);
+                        }
                     }
                 }
-            }else {
-               //reemprime as retas das restriçoes com outra cor
+            } else {
+                //reemprime as retas das restriçoes com outra cor
                 for (int j = 0; j < matrizSimplexInicial.length - 1; j++) {
                     int n = j + 1;
-                    if (j != matrizSimplexInicial.length - 1) {
-                         printWriter.printf("f%d1(t),f%d2(t) ti \"restrição %d\"lc rgb \"#0025ad\" lt 2 lw 4,\\%n", j, j, n);
+                    if (!formatoDoGrafico.equalsIgnoreCase(EPS)) {
+                        if (j != matrizSimplexInicial.length - 1) {
+                            printWriter.printf("f%d1(t),f%d2(t) ti \"restrição %d\"lc rgb \"#0025ad\" lt 2 lw 4,\\%n", j, j, n);
+                        } else {
+                            printWriter.printf("f%d1(t),f%d2(t) ti \"restrição %d\"lc rgb \"#0025ad\" lt 2 lw 4 %n", j, j, n);
+                        }
                     } else {
-                        printWriter.printf("f%d1(t),f%d2(t) ti \"restrição %d\"lc rgb \"#0025ad\" lt 2 lw 4 %n", j, j, n);
+                        if (j != matrizSimplexInicial.length - 1) {
+                            printWriter.printf("f%d1(t),f%d2(t) ti \"restricao %d\"lc rgb \"#0025ad\" lt 2 lw 4,\\%n", j, j, n);
+                        } else {
+                            printWriter.printf("f%d1(t),f%d2(t) ti \"restricao %d\"lc rgb \"#0025ad\" lt 2 lw 4 %n", j, j, n);
+                        }
                     }
                 }
 
@@ -214,7 +251,7 @@ public class Grafico {
                     } else {
                         printWriter.printf("g%d1(t),g%d2(t) ti \"iteração %d\"with lines linewidth 4\n", k, k, i);
                     }
-                } 
+                }
             }
             printWriter.println("set terminal wxt");
             printWriter.println("set output");
@@ -229,24 +266,25 @@ public class Grafico {
 
             //TODO c
         } catch (InterruptedException ie) {
-        
+
             //TODO
         }
-        
+
     }
-    
-    public static void prepararGrafico(int nLinhas,int nColunas) {
+
+    public static void prepararGrafico(int nLinhas, int nColunas) {
         String[] calcVars = Utils.getVariaveisCalculo(Simplex.getVariaveis(), nLinhas);
         int nVars = calcVars.length;
         calcVars = Utils.aumentarArray(nLinhas, calcVars);
         for (int i = nVars; i < calcVars.length; i++) {
             calcVars[i] = Simplex.resultados[i - nVars];
-        }   
+        }
     }
 
     /**
      * Define se o programa vai ou não permitir ao utilizador gerar um gráfico
-     * @param cont 
+     *
+     * @param cont
      */
     public static void setGraphicMode(int cont) {
         GRAPH_MODE = cont == 2;

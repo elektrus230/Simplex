@@ -23,8 +23,22 @@ import static simplex.Main.logPath;
 public class Logs {
 
     public static void escreverLog(String mensagem) {
+
+        /**
+         * loga para 
+         * validação de argumentos
+         * validação de ficheiros
+         * validação de espaços
+         * validação de nullpointexception
+         * validação da primeira linha
+         * validação das linhas de restrições
+         * validação de incógnitas nas linhs das restrições
+         * validação de zeros nos divisores
+         * 
+         * 
+         */
         try {
-           
+
             File log = new File((logPath));
             FileWriter fileWriter = new FileWriter(log, true);
             BufferedWriter buffer = new BufferedWriter(fileWriter);

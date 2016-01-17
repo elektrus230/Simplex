@@ -87,8 +87,11 @@ public class InputDataProcessing {
     }
 
     /**
-     * TODO : Add descricao
-     *
+     * TODO : 
+     *este método vai nos encontrar as variáveis existentes na linha da função objectivo
+     * e coloca-las num array que vai aumentando de tamanho caso seja necessário e ao mesmo tempo
+     * vai construindo a matriz inicial, cujo tamanho também é dinâmico
+     * 
      * @param matcher
      * @param matrizInicialS
      * @return
@@ -131,11 +134,15 @@ public class InputDataProcessing {
     //<editor-fold defaultstate="collapsed" desc="PREENCHIMENTO DA MATRIZ">
     /**
      * TODO: 
-     * este metodo vai apanhar o array criado com o nome das variaveis
-     * e vai apanhando em toda a linha essas variaveis e vai somando ou subtraindo
-     * os valores que a variavel tem por linha e colocando na matriz no seu local
-     * certo
-     *
+     * este método vai apanhar o array criado com o nome das variáveis
+     * e vai apanhando em toda a linha essas variáveis e vai somando ou subtraindo
+     * os valores que a variável tem por linha e colocando na matriz no seu local
+     * certo.
+     * este método tem duas partes;
+     * a parte onde há as variáveis, e a parte após os menores ou maiores e iguais 
+     *a parte onde temos as variáveis vamos pelo nome
+     * a outra parte é o que resta a seguir ao menor ou maior e iguais
+     * 
      * @param linhas
      * @param matriz
      */
