@@ -5,6 +5,7 @@ package simplex;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,7 +52,7 @@ public class Reader {
                     linhas = textoS.split(SYMBOLO_SPLIT);
                     
                 }
-                
+                System.out.println(Arrays.toString(linhas));
                 verificacaoEspacos(linhas);
                 
                 for (int i = 0; i < linhas.length; i++) {

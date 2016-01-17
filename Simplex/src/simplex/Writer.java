@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.Formatter;
 
 /**
@@ -25,6 +26,7 @@ public class Writer {
     /**
      * Este método serve para escrever para o ecrâ e para o ficheiro de output
      * os dados lidos do ficheiro de input.
+     *
      * @param linhas
      * @param inputPath
      */
@@ -69,15 +71,31 @@ public class Writer {
     //<editor-fold defaultstate="collapsed" desc="imprimir as matrizes, desde a inicial até à ultima iteração">
     /**
      * imprimir as matrizes, desde a inicial até à ultima iteração
+     *
      * @param vars
      * @param matrizSimplex
      * @param cont
      * @param inputPath
      */
-    public static void imprimirIteração(String[] vars, 
+    public static void imprimirIteração(String[] vars,
             double[][] matrizSimplex, int cont, String inputPath) {
 
         try {
+            String[][] matrizImprimir = new String[matrizSimplex.length + 1][matrizSimplex[0].length + 1];
+            for (int i = 0; i < matrizSimplex.length; i++) {
+                for (int j = 0; j < matrizSimplex[i].length; j++) {
+                    matrizImprimir[i + 1][j + 1] = String.format("%6.2f",(matrizSimplex[i][j]));
+                }
+            }
+            for (int i = 0; i < vars.length; i++) {
+                matrizImprimir[i+1][0]=vars[i];
+            }
+            
+            for (int i = 0; i < matrizImprimir.length; i++) {
+                System.out.println(Arrays.toString(matrizImprimir[i]));
+            }
+            System.out.println(Arrays.toString(vars));
+            
 
             File resultados = new File((inputPath));
             FileWriter fileWriter = new FileWriter(resultados, true);
@@ -111,7 +129,7 @@ public class Writer {
 
                 if (linha == 0) {
 
-                    printHeader(Simplex.getVariaveis(), printWriter,nColunas);
+                    printHeader(Simplex.getVariaveis(), printWriter, nColunas);
 
                     for (int k = 0; k < tamLin + 1; k++) {
 
@@ -152,9 +170,10 @@ public class Writer {
 
     /**
      * Este método serve para apresentar os resultados finais
+     *
      * @param heads
      * @param matrizSimplex
-     * @param caminhoDoFicheiroDeOutput 
+     * @param caminhoDoFicheiroDeOutput
      */
     public static void escreverResultados(String[] heads, double[][] matrizSimplex, String caminhoDoFicheiroDeOutput) {
 
@@ -172,19 +191,17 @@ public class Writer {
             int nColunas = matrizSimplex[0].length;
 
             for (int linha = 0; linha < nLinhas; linha++) {
-               
-                String nomeVar = linha == nLinhas - 1 ? InputDataProcessing.NomeFuncObjectivo : heads[linha] ;
-                
-                
+
+                String nomeVar = linha == nLinhas - 1 ? InputDataProcessing.NomeFuncObjectivo : heads[linha];
+
                 String resultado;
-                if(InputDataProcessing.MAXIMIZACAO)
-                {
-                    resultado = String.format("%8.2f",matrizSimplex[linha][nColunas - 1]);
-                }else{
-                    int posicao = linha == nLinhas ? nColunas-heads.length+linha : nColunas-heads.length+linha - 1;
-                    resultado = String.format("%8.2f",matrizSimplex[nLinhas - 1][posicao]);
+                if (InputDataProcessing.MAXIMIZACAO) {
+                    resultado = String.format("%8.2f", matrizSimplex[linha][nColunas - 1]);
+                } else {
+                    int posicao = linha == nLinhas ? nColunas - heads.length + linha : nColunas - heads.length + linha - 1;
+                    resultado = String.format("%8.2f", matrizSimplex[nLinhas - 1][posicao]);
                 }
-                
+
                 System.out.printf(StringsLib.Msg_ApresentacaoResultado, nomeVar, resultado);
                 printWriter.printf(StringsLib.Msg_ApresentacaoResultado, nomeVar, resultado);
             }
@@ -198,12 +215,13 @@ public class Writer {
             System.out.println(StringsLib.Erro_Escrever + ioe.getMessage());
         }
     }
-    
+
     /**
      * Este método serve para imprimir o cabeçalho do problema, ao criarmos o
      * FileWriter temos que por false no segundo argumento, pois assim apaga o
      * que tiver dentro do ficheiro e escreve o pretendido é preciso lembrar que
      * deve-se sempre acabar com o fecho do PrintWiter ao sair
+     *
      * @param inputPath
      */
     public static void escreverHeader(String inputPath) {
@@ -224,7 +242,6 @@ public class Writer {
         }
     }
 
-
     /**
      * este método serve para criar o cabeçalho da matriz criada com o nome das
      * variáveis as folgas e de b
@@ -237,53 +254,52 @@ public class Writer {
 
         String header = String.format("\n%7s", "");
 
-      
-        if(InputDataProcessing.MAXIMIZACAO){
-        
+        if (InputDataProcessing.MAXIMIZACAO) {
+
             for (int i = 0; i < vars.length; i++) {
                 header += String.format("%7s", vars[i]);
             }
 
             for (int i = vars.length; i < nColunas - 1; i++) {
-                header += String.format("%8s", "F" + (i - vars.length + 1)); 
+                header += String.format("%8s", "F" + (i - vars.length + 1));
             }
-            
-        }else{
-        
-            for (int i = 0; i < nColunas - vars.length - 1 ; i++) {
+
+        } else {
+
+            for (int i = 0; i < nColunas - vars.length - 1; i++) {
                 header += String.format("%8s", "Y" + (i + 1));
             }
-            
+
             for (int i = 0; i < vars.length; i++) {
                 header += String.format("%7s", vars[i]);
             }
         }
-        
+
         header += String.format("%7s", "B");
 
         printWriter.println(header);
         System.out.println(header);
     }
 
-    
     /**
      * Escreve uma mensagem e termina o programa.
+     *
      * @param mensagem
-     * @param formatter 
+     * @param formatter
      */
-        public static void forcarSaida(String mensagem, Formatter formatter){
-        escreverGenerico(mensagem,formatter);
-        escreverGenerico(StringsLib.Msg_Saida,formatter);
-        if(formatter != null){
+    public static void forcarSaida(String mensagem, Formatter formatter) {
+        escreverGenerico(mensagem, formatter);
+        escreverGenerico(StringsLib.Msg_Saida, formatter);
+        if (formatter != null) {
             formatter.close();
         }
-        if(Main.TEST_MODE){
+        if (Main.TEST_MODE) {
             return;
-        }else{
-            System.exit(0);  
+        } else {
+            System.exit(0);
         }
     }
- 
+
 //    /**
 //     * Escreve uma mensagem e termina o programa.
 //     * @param mensagem 
@@ -303,29 +319,29 @@ public class Writer {
 //            
 //        }
 //    }
-    
     /**
-     * Escreve uma mensagem para a consola.
-     * Se o formatter recebido existir, 
+     * Escreve uma mensagem para a consola. Se o formatter recebido existir,
      * escreve tambem para um ficheiro
+     *
      * @param mensagem
-     * @param formatter 
+     * @param formatter
      */
-    public static void escreverGenerico(String mensagem, Formatter formatter){
+    public static void escreverGenerico(String mensagem, Formatter formatter) {
         System.out.println(mensagem);
-        if(formatter != null){
+        if (formatter != null) {
             formatter.format(mensagem);
         }
     }
-    
+
     /**
      * Escreve uma mensagem com uma cor
+     *
      * @param mensagem
      * @param formatter
-     * @param cor 
+     * @param cor
      */
-    public static void escreverGenerico(String mensagem, Formatter formatter, String cor){
+    public static void escreverGenerico(String mensagem, Formatter formatter, String cor) {
         String mensagemColorida = StringsLib.Escape_Char + cor + mensagem;
-        escreverGenerico(mensagemColorida,formatter);
+        escreverGenerico(mensagemColorida, formatter);
     }
 }

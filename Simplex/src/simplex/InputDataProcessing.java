@@ -61,7 +61,7 @@ public class InputDataProcessing {
                 matrizOutput = Utils.converterMatrizParaDouble(matrizInicialS);
 
                 int nResultados = MAXIMIZACAO ? linhas.length : Simplex.getnVariaveis() + 1;
-                String[] resultados = criarColunaResultados(nResultados);
+                String[] resultados = criarColunaResultados(nResultados, linhas[0]);
                 Simplex.setResultados(resultados);
             }
         }
@@ -87,11 +87,11 @@ public class InputDataProcessing {
     }
 
     /**
-     * TODO : 
-     *este método vai nos encontrar as variáveis existentes na linha da função objectivo
-     * e coloca-las num array que vai aumentando de tamanho caso seja necessário e ao mesmo tempo
-     * vai construindo a matriz inicial, cujo tamanho também é dinâmico
-     * 
+     * TODO : este método vai nos encontrar as variáveis existentes na linha da
+     * função objectivo e coloca-las num array que vai aumentando de tamanho
+     * caso seja necessário e ao mesmo tempo vai construindo a matriz inicial,
+     * cujo tamanho também é dinâmico
+     *
      * @param matcher
      * @param matrizInicialS
      * @return
@@ -133,16 +133,14 @@ public class InputDataProcessing {
 
     //<editor-fold defaultstate="collapsed" desc="PREENCHIMENTO DA MATRIZ">
     /**
-     * TODO: 
-     * este método vai apanhar o array criado com o nome das variáveis
-     * e vai apanhando em toda a linha essas variáveis e vai somando ou subtraindo
-     * os valores que a variável tem por linha e colocando na matriz no seu local
-     * certo.
-     * este método tem duas partes;
-     * a parte onde há as variáveis, e a parte após os menores ou maiores e iguais 
-     *a parte onde temos as variáveis vamos pelo nome
-     * a outra parte é o que resta a seguir ao menor ou maior e iguais
-     * 
+     * TODO: este método vai apanhar o array criado com o nome das variáveis e
+     * vai apanhando em toda a linha essas variáveis e vai somando ou subtraindo
+     * os valores que a variável tem por linha e colocando na matriz no seu
+     * local certo. este método tem duas partes; a parte onde há as variáveis, e
+     * a parte após os menores ou maiores e iguais a parte onde temos as
+     * variáveis vamos pelo nome a outra parte é o que resta a seguir ao menor
+     * ou maior e iguais
+     *
      * @param linhas
      * @param matriz
      */
@@ -210,10 +208,10 @@ public class InputDataProcessing {
     }
 
     /**
-     * TODO COMMENT UNIT TEST - está feito
-     * aqui vamos validar se existem variaveis nas linhas das restrições
-     * que não existam na linha da função objectivo
-     * 
+     * TODO COMMENT UNIT TEST - está feito aqui vamos validar se existem
+     * variaveis nas linhas das restrições que não existam na linha da função
+     * objectivo
+     *
      * @param varsExistentes
      * @param linhas
      */
@@ -244,10 +242,11 @@ public class InputDataProcessing {
 
     //</editor-fold>
     /**
-     * TODO REVER TITULO COMMETN UNIT TEST CLASS
-     *este metodo transpoe uma string que pode ter a barra de divisor
-     * separa a string pela barra e depois realiza a operação de divisão
-     * aproveita para validar se o numero está a ser dividido por 0 ou não
+     * TODO REVER TITULO COMMETN UNIT TEST CLASS este metodo transpoe uma string
+     * que pode ter a barra de divisor separa a string pela barra e depois
+     * realiza a operação de divisão aproveita para validar se o numero está a
+     * ser dividido por 0 ou não
+     *
      * @param conteudo
      * @return
      */
@@ -342,28 +341,41 @@ public class InputDataProcessing {
      * @param nResultadosEserados
      * @return lista ordenada de nomes de variaveis/slacks/Z
      */
-    private static String[] criarColunaResultados(int nResultadosEserados) {
+    private static String[] criarColunaResultados(int nResultadosEserados, String linha) {
 
         String[] output = new String[nResultadosEserados];
 
         String[] vars = Simplex.getVariaveis();
 
-        String var = "S";
+        String var = "F";
 
-        String obj = InputDataProcessing.MAXIMIZACAO ? "Z " : "W ";
+        String obj = null;
+
+        if (!InputDataProcessing.MAXIMIZACAO) {
+            if (linha.contains("Z")) {
+                obj = "W";
+            } else {
+                obj = "Z";
+
+            }
+        } else {
+            if (linha.contains("W")) {
+                obj = "W";
+            }else {
+                obj ="Z";
+            }
+        }
+
 
         for (int i = 0; i < nResultadosEserados; i++) {
             if (i == nResultadosEserados - 1) {
                 output[i] = obj;
             } else {
-                if (InputDataProcessing.MAXIMIZACAO) {
 
-                    output[i] = var + (i + 1);
 
-                } else {
+                output[i] = var + (i + 1);
 
-                    output[i] = vars[i];
-                }
+
             }
         }
         return output;
@@ -411,8 +423,8 @@ public class InputDataProcessing {
     }
 
     /**
-     * TODO to remove? Processo necessário para a maximização e minimização Acrescenta colunas
-     * entre variaveis de decisão a ultima coluna
+     * TODO to remove? Processo necessário para a maximização e minimização
+     * Acrescenta colunas entre variaveis de decisão a ultima coluna
      *
      * @param matrizOutput
      * @param nSlacks
@@ -438,11 +450,12 @@ public class InputDataProcessing {
         }
         return output;
     }
-/**
- * serve para definirmos qual o nome da função objectivo
- * 
- * @param linha 
- */
+
+    /**
+     * serve para definirmos qual o nome da função objectivo
+     *
+     * @param linha
+     */
     private static void setNomeFuncaoObjectivo(String linha) {
         if (linha.toUpperCase().split("=")[0].contains("W")) {
             NomeFuncObjectivo = "W";
