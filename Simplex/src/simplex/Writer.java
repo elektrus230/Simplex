@@ -117,11 +117,7 @@ public class Writer {
 
             for (int linha = 0; linha < matrizImprimir.length; linha++) {
                 
-                String tempp = "";
-                if (linha!=0){
-                    tempp = "|"; 
-                }
-                tempp +=  String.format("%4s|", matrizImprimir[linha][0]);
+                String tempp = "|" + String.format("%4s|", matrizImprimir[linha][0]);
                 for (int coluna = 1; coluna < matrizImprimir[linha].length; coluna++) {
                     tempp += String.format("%9s", matrizImprimir[linha][coluna]);
 
@@ -294,6 +290,8 @@ public class Writer {
         }
     }
 
+<<<<<<< f8ba46c571ee86f9541235ff81239dc44401b746
+=======
 //    /**
 //     * Escreve uma mensagem e termina o programa.
 //     * @param mensagem 
@@ -313,6 +311,7 @@ public class Writer {
 //            
 //        }
 //    }
+>>>>>>> quase?
     /**
      * Escreve uma mensagem para a consola. Se o formatter recebido existir,
      * escreve tambem para um ficheiro
@@ -352,11 +351,19 @@ public class Writer {
      */
     public static void escreverLog(String mensagem, String tipoErro) {
         try {
+<<<<<<< f8ba46c571ee86f9541235ff81239dc44401b746
+            
+            String path = "LOG.txt";
+            
+            if(!Main.TEST_MODE){
+                path = Main.getCaminhoFicheiroOutput(Main.logPath);
+=======
 
             String path = Main.getCaminhoFicheiroOutput(Main.logPath);
 
             if (Main.TEST_MODE) {
                 path = "LOG.txt";
+>>>>>>> quase?
             }
 
             File log = new File((path));
