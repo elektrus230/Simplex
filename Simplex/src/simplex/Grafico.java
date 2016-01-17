@@ -16,7 +16,8 @@ import static simplex.StringsLib.PNG;
 import static simplex.StringsLib.TXT;
 
 /**
- *
+ * Classe responsável pela gestão das 
+ * funcionalidades relativas ao gráfico
  * @author Grupo 9
  */
 public class Grafico {
@@ -28,11 +29,14 @@ public class Grafico {
 
     /**
      * Pede ao utilizador para definir o tipo de ficheiro do grafico.
+     * Existem 3 possibilidfades : PNG , EPS e TXT
+     * O formato PNG é o formato predefinido caso o utilizador
+     * não selecione uma opção correcta
      * @return
      */
     public static void setFormatoDoGrafico() {
 
-        String formato = StringsLib.PNG;
+        String formato = PNG;
         
         Writer.escreverGenerico(StringsLib.Menu_TipoGráfico, null);
 
@@ -47,9 +51,18 @@ public class Grafico {
                 break;
         }
 
+        Writer.escreverGenerico(
+                String.format(
+                        StringsLib.Msg_FormatoGraficoSelecionado,formato), null);
+        
         formatoDoGrafico = formato;
     }
 
+    /**
+     * TODO COMMENT UNIT TEST
+     * @param iteracao
+     * @param valoresZ 
+     */
     public static void gerarScript(int iteracao, double[] valoresZ) {
 
       

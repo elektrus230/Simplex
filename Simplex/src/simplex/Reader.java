@@ -6,6 +6,8 @@ package simplex;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -51,6 +53,8 @@ public class Reader {
 
                 }
                 
+                verificacaoEspacos(linhas);
+                
                  for (int i = 0; i < linhas.length; i++) {
                     linhas[i] = linhas[i].toUpperCase();
                 }
@@ -63,6 +67,27 @@ public class Reader {
         }
        
         return linhas;
+    }
+    
+    public static boolean verificacaoEspacos(String[] linhas) {
+        linhas = linhas;
+        boolean output = true;
+        try {
+
+            for (int i = 0; i < linhas.length; i++) {
+                Pattern pattern = Pattern.compile(".*\\s{3,}.*");
+                Matcher matcher = pattern.matcher(linhas[i]);
+                while (matcher.find()) {
+                    output = false;
+
+                    Writer.forcarSaida(StringsLib.Erro_EspaçoesEntreCarateresInvalido, Writer.Escritor);
+                }
+
+            }
+        } catch (NullPointerException npe) {
+            System.out.println("ola");
+        }
+        return output;
     }
 
 }

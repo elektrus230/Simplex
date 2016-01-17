@@ -114,7 +114,7 @@ public class InputDataProcessing {
         
         Simplex.setVariaveis(variveisEncontradas);
         Simplex.setnVariaveis(cont);
-        //Grafico.setGraphicMode(cont);
+        Grafico.setGraphicMode(cont);
         
         return matrizInicialS;
     }

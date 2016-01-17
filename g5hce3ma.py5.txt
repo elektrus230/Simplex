@@ -1,0 +1,21 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   Simplex/src/simplex/Grafico.java
+#	modified:   Simplex/src/simplex/InputDataProcessing.java
+#	modified:   Simplex/src/simplex/Main.java
+#	modified:   Simplex/src/simplex/Reader.java
+#	modified:   Simplex/src/simplex/StringsLib.java
+#	modified:   Simplex/src/simplex/Testes.java
+#	modified:   Simplex/src/simplex/Writer.java
+#
+# Untracked files:
+#	Simplex/Solucao Grafica.png
+#	Simplex/script.gp
+#	Simplex/testfiles/Output.txt
+#
+Updatate

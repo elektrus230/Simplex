@@ -5,8 +5,6 @@
  */
 package simplex;
 
-import java.util.Arrays;
-
 /**
  *
  * @author Grupo 9
@@ -17,15 +15,16 @@ public class Testes {
         
         Main.TEST_MODE = true;
 
-//        testeTransporMatriz();
-//        testeCalcularQuocienteColunas();
-//        testeAcrescentarColunasDeSlacks();
-//        testeAumentarArray();
-//        testeAumentarMatriz();
-//        testeParseDoubleSeguro();
+        testeTransporMatriz();
+        testeCalcularQuocienteColunas();
+        testeAcrescentarColunasDeSlacks();
+        testeAumentarArray();
+        testeAumentarMatriz();
+        testeParseDoubleSeguro();
         testeCriarMatrizComFolgas();
-//        testeAdicionarSlacks();
-//        testeEProblemaDeMaximixacao();
+        testeVerificacaoEspacos();
+        testeAdicionarSlacks();
+        testeEProblemaDeMaximixacao();
     }
 
     /**
@@ -135,7 +134,7 @@ public class Testes {
         };
         double[] output = Utils.calculaQuocienteColunas(array1, array2);
         boolean result = true;
-        System.out.println(Arrays.toString(output));
+        
         for (int i = 0; i < output.length; i++) {
             if(output[i] != expResult[i]){
                 result = false;
@@ -313,5 +312,16 @@ public class Testes {
         
         result = InputDataProcessing.eProblemaDeMaximizacao(linhas);
         printTest("testeEProblemaDeMaximizacao", !result);
+    }
+    
+    public static void testeVerificacaoEspacos() {
+        String[] inputA = new String[]{
+            "z  =  2  .  2  /  2  .  2  x  1  +  2x2",
+            "x  2  +  4  x  3  <=  4  5"
+        };
+        boolean expResult = true;
+        boolean output = Reader.verificacaoEspacos(inputA);
+        boolean result = output == expResult;
+        printTest("testeVerificacaoEspacos", result);
     }
 }

@@ -317,4 +317,15 @@ public class Writer {
             formatter.format(mensagem);
         }
     }
+    
+    /**
+     * Escreve uma mensagem com uma cor
+     * @param mensagem
+     * @param formatter
+     * @param cor 
+     */
+    public static void escreverGenerico(String mensagem, Formatter formatter, String cor){
+        String mensagemColorida = StringsLib.Escape_Char + cor + mensagem;
+        escreverGenerico(mensagemColorida,formatter);
+    }
 }

@@ -36,6 +36,8 @@ public class StringsLib {
     public static final String Msg_ProgramaTerminadoSucesso = "Programa terminado com sucesso.\n";
     public static final String Msg_ApresentacaoResultado = "O resultado final de %3s = %s %n";
     public static final String Msg_DefaultGrafico = "Opção selecionada inválida. Formato PNG definido por defeito.";
+    public static final String Msg_FormatoGraficoSelecionado = "Fomato do gráfico selecionado: %s.";
+    
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="ERROS">
@@ -78,13 +80,37 @@ public class StringsLib {
     public static final String PNG = ".png";
     public static final String TXT = ".txt";
     public static final String EPS = ".eps";
-    public static final String Header_Console = "-----------------------------------------------\n\t\t   SIMPLEX\n-----------------------------------------------\n";
+    public static final String Header_Console = "-----------------------------------------------\n\t\t   " + StringsLib.Escape_Char + StringsLib.Color_Bkg_Magenta+"SIMPLEX\n-----------------------------------------------\n";
     public static final String Header_File = "-----------------------------------------------\n\t\t\t\t\tSIMPLEX\n-----------------------------------------------\n";
-    
-    //</editor-fold>
-    
     public static final String Menu_TipoGráfico = "\nPor favor seleccione o formato do ficheiro do gráfico:"
                 + "\n\t1 - PNG"
                 + "\n\t2 - TXT"
                 + "\n\t3 - EPS";
+    public static final char Escape_Char = (char)27;
+    
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="CORES">
+
+    public static final String Color_Black = "[30m";
+    public static final String Color_Red = "[31m";
+    public static final String Color_Green = "[32m";
+    public static final String Color_Yeallow = "[33m";
+    public static final String Color_Blue = "[34m";
+    public static final String Color_Magenta = "[35m";
+    public static final String Color_Cyan = "[36m";
+    public static final String Color_White = "[37m";
+    
+    public static final String Color_Bkg_Black = "[40m";
+    public static final String Color_Bkg_Red = "[41m";
+    public static final String Color_Bkg_Green = "[42m";
+    public static final String Color_Bkg_Yeallow = "[43m";
+    public static final String Color_Bkg_Blue = "[44m";
+    public static final String Color_Bkg_Magenta = "[45m";
+    public static final String Color_Bkg_Cyan = "[46m";
+    public static final String Color_Bkg_White = "[47m";
+   
+    //</editor-fold>
+    
+    
 }

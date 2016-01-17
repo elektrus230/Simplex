@@ -31,14 +31,12 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        inputPath = "testfiles\\input_Min.txt";
+        inputPath = "testfiles\\TEST_INPUT_MAX_VALID_B.txt";
         outputPath = "testfiles\\Output.txt";
 
         //validarInputs(args);
         
         Writer.escreverHeader(outputPath);
-        
-        //formatoDoGrafico = getFormatoDoGrafico();
         
         String[] linhasFicheiro = Reader.lerFicheiro(inputPath);
         
@@ -176,6 +174,11 @@ public class Main {
         //TODO: add other validations
     }
     
+    /**
+     * TODO Crasha o programa
+     * @param leitura
+     * @return 
+     */
     public static boolean validarEquacoes(String[] leitura) {
         boolean op = false;
         String linhaFuncao = leitura[0];
