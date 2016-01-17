@@ -232,8 +232,8 @@ public class InputDataProcessing {
                 controle++;
 
                 if (controle > cont) {
-                    //TODO add to log
-                    System.out.println(StringsLib.Erro_VariavelInfiltrada + " ->validarVariaveisRestricoes + InputDataProcessing");
+                    Writer.escreverLog(StringsLib.Erro_VariavelInfiltrada, StringsLib.Log_Erro);
+                    Writer.forcarSaida(StringsLib.Erro_VariavelInfiltrada, Writer.Escritor);
                     output = false;
                 }
 
@@ -405,8 +405,10 @@ public class InputDataProcessing {
                 }
             }
         }
-        Writer.escreverGenerico(String.format(StringsLib.Msg_TipoProblemaPPL,
-                (output ? StringsLib.Maximizacao : StringsLib.Minimizacao)), Writer.Escritor);
+        if(!Main.TEST_MODE){
+            Writer.escreverGenerico(String.format(StringsLib.Msg_TipoProblemaPPL,
+                    (output ? StringsLib.Maximizacao : StringsLib.Minimizacao)), Writer.Escritor);
+        }
         return output;
     }
 

@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.Formatter;
 
 /**
@@ -20,8 +21,8 @@ import java.util.Formatter;
 public class Writer {
 
     public static Formatter Escritor;
-    public static Formatter Log;
-
+    
+    
     /**
      * Este método serve para escrever para o ecrâ e para o ficheiro de output
      * os dados lidos do ficheiro de input.
@@ -66,7 +67,6 @@ public class Writer {
         }
     }
 
-    //<editor-fold defaultstate="collapsed" desc="imprimir as matrizes, desde a inicial até à ultima iteração">
     /**
      * imprimir as matrizes, desde a inicial até à ultima iteração
      * @param vars
@@ -148,7 +148,6 @@ public class Writer {
             System.out.println("Ocorreu um problema ao escrever no ficheiro" + ioe.getMessage());
         }
     }
-    //</editor-fold>
 
     /**
      * Este método serve para apresentar os resultados finais
@@ -223,8 +222,6 @@ public class Writer {
             System.out.println(StringsLib.Erro_EscreverHeader);
         }
     }
-
-
     /**
      * este método serve para criar o cabeçalho da matriz criada com o nome das
      * variáveis as folgas e de b
@@ -264,7 +261,6 @@ public class Writer {
         printWriter.println(header);
         System.out.println(header);
     }
-
     
     /**
      * Escreve uma mensagem e termina o programa.
@@ -283,27 +279,6 @@ public class Writer {
             System.exit(0);  
         }
     }
- 
-//    /**
-//     * Escreve uma mensagem e termina o programa.
-//     * @param mensagem 
-//     */
-//    public static void forcarSaida(String mensagem, int linha, Class cls, Formatter method){
-//        escreverGenerico(mensagem,fileprinter);
-//        escreverGenerico(StringsLib.Msg_Saida,fileprinter);
-//        if(fileprinter != null){
-//            fileprinter.close();
-//        }
-//        
-//        
-//        if(Main.TEST_MODE){
-//            return;
-//        }else{
-//            System.exit(0);
-//            
-//        }
-//    }
-    
     /**
      * Escreve uma mensagem para a consola.
      * Se o formatter recebido existir, 
@@ -327,5 +302,46 @@ public class Writer {
     public static void escreverGenerico(String mensagem, Formatter formatter, String cor){
         String mensagemColorida = StringsLib.Escape_Char + cor + mensagem;
         escreverGenerico(mensagemColorida,formatter);
+    }
+    
+    /**
+         * loga para 
+         * validação de argumentos
+         * validação de ficheiros
+         * validação de espaços
+         * validação de nullpointexception
+         * validação da primeira linha
+         * validação das linhas de restrições
+         * validação de incógnitas nas linhs das restrições
+         * validação de zeros nos divisores
+         * 
+         * 
+     * @param mensagem
+     * @param tipoErro
+     * @param local
+         */
+    public static void escreverLog(String mensagem , String tipoErro) {
+        try {
+            
+            String path = Main.getCaminhoFicheiroOutput(Main.logPath);
+            
+            if(Main.TEST_MODE){
+                path = "LOG.txt";
+            }
+            
+            File log = new File((path));
+            FileWriter fileWriter = new FileWriter(log, true);
+            BufferedWriter buffer = new BufferedWriter(fileWriter);
+            PrintWriter printWriter = new PrintWriter(buffer);
+            String data = Utils.getDataActual(StringsLib.FormatoData);
+            
+            String a = Arrays.toString(Thread.currentThread().getStackTrace());
+
+            String entry = String.format("# %s ERRO: %s : %s -> %s", data,tipoErro,mensagem,a);
+            printWriter.println(entry);
+            printWriter.close();
+        } catch (IOException ioe) {
+            Writer.escreverGenerico(StringsLib.Erro_EscreverLog, Writer.Escritor);
+        }
     }
 }

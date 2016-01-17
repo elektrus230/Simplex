@@ -17,20 +17,21 @@ public class Testes {
         
         Main.TEST_MODE = true;
         
-        testeTransporMatriz();
-        testeCalcularQuocienteColunas();
-        testeAcrescentarColunasDeSlacks();
-        testeAumentarArray();
-        testeAumentarMatriz();
-        testeParseDoubleSeguro();
-        testeCriarMatrizComFolgas();
-        testeVerificacaoEspacos();
-        testeAdicionarSlacks();
-        testeEProblemaDeMaximixacao();
-        testeValidacaoPrimeiraLinha();
-        testeValidacaoLinhaRestricoes();
-        testeValidarVariaveisRestricoes();
-        testeTransporParaDouble();
+//        testeTransporMatriz();
+//        testeCalcularQuocienteColunas();
+//        testeAcrescentarColunasDeSlacks();
+//        testeAumentarArray();
+//        testeAumentarMatriz();
+//        testeParseDoubleSeguro();
+//        testeCriarMatrizComFolgas();
+//        testeVerificacaoEspacos();
+//        testeAdicionarSlacks();
+//        testeEProblemaDeMaximixacao();
+//        testeValidacaoPrimeiraLinha();
+//        testeValidacaoLinhaRestricoes();
+//        testeValidarVariaveisRestricoes();
+//        testeTransporParaDouble();
+        testLogMesage();
     }
 
     /**
@@ -40,11 +41,12 @@ public class Testes {
      * @param result
      */
     public static void printTest(String testName, boolean result) {
-        String resultTxt = "Passed";
+        String resultTxt = StringsLib.Escape_Char + StringsLib.Color_Green + "Passed";
         if (!result) {
-            resultTxt = "Failed";
+            resultTxt = StringsLib.Escape_Char + StringsLib.Color_Red + "Failed";
         }
         System.out.printf("Test %s Result : %s.\n", testName, resultTxt);
+        System.out.print(StringsLib.Escape_Char + "[39m");
     }
     
     public static void testeTransporMatriz() {
@@ -384,7 +386,6 @@ public class Testes {
         printTest("testeValidarVariaveisRestricoes linhas2", result);
         
     }
-
    
     public static void testeTransporParaDouble(){
         String numeros1 ="205.5/205.5";
@@ -392,5 +393,11 @@ public class Testes {
         double output=simplex.InputDataProcessing.transporParaDouble(numeros1);
         boolean result = output == expResult;
         printTest("testeTransporParaDouble", result);
+    }
+    
+    public static void testLogMesage(){
+    
+        String a = Arrays.toString(Thread.currentThread().getStackTrace());
+        Writer.escreverLog("TesteTipo", "TesteMsg");
     }
 }

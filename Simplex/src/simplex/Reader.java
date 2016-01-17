@@ -68,25 +68,35 @@ public class Reader {
         return linhas;
     }
     
+    /**
+     * TODO COmment LOG 
+     * @param linhas
+     * @return 
+     */
     public static boolean verificacaoEspacos(String[] linhas) {
-        linhas = linhas;
         boolean output = true;
-        try {
-            
+        
+        if(linhas != null){
             for (int i = 0; i < linhas.length; i++) {
                 Pattern pattern = Pattern.compile(".*\\s{3,}.*");
                 Matcher matcher = pattern.matcher(linhas[i]);
+
                 while (matcher.find()) {
+
                     output = false;
-                    
-                    Writer.forcarSaida(StringsLib.Erro_EspaçoesEntreCarateresInvalido, Writer.Escritor);
-                }
-                
+                    if(!Main.TEST_MODE){
+                        Writer.escreverLog(StringsLib.Erro_EspaçoesEntreCarateresInvalido, StringsLib.Log_Erro);
+                        Writer.forcarSaida(StringsLib.Erro_EspaçoesEntreCarateresInvalido, Writer.Escritor);
+                    }
+                }      
             }
-        } catch (NullPointerException npe) {
-            //TODO usar exepcao para log
-            System.out.println(StringsLib.Erro_FicheiroComCarateresNaoValidos);
-            System.exit(0);
+        }else{
+            output = false;
+            if(!Main.TEST_MODE){
+                Writer.escreverLog(StringsLib.Erro_EspaçoesEntreCarateresInvalido, StringsLib.Log_Erro);
+                Writer.forcarSaida(StringsLib.Erro_EspaçoesEntreCarateresInvalido, Writer.Escritor);
+            }
+           
         }
         return output;
     }

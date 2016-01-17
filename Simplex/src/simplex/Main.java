@@ -32,10 +32,9 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        inputPath = "testfiles\\TEST_INPUT_MIN_VALID_A.txt";
+        inputPath = "testfiles\\TEST_INPUT_MAX_VALID_A.txt";
         outputPath = "testfiles\\Output.txt";
 
-        tirarNomeParaLog();
         Writer.escreverHeader(outputPath); //ver com o Dinis
         
         String[] linhasFicheiro = Reader.lerFicheiro(inputPath);
@@ -54,14 +53,9 @@ public class Main {
             Simplex.executarSimplex(outputPath);
         }else{
             //TODO fix messages
+            Writer.escreverLog(StringsLib.Msg_SaidaInesperada, StringsLib.Log_Info);
             Writer.forcarSaida(StringsLib.Msg_SaidaInesperada, Writer.Escritor);
         }
-    }
-
-    public static void tirarNomeParaLog() {
-        //validarInputs(args);
-        String a = new File(outputPath).getName();
-        logPath=outputPath.replace(a,"")+"log.txt";
     }
 
     /**
@@ -154,13 +148,14 @@ public class Main {
     }
 
     /**
+     * TODO UNIT Test
      * Através do ficheiro de input, que se assume já se encontrar válido,
      * extrai a pasta desse ficheiro e cria um ficheiro nesse directorio
      * para os outputs.
      * @param inputPath
      * @return 
      */
-    private static String getCaminhoFicheiroOutput(String inputPath) {
+    public static String getCaminhoFicheiroOutput(String inputPath) {
         
         String defaultPath;
         Writer.escreverGenerico(inputPath, null);
@@ -218,7 +213,9 @@ public class Main {
             Matcher m = linhaVariaveis.matcher(linha);
             op = m.matches();
             if (op == false) {
-                Writer.forcarSaida(StringsLib.Erro_RestricoesInvalidas, Writer.Escritor);
+                if(!Main.TEST_MODE){
+                    Writer.forcarSaida(StringsLib.Erro_RestricoesInvalidas, Writer.Escritor);
+                }                
             }
         }
         return op;

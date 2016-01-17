@@ -104,4 +104,11 @@ public static final String Erro_FicheiroComCarateresNaoValidos = "O ficheiro con
     public static final String Color_Bkg_White = "[47m";
 
     //</editor-fold>
+    public static final  String FormatoData = "dd/MM/yyyy HH:mm:ss";
+    public static final String Erro_EscreverLog = "Erro : Falha ao escrever para o ficheiro de log.";
+    
+    public static final String Log_Info = "Info";
+    public static final String Log_Erro = "Erro";
+    public static final String Log_Avisdo = "Aviso";
+    
 }

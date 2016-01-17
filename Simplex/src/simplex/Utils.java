@@ -3,6 +3,10 @@
  */
 package simplex;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  *
  * @author Grupo 9
@@ -187,5 +191,16 @@ public class Utils {
             }
         }
         return output;
+    }
+    
+    /**
+     * TODO COMMENT UNIT TEST?
+     * @param formato
+     * @return 
+     */
+    public static String getDataActual(String formato) {
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat(formato);
+        return sdf.format(date);
     }
 }
