@@ -22,6 +22,7 @@ public class Main {
 
     public static String inputPath;
     public static String outputPath;
+    public static String logPath;
     public static double [][] matrizSimplexInicial;
     public static boolean TEST_MODE = false;
 
@@ -31,16 +32,17 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        inputPath = "testfiles\\TEST_INPUT_MAX_VALID_B.txt";
+        inputPath = "testfiles\\TEST_INPUT_MIN_VALID_A.txt";
         outputPath = "testfiles\\Output.txt";
 
         //validarInputs(args);
-        
-        Writer.escreverHeader(outputPath);
+        String a = new File(outputPath).getName();
+        logPath=outputPath.replace(a,"");
+        Writer.escreverHeader(outputPath); //ver com o Dinis
         
         String[] linhasFicheiro = Reader.lerFicheiro(inputPath);
         
-        //validarLinhas(linhasFicheiro);
+        validarLinhas(linhasFicheiro);
         
         matrizSimplexInicial = InputDataProcessing.extrairValoresDasLinhas(linhasFicheiro);
         

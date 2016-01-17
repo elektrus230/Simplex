@@ -1,5 +1,5 @@
-set term postscript enhanced landscape color "arial" 14 
-set output "Solucao Grafica.eps"
+set term pngcairo enhanced size 1366,768 font "arial,10" 
+set output "Solucao Grafica.png"
 set parametric
 set style fill empty
 set title "Solução Gráfica"

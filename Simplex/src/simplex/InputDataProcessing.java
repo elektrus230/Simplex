@@ -15,13 +15,13 @@ import static simplex.Utils.stringContemElelmentoDeArray;
  * @author Grupo 9
  */
 public class InputDataProcessing {
-    
+
     public static boolean MAXIMIZACAO = true;
     public static final String EMPTY = "";
     public static final String SPACE = " ";
-    
+
     //<editor-fold defaultstate="collapsed" desc="OPERADORES">
-    public final static String[] MENOR_OU_IGUAL = {"<=", "=<", "\u2264", "\u2266"} ;
+    public final static String[] MENOR_OU_IGUAL = {"<=", "=<", "\u2264", "\u2266"};
     public final static String[] MAIOR_OU_IGUAL = {">=", "=>", "\u2265", "\u2267"};
     public final static char IGUAL = '=';
     public final static char MENOS = '-';
@@ -29,11 +29,17 @@ public class InputDataProcessing {
     public final static char BARRA = '/';
     public final static char ESPACO = ' ';
     //</editor-fold>
-    
-    public static String NomeFuncObjectivo;   
+
+    public static String NomeFuncObjectivo;
     public static String[] colunaRefResultados;
 
-    
+    /**
+     * aqui se vai retirar os valores das equações para desse modo se poder
+     * efectuar os calculos
+     *
+     * @param linhas
+     * @return
+     */
     public static double[][] extrairValoresDasLinhas(String[] linhas) {
 
         double[][] matrizOutput = null;
@@ -41,19 +47,19 @@ public class InputDataProcessing {
         if (linhas != null) {
 
             if (linhas.length > 0) {
-                
+
                 setNomeFuncaoObjectivo(linhas[0]);
-                
+
                 Writer.ImprimirDadosIniciais(linhas, Main.outputPath);
 
                 MAXIMIZACAO = eProblemaDeMaximizacao(linhas);
-                
+
                 String[][] matrizInicialS = getMatrixInicial(linhas);
-                
+
                 preencherMatrizRestricoes(linhas, matrizInicialS);
-                                
+
                 matrizOutput = Utils.converterMatrizParaDouble(matrizInicialS);
-                
+
                 int nResultados = MAXIMIZACAO ? linhas.length : Simplex.getnVariaveis() + 1;
                 String[] resultados = criarColunaResultados(nResultados);
                 Simplex.setResultados(resultados);
@@ -63,9 +69,11 @@ public class InputDataProcessing {
     }
 
     /**
-     * TODO: rever - certas coisas so devem acontecer se existirem pelo menos 2 vars
+     * TODO: rever - certas coisas so devem acontecer se existirem pelo menos 2
+     * vars
+     *
      * @param linhas
-     * @return 
+     * @return
      */
     private static String[][] getMatrixInicial(String[] linhas) {
         String[][] matrizInicialS = new String[linhas.length][3];
@@ -80,27 +88,28 @@ public class InputDataProcessing {
 
     /**
      * TODO : Add descricao
+     *
      * @param matcher
      * @param matrizInicialS
-     * @return 
+     * @return
      */
     private static String[][] encontrarVariaveis(Matcher matcher, String[][] matrizInicialS) {
-        
+
         int cont = 0;
-        
+
         String[] variveisEncontradas = new String[2];
-        
+
         while (matcher.find()) {
-            
-            variveisEncontradas = Utils.aumentarArray(cont,variveisEncontradas);
-            matrizInicialS = Utils.aumentaColunasMatriz(cont,matrizInicialS);
+
+            variveisEncontradas = Utils.aumentarArray(cont, variveisEncontradas);
+            matrizInicialS = Utils.aumentaColunasMatriz(cont, matrizInicialS);
             variveisEncontradas[cont] = matcher.group(8);
-            
+
             String valor = EMPTY;
             if (matcher.group(0).contains("-") && matcher.group(4).isEmpty()) {
                 valor += "-1";
             } else {
-                
+
                 if (matcher.group(1).isEmpty() || (matcher.group(1).contains("+") && matcher.group(4).isEmpty())) {
                     valor += "1";
                 } else {
@@ -108,35 +117,39 @@ public class InputDataProcessing {
                 }
             }
             matrizInicialS[matrizInicialS.length - 1][cont] = valor.replaceAll(SPACE, EMPTY);
-            
+
             cont++;
         }
-        
+
         Simplex.setVariaveis(variveisEncontradas);
         Simplex.setnVariaveis(cont);
         Grafico.setGraphicMode(cont);
-        
+
         return matrizInicialS;
     }
-    
+
     //<editor-fold defaultstate="collapsed" desc="PREENCHIMENTO DA MATRIZ">
-    
     /**
-     * TODO: Add descricao
+     * TODO: 
+     * este metodo vai apanhar o array criado com o nome das variaveis
+     * e vai apanhando em toda a linha essas variaveis e vai somando ou subtraindo
+     * os valores que a variavel tem por linha e colocando na matriz no seu local
+     * certo
+     *
      * @param linhas
-     * @param matriz 
+     * @param matriz
      */
-    public static void preencherMatrizRestricoes(String[] linhas, String[][] matriz) {   
-        
+    public static void preencherMatrizRestricoes(String[] linhas, String[][] matriz) {
+
         int nLinhas = matriz.length;
         int nColunas = matriz[0].length;
-        
+
         String[] linhasTemp = new String[nLinhas - 1];
         for (int i = 0; i < linhasTemp.length; i++) {
             linhasTemp[i] = linhas[i + 1];
             validarVariaveisRestricoes(Simplex.getVariaveis(), linhas);
         }
-        
+
         for (int i = 0; i < linhasTemp.length; i++) {
             for (int j = 0; j < nColunas - 1; j++) {
                 double valorV = 0;
@@ -188,39 +201,48 @@ public class InputDataProcessing {
             }
         }
     }
-    
+
     /**
-     * TODO COMMENT UNIT TEST
+     * TODO COMMENT UNIT TEST - está feito
+     * aqui vamos validar se existem variaveis nas linhas das restrições
+     * que não existam na linha da função objectivo
+     * 
      * @param varsExistentes
-     * @param linhas 
+     * @param linhas
      */
-    public static void validarVariaveisRestricoes(String[] varsExistentes, String [] linhas) {
+    public static boolean validarVariaveisRestricoes(String[] varsExistentes, String[] linhas) {
+        boolean output = true;
         for (String linha : linhas) {
             String padrao = StringsLib.Regex_ValidaMaisDe2Espacos;
             Pattern pattern = Pattern.compile(padrao);
             Matcher matcher = pattern.matcher(linha);
-            int cont=0,controle=0;
-            while (matcher.find()){
-                String encontrou=matcher.group();
-                if(Arrays.asList(varsExistentes).contains(encontrou)){
+            int cont = 0, controle = 0;
+            while (matcher.find()) {
+                String encontrou = matcher.group();
+                if (Arrays.asList(varsExistentes).contains(encontrou)) {
                     cont++;
                 }
                 controle++;
-                
-                if (controle > cont){
+
+                if (controle > cont) {
                     //TODO add to log
-                    System.out.println(StringsLib.Erro_VariavelInfiltrada);
+                    System.out.println(StringsLib.Erro_VariavelInfiltrada + " ->validarVariaveisRestricoes + InputDataProcessing");
+                    output = false;
                 }
+
             }
         }
+        return output;
     }
-    
+
     //</editor-fold>
-    
     /**
      * TODO REVER TITULO COMMETN UNIT TEST CLASS
+     *este metodo transpoe uma string que pode ter a barra de divisor
+     * separa a string pela barra e depois realiza a operação de divisão
+     * aproveita para validar se o numero está a ser dividido por 0 ou não
      * @param conteudo
-     * @return 
+     * @return
      */
     public static double transporParaDouble(String conteudo) {
         double output = 0;
@@ -231,7 +253,7 @@ public class InputDataProcessing {
             double preBarraD = Double.parseDouble(preBarraS);
             double posBarraD = Double.parseDouble(posBarraS);
             if (posBarraD == 0) {
-               Writer.forcarSaida(StringsLib.Erro_DivisorIgualZero, Writer.Escritor);
+                Writer.forcarSaida(StringsLib.Erro_DivisorIgualZero, Writer.Escritor);
             } else {
                 output = preBarraD / posBarraD;
             }
@@ -244,134 +266,133 @@ public class InputDataProcessing {
     }
 
     //<editor-fold defaultstate="collapsed" desc="FOLGAS">
-    
     /**
-     * UNIT TEST
-     * Cria folgas e torna a linha Funcao Obj negativa
+     * UNIT TEST Cria folgas e torna a linha Funcao Obj negativa
+     *
      * @param matrizAFolgar
-     * @return 
+     * @return
      */
     public static double[][] criarMatrizComFolgas(double[][] matrizAFolgar) {
-        
+
         int linhas = matrizAFolgar.length;
         int colunas = matrizAFolgar[0].length;
         int colunasComSlacks = colunas + linhas - 1;
-        
+
         double[][] output = new double[linhas][colunasComSlacks];
-        
+
         int inicioSlacks = MAXIMIZACAO ? Simplex.getnVariaveis() : linhas - 1;
-        
+
         adicionarSlacks(matrizAFolgar, output, inicioSlacks);
-        
-        for(int i=0;i< Simplex.getnVariaveis();i++){
-            output[linhas- 1 ][i] *= -1;
+
+        for (int i = 0; i < Simplex.getnVariaveis(); i++) {
+            output[linhas - 1][i] *= -1;
         }
         return output;
     }
 
     /**
-     * UNIT TEST
-     * Copia os dados de uma matriz para uma maior e adiciona slacks
+     * UNIT TEST Copia os dados de uma matriz para uma maior e adiciona slacks
+     *
      * @param semSlacks
-     * @param comSlacks 
+     * @param comSlacks
      */
     public static void adicionarSlacks(double[][] semSlacks, double[][] comSlacks, int inicio) {
-        
+
         for (int i = 0; i < semSlacks.length; i++) {
-            System.arraycopy(semSlacks[i], 0, comSlacks[i], 0, semSlacks[i].length-1);
+            System.arraycopy(semSlacks[i], 0, comSlacks[i], 0, semSlacks[i].length - 1);
         }
-        
+
         for (int i = 0; i < comSlacks.length; i++) {
-            comSlacks[i][comSlacks[i].length-1] = semSlacks[i][(semSlacks[i].length)-1];
+            comSlacks[i][comSlacks[i].length - 1] = semSlacks[i][(semSlacks[i].length) - 1];
         }
-        
-        for (int i = 0; i < comSlacks.length-1; i++) {
-            comSlacks[i][semSlacks[0].length-1+i] = 1;
+
+        for (int i = 0; i < comSlacks.length - 1; i++) {
+            comSlacks[i][semSlacks[0].length - 1 + i] = 1;
         }
     }
-    
-     /**
-     * TODO UNIT TEST 
-     * Preenche os slacks na tabela simplex.
-     * Colaca o valor 1 nos espaços referentes a slacks
+
+    /**
+     * TODO UNIT TEST Preenche os slacks na tabela simplex. Colaca o valor 1 nos
+     * espaços referentes a slacks
+     *
      * @param matrizOutput
      * @param colunaInicio
-     * @param colunaFin 
+     * @param colunaFin
      */
     public static void preencherSlacks(double[][] matrizOutput, int colunaInicio, int colunaFin) {
         int linha = 0;
-        for (int coluna = colunaInicio; coluna < colunaFin; coluna++){
+        for (int coluna = colunaInicio; coluna < colunaFin; coluna++) {
             matrizOutput[linha][coluna] = 1;
             linha++;
         }
     }
-    
-    //</editor-fold>
 
+    //</editor-fold>
     /**
-     * TODO UNIT TEST
-     * Cria um array que vai servir para ir guardando as variaveis de resultado
+     * TODO UNIT TEST Cria um array que vai servir para ir guardando as
+     * variaveis de resultado
+     *
      * @param nResultadosEserados
      * @return lista ordenada de nomes de variaveis/slacks/Z
      */
     private static String[] criarColunaResultados(int nResultadosEserados) {
-        
+
         String[] output = new String[nResultadosEserados];
-        
-        String[] vars  = Simplex.getVariaveis();
-        
+
+        String[] vars = Simplex.getVariaveis();
+
         String var = "S";
-        
+
         String obj = InputDataProcessing.MAXIMIZACAO ? "Z " : "W ";
 
-        
         for (int i = 0; i < nResultadosEserados; i++) {
-            if (i == nResultadosEserados - 1) {    
+            if (i == nResultadosEserados - 1) {
                 output[i] = obj;
-            }else{
-                if(InputDataProcessing.MAXIMIZACAO){
-                    
+            } else {
+                if (InputDataProcessing.MAXIMIZACAO) {
+
                     output[i] = var + (i + 1);
-                
-                }else{
-                
+
+                } else {
+
                     output[i] = vars[i];
                 }
             }
-        }        
+        }
         return output;
     }
 
     /**
-     * TODO UNIT TEST
-     * Determina se o problema em questão é de maximização ou de minimização
-     * Se detetar uma inconsitencia de simbolos nas linhas, forca o programa a parar
+     * TODO UNIT TEST Determina se o problema em questão é de maximização ou de
+     * minimização Se detetar uma inconsitencia de simbolos nas linhas, forca o
+     * programa a parar
+     *
      * @param linhas
-     * @return 
+     * @return
      */
     public static boolean eProblemaDeMaximizacao(String[] linhas) {
         boolean output = true;
         int trigger = 0;
         for (int i = 1; i < linhas.length; i++) {
-            if(trigger == 0){
-                if(stringContemElelmentoDeArray(linhas[i], MENOR_OU_IGUAL)){
+            if (trigger == 0) {
+                if (stringContemElelmentoDeArray(linhas[i], MENOR_OU_IGUAL)) {
                     output = true;
                     trigger = 1;
-                }else if(stringContemElelmentoDeArray(linhas[i], MAIOR_OU_IGUAL)){
+                } else if (stringContemElelmentoDeArray(linhas[i], MAIOR_OU_IGUAL)) {
                     output = false;
                     trigger = 2;
                 }
-            }else{
-            
-                if(trigger == 1){
-                
-                    if(stringContemElelmentoDeArray(linhas[i], MAIOR_OU_IGUAL)){
+            } else {
+
+                if (trigger == 1) {
+
+                    if (stringContemElelmentoDeArray(linhas[i], MAIOR_OU_IGUAL)) {
                         Writer.forcarSaida(StringsLib.Erro_InconsistenciaOperador, Writer.Escritor);
                     }
-                    
-                }else{
-                    
-                    if(stringContemElelmentoDeArray(linhas[i], MENOR_OU_IGUAL)){
+
+                } else {
+
+                    if (stringContemElelmentoDeArray(linhas[i], MENOR_OU_IGUAL)) {
                         Writer.forcarSaida(StringsLib.Erro_InconsistenciaOperador, Writer.Escritor);
                     }
                 }
@@ -383,38 +404,42 @@ public class InputDataProcessing {
     }
 
     /**
-     * TODO to remove?
-     * Processo necessário para a minimização
-     * Acrescenta colunas entre antes da ultima coluna
+     * TODO to remove? Processo necessário para a maximização e minimização Acrescenta colunas
+     * entre variaveis de decisão a ultima coluna
+     *
      * @param matrizOutput
      * @param nSlacks
-     * @return 
+     * @return
      */
     public static double[][] acrescentarColunasDeSlacks(double[][] matrizOutput, int nSlacks) {
-        
+
         int linhas = matrizOutput.length;
         int colunas = matrizOutput[0].length;
-        
+
         double[][] output = new double[linhas][colunas + nSlacks];
-        for (int i = 0; i < linhas;i++) {
+        for (int i = 0; i < linhas; i++) {
             for (int j = 0; j < colunas; j++) {
-                
+
                 output[i][j] = matrizOutput[i][j];
             }
         }
-        
+
         for (int i = 0; i < linhas; i++) {
             output[i][colunas + nSlacks - 1] = output[i][colunas - 1];
-            output[i][colunas - 1] = 0; 
- 
+            output[i][colunas - 1] = 0;
+
         }
         return output;
     }
-
+/**
+ * serve para definirmos qual o nome da função objectivo
+ * 
+ * @param linha 
+ */
     private static void setNomeFuncaoObjectivo(String linha) {
-        if(linha.toUpperCase().split("=")[0].contains("W")){
+        if (linha.toUpperCase().split("=")[0].contains("W")) {
             NomeFuncObjectivo = "W";
-        }else{
+        } else {
             NomeFuncObjectivo = "Z";
         }
     }
