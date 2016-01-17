@@ -297,26 +297,6 @@ public class Writer {
         }
     }
 
-//    /**
-//     * Escreve uma mensagem e termina o programa.
-//     * @param mensagem 
-//     */
-//    public static void forcarSaida(String mensagem, int linha, Class cls, Formatter method){
-//        escreverGenerico(mensagem,fileprinter);
-//        escreverGenerico(StringsLib.Msg_Saida,fileprinter);
-//        if(fileprinter != null){
-//            fileprinter.close();
-//        }
-//        
-//        
-//        if(Main.TEST_MODE){
-//            return;
-//        }else{
-//            System.exit(0);
-//            
-//        }
-//    }
-
     /**
      * Escreve uma mensagem para a consola. Se o formatter recebido existir,
      * escreve tambem para um ficheiro
@@ -362,10 +342,10 @@ public class Writer {
     public static void escreverLog(String mensagem , String tipoErro) {
         try {
             
-            String path = Main.getCaminhoFicheiroOutput(Main.logPath);
+            String path = "LOG.txt";
             
-            if(Main.TEST_MODE){
-                path = "LOG.txt";
+            if(!Main.TEST_MODE){
+                path = Main.getCaminhoFicheiroOutput(Main.logPath);
             }
             
             File log = new File((path));

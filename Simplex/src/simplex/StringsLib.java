@@ -75,7 +75,7 @@ public static final String Erro_FicheiroComCarateresNaoValidos = "O ficheiro con
     public static final String PNG = ".png";
     public static final String TXT = ".txt";
     public static final String EPS = ".eps";
-    public static final String Header_Console = "-----------------------------------------------\n\t\t   " + StringsLib.Escape_Char + StringsLib.Color_Bkg_Magenta + "SIMPLEX\n-----------------------------------------------\n";
+    public static final String Header_Console = "-----------------------------------------------\n\t\t   SIMPLEX\n-----------------------------------------------\n";
     public static final String Header_File = "-----------------------------------------------\n\t\t\t\t\tSIMPLEX\n-----------------------------------------------\n";
     public static final String Menu_TipoGráfico = "\nPor favor seleccione o formato do ficheiro do gráfico:"
             + "\n\t1 - PNG"
