@@ -21,8 +21,7 @@ import java.util.Formatter;
 public class Writer {
 
     public static Formatter Escritor;
-    
-    
+
     /**
      * Este método serve para escrever para o ecrâ e para o ficheiro de output
      * os dados lidos do ficheiro de input.
@@ -77,84 +76,77 @@ public class Writer {
      * @param inputPath
      */
     public static void imprimirIteração(String[] vars,
-            double[][] matrizSimplex, int cont, String inputPath) {
+            double[][] matrizSimplex, int cont, String inputPath, String[] VariaveisCalculo) {
 
         try {
             String[][] matrizImprimir = new String[matrizSimplex.length + 1][matrizSimplex[0].length + 1];
+            matrizImprimir[0][0] = "";
             for (int i = 0; i < matrizSimplex.length; i++) {
                 for (int j = 0; j < matrizSimplex[i].length; j++) {
-                    matrizImprimir[i + 1][j + 1] = String.format("%6.2f",(matrizSimplex[i][j]));
+                    matrizImprimir[i + 1][j + 1] = String.format("%6.2f", (matrizSimplex[i][j]));
                 }
             }
+            for (int i = 0; i < VariaveisCalculo.length; i++) {
+                matrizImprimir[0][i + 1] = VariaveisCalculo[i];
+            }
+
             for (int i = 0; i < vars.length; i++) {
-                matrizImprimir[i+1][0]=vars[i];
+                matrizImprimir[i + 1][0] = vars[i];
             }
-            
-            for (int i = 0; i < matrizImprimir.length; i++) {
-                System.out.println(Arrays.toString(matrizImprimir[i]));
-            }
-            System.out.println(Arrays.toString(vars));
-            
+//            
+//            for (int i = 0; i < matrizImprimir.length; i++) {
+//                System.out.println(Arrays.toString(matrizImprimir[i]));
+//            }
 
             File resultados = new File((inputPath));
             FileWriter fileWriter = new FileWriter(resultados, true);
             BufferedWriter buffer = new BufferedWriter(fileWriter);
             PrintWriter printWriter = new PrintWriter(buffer);
 
+            int tamLin;
+
             if (cont == 0) {
 
                 printWriter.printf("\n\t\t-= Matriz inicial =-\n");
                 System.out.printf("\n\t\t-= Matriz inicial =-\n");
-
             } else {
 
                 printWriter.printf("%nIteração nº %d: \n", cont);
                 System.out.printf("\n\nIteração nº %d: \n", cont);
             }
 
-            int tamLin;
-            int nLinhas = matrizSimplex.length;
-            int nColunas = matrizSimplex[0].length;
+            for (int linha = 0; linha < matrizImprimir.length; linha++) {
+                
+                String tempp = "|" + String.format("%4s|", matrizImprimir[linha][0]);
+                for (int coluna = 1; coluna < matrizImprimir[linha].length; coluna++) {
+                    tempp += String.format("%9s", matrizImprimir[linha][coluna]);
 
-            for (int linha = 0; linha < nLinhas; linha++) {
-
-                String tempp = "|" + vars[linha] + " | ";
-
-                for (int coluna = 0; coluna < nColunas; coluna++) {
-                    tempp += String.format("%8.2f", matrizSimplex[linha][coluna]);
                 }
-
                 tamLin = tempp.length();
-
-                if (linha == 0) {
-
-                    printHeader(Simplex.getVariaveis(), printWriter, nColunas);
-
+                if (linha == 1) {
                     for (int k = 0; k < tamLin + 1; k++) {
-
                         System.out.printf("-");
                         printWriter.printf("-");
                     }
-
                     System.out.printf("\n");
                     printWriter.printf("\n");
                 }
-
-                System.out.printf(tempp + " | ");
-                printWriter.printf(tempp + " | ");
-
+                System.out.printf(tempp + "|");
+                printWriter.printf(tempp + "|");
                 System.out.print("\n");
                 printWriter.printf("\n");
 
                 tempp = "|";
 
-                if (linha == nLinhas - 1) {
+                if (linha == matrizImprimir.length - 1) {
                     for (int k = 0; k < tamLin + 1; k++) {
                         System.out.printf("-");
                         printWriter.printf("-");
                     }
                 }
             }
+
+           
 
             System.out.print("\n");
             printWriter.printf("\n");
@@ -239,6 +231,7 @@ public class Writer {
             System.out.println(StringsLib.Erro_EscreverHeader);
         }
     }
+
     /**
      * este método serve para criar o cabeçalho da matriz criada com o nome das
      * variáveis as folgas e de b
@@ -316,7 +309,6 @@ public class Writer {
 //            
 //        }
 //    }
-
     /**
      * Escreve uma mensagem para a consola. Se o formatter recebido existir,
      * escreve tambem para um ficheiro
@@ -342,41 +334,36 @@ public class Writer {
         String mensagemColorida = StringsLib.Escape_Char + cor + mensagem;
         escreverGenerico(mensagemColorida, formatter);
     }
-    
+
     /**
-         * loga para 
-         * validação de argumentos
-         * validação de ficheiros
-         * validação de espaços
-         * validação de nullpointexception
-         * validação da primeira linha
-         * validação das linhas de restrições
-         * validação de incógnitas nas linhs das restrições
-         * validação de zeros nos divisores
-         * 
-         * 
+     * loga para validação de argumentos validação de ficheiros validação de
+     * espaços validação de nullpointexception validação da primeira linha
+     * validação das linhas de restrições validação de incógnitas nas linhs das
+     * restrições validação de zeros nos divisores
+     *
+     *
      * @param mensagem
      * @param tipoErro
      * @param local
-         */
-    public static void escreverLog(String mensagem , String tipoErro) {
+     */
+    public static void escreverLog(String mensagem, String tipoErro) {
         try {
-            
+
             String path = Main.getCaminhoFicheiroOutput(Main.logPath);
-            
-            if(Main.TEST_MODE){
+
+            if (Main.TEST_MODE) {
                 path = "LOG.txt";
             }
-            
+
             File log = new File((path));
             FileWriter fileWriter = new FileWriter(log, true);
             BufferedWriter buffer = new BufferedWriter(fileWriter);
             PrintWriter printWriter = new PrintWriter(buffer);
             String data = Utils.getDataActual(StringsLib.FormatoData);
-            
+
             String a = Arrays.toString(Thread.currentThread().getStackTrace());
 
-            String entry = String.format("# %s ERRO: %s : %s -> %s", data,tipoErro,mensagem,a);
+            String entry = String.format("# %s ERRO: %s : %s -> %s", data, tipoErro, mensagem, a);
             printWriter.println(entry);
             printWriter.close();
         } catch (IOException ioe) {
