@@ -22,48 +22,39 @@ public class Main {
 
     public static String inputPath;
     public static String outputPath;
-    public static double [][] matrizSimplex;
     public static double [][] matrizSimplexInicial;
     public static boolean TEST_MODE = false;
 
-    
     /**
      * Inicia o programa
      * @param args  > 0 = caminho do ficheiro input | 1 -> caminho ficheiro de output
      */
     public static void main(String[] args) {
 
-        inputPath = "testfiles\\inputC.txt";
+        inputPath = "testfiles\\input_Min.txt";
         outputPath = "testfiles\\Output.txt";
 
         //validarInputs(args);
-       
+        
         Writer.escreverHeader(outputPath);
         
         //formatoDoGrafico = getFormatoDoGrafico();
         
         String[] linhasFicheiro = Reader.lerFicheiro(inputPath);
         
-        validarLinhas(linhasFicheiro);
+        //validarLinhas(linhasFicheiro);
         
         matrizSimplexInicial = InputDataProcessing.extrairValoresDasLinhas(linhasFicheiro);
         
         if(InputDataProcessing.MAXIMIZACAO){
-        
-            matrizSimplex = InputDataProcessing.criarMatrizComFolgas(matrizSimplexInicial);
-
+            Simplex.matrizSimplex = InputDataProcessing.criarMatrizComFolgas(matrizSimplexInicial);
         }else{
-            
-            matrizSimplex = InputDataProcessing.criarMatrizComFolgas(
-                    Utils.transporMatriz(matrizSimplexInicial));
+            Simplex.matrizSimplex = InputDataProcessing.criarMatrizComFolgas(Utils.transporMatriz(matrizSimplexInicial));
         }
         
         if(Simplex.matrizSimplex != null){
-            System.out.println("here");
             Simplex.executarSimplex(outputPath);
-            
         }else{
-
             //TODO fix messages
             Writer.forcarSaida(StringsLib.Msg_SaidaInesperada, Writer.Escritor);
         }
@@ -204,14 +195,10 @@ public class Main {
     
     public static boolean validacaoPrimeiraLinha(String linha) {
         boolean op = false;
-        Simplex.listaVariaveis = new String[2];
-
+        Simplex.variaveis = new String[2];
         Pattern p1linha = Pattern.compile(StringsLib.Regex_ValidaPrimeiraLinha);
         Matcher m = p1linha.matcher(linha);
         op = m.matches();
-        
-//        System.out.println("a linha função é "+op);
-
         return op;
     }
     
@@ -225,7 +212,6 @@ public class Main {
                 Writer.forcarSaida(StringsLib.Erro_RestricoesInvalidas, Writer.Escritor);
             }
         }
-//        System.out.println("as linhas de restrições são "+op);
         return op;
     }
    
