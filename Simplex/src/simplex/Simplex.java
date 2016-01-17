@@ -66,7 +66,8 @@ public class Simplex {
         }
         
         imprimirIteração(resultados, matrizSimplex,iteracao,outputFile);
-        String[] res = InputDataProcessing.MAXIMIZACAO ? resultados : getVariaveis();
+        String[] res =  resultados;
+//        String[] res = InputDataProcessing.MAXIMIZACAO ? resultados : getVariaveis();
         escreverResultados(res, matrizSimplex, outputFile);
     }
 
