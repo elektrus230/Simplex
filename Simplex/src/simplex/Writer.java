@@ -117,7 +117,11 @@ public class Writer {
 
             for (int linha = 0; linha < matrizImprimir.length; linha++) {
                 
-                String tempp = "|" + String.format("%4s|", matrizImprimir[linha][0]);
+                String tempp = "";
+                if (linha!=0){
+                    tempp = "|"; 
+                }
+                tempp +=  String.format("%4s|", matrizImprimir[linha][0]);
                 for (int coluna = 1; coluna < matrizImprimir[linha].length; coluna++) {
                     tempp += String.format("%9s", matrizImprimir[linha][coluna]);
 
