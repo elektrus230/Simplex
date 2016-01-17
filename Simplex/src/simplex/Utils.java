@@ -12,23 +12,33 @@ import java.util.Date;
  * @author Grupo 9
  */
 public class Utils {
+    
     /**
      * Recebe um array e expande-o, preservando o seu conteudo
-     * @param output
+     * TESTE UNITARIO
+     * @param array
      * @return 
      */
-    public static String[][] expandirArray(String[][] output) {
-        if (output == null) {
-            output = new String[1][3];
+    public static String[][] expandirArray(String[][] array) {
+        if (array == null) {
+            array = new String[1][3];
         } else {
-            int tamanho = output.length;
+            int tamanho = array.length;
             String[][] tempArray = new String[tamanho + 1][3];
-            System.arraycopy(output, 0, tempArray, 0, tamanho);
-            output = tempArray;
+            System.arraycopy(array, 0, tempArray, 0, tamanho);
+            array = tempArray;
         }
-        return output;
+        return array;
     }
-
+    
+    /**
+     * Retorna um array contendo o resultado da divisao dos
+     * elementos de um array pelos elementos de outro dado array
+     * TESTE UNITARIO
+     * @param colPivot
+     * @param ultimaColuna
+     * @return 
+     */
     public static double[] calculaQuocienteColunas(double[] colPivot, double[] ultimaColuna) {
         double[] quocienteColunas = new double[colPivot.length];
         for (int linha = 0; linha < colPivot.length; linha++) {
@@ -41,6 +51,13 @@ public class Utils {
         return quocienteColunas;
     }
     
+    /**
+     * Verifica se uma string contem um elemento de um dado array 
+     * TESTE UNITARIO
+     * @param str
+     * @param elementos
+     * @return 
+     */
     public static boolean stringContemElelmentoDeArray(String str, String[] elementos){
         boolean output = false;
         for (int i = 0; i < elementos.length; i++ ) {
@@ -53,17 +70,15 @@ public class Utils {
     }
     
     /**
-     * TODO: Teste unitario
+     * Transpoe uma matriz recebida
+     * Teste unitario
      * @param matriz
      * @return 
      */
     public static double[][] transporMatriz(double[][] matriz){
-   
         double[][] output = new double[matriz[0].length][matriz.length];
         for (int i = 0; i < matriz.length; i++) {
-            
             for(int j = 0; j < matriz[0].length; j++){
-                
                 output[j][i] = matriz[i][j];   
             }   
         }
@@ -75,6 +90,7 @@ public class Utils {
      * Se um dos valores for 0, não multiplica, uma 
      * vez que doubles aceitam -0, o que tende a 
      * gerar problemas
+     * Teste Unitário
      * @param array
      * @return 
      */
@@ -88,7 +104,8 @@ public class Utils {
     }
     
     /**
-     * TODO UNIT TEST
+     * Aumenta o numero de colunas de uma dada matriz 
+     * UNIT TEST
      * @param cont
      * @param matriz
      * @return 
@@ -107,7 +124,8 @@ public class Utils {
     }
 
     /**
-     * TODO UNIT TEST
+     * Aumenta o numero de linhas de um array
+     * UNIT TEST
      * @param cont
      * @param array
      * @return 
@@ -123,7 +141,8 @@ public class Utils {
     }
     
     /**
-     * TODO UNIT TEST
+     * Aumenta o tamanho de um array
+     * UNIT TEST
      * @param cont
      * @param array
      * @return 
@@ -139,9 +158,10 @@ public class Utils {
     }
     
     /**
-     * UNIT TEST
-     * Attempts to parse a string to double.
+     * Faz parse de um double e evita crashar
+     * devolve 0 se falhar
      * Defaults to 0 if fails
+     * UNIT TEST
      * @param string
      * @return 
      */
@@ -194,7 +214,7 @@ public class Utils {
     }
     
     /**
-     * TODO COMMENT UNIT TEST?
+     * Devolve a data actual num dado formato
      * @param formato
      * @return 
      */

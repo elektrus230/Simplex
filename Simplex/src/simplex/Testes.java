@@ -31,7 +31,10 @@ public class Testes {
 //        testeValidacaoLinhaRestricoes();
 //        testeValidarVariaveisRestricoes();
 //        testeTransporParaDouble();
-        testLogMesage();
+//        testLogMesage();
+//        testeNegarArray();
+        //testStringContemElelmentoDeArray();
+        testeExpandirArray();
     }
 
     /**
@@ -47,33 +50,6 @@ public class Testes {
         }
         System.out.printf("Test %s Result : %s.\n", testName, resultTxt);
         System.out.print(StringsLib.Escape_Char + "[39m");
-    }
-    
-    public static void testeTransporMatriz() {
-        
-        double[][] input = new double[][]{
-            {1, 4},
-            {2, 5},
-            {3, 6}
-        };
-        double[][] output = Utils.transporMatriz(input);
-        double[][] expResult = new double[][]{
-            {1, 2, 3},
-            {4, 5, 6}
-        };
-        boolean result = true;
-        for (int i = 0; i < output.length; i++) {
-            for (int j = 0; j < output[0].length; j++) {
-                if (output[i][j] != expResult[i][j]) {
-                    result = false;
-                    break;
-                }
-            }
-            if (!result) {
-                break;
-            }
-        }
-        printTest("Transpor matriz.", result);
     }
     
     public static void testeAcrescentarColunasDeSlacks() {
@@ -113,72 +89,6 @@ public class Testes {
         }
         
         printTest("Acrescentar coluna : ", result);
-    }
-    
-    public static void testeCalcularQuocienteColunas() {
-        
-        double[] array1 = new double[]{
-            5,
-            10,
-            3
-        };
-        
-        double[] array2 = new double[]{
-            5,
-            20,
-            15
-        };
-        double[] expResult = new double[]{
-            1.0,
-            2.0,
-            5
-        };
-        double[] output = Utils.calculaQuocienteColunas(array1, array2);
-        boolean result = true;
-        
-        for (int i = 0; i < output.length; i++) {
-            if (output[i] != expResult[i]) {
-                result = false;
-                break;
-            }
-        }
-        printTest("testeCalcularQuocienteColunas : ", result);
-    }
-    
-    public static void testeAumentarArray() {
-        int cont = 4;
-        String[] input = new String[3];
-        int expResult = 4;
-        String[] output = Utils.aumentarArray(cont, input);
-        boolean result = output.length == expResult;
-        printTest("testAumentarArray", result);
-    }
-    
-    public static void testeAumentarMatriz() {
-        int cont = 4;
-        String[][] input = new String[3][3];
-        int expResult = 4;
-        String[][] output = Utils.aumentaColunasMatriz(cont, input);
-        boolean result = output[0].length == expResult;
-        printTest("testAumentarArray", result);
-    }
-    
-    public static void testeParseDoubleSeguro() {
-        
-        boolean result = false;
-        String input = "1";
-        double expResult = 1.0;
-        double output = Utils.parseDoubleSeguro(input);
-        result = expResult == output;
-        printTest("parseDoubleSeguro", result);
-        
-        result = false;
-        input = "";
-        expResult = 0.0;
-        output = Utils.parseDoubleSeguro(input);
-        result = expResult == output;
-        printTest("parseDoubleSeguro", result);
-        
     }
     
     public static void testeCriarMatrizComFolgas() {
@@ -395,9 +305,181 @@ public class Testes {
         printTest("testeTransporParaDouble", result);
     }
     
+    
+    
+    //<editor-fold defaultstate="collapsed" desc="LOG">
+    
     public static void testLogMesage(){
     
         String a = Arrays.toString(Thread.currentThread().getStackTrace());
         Writer.escreverLog("TesteTipo", "TesteMsg");
+        System.out.println("Teste escrever log -> consultar ficheiro log.txt");
     }
+    
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="SIMPLEX">
+    
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="WRITTER">
+    
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="INPUT DATA PROCESSING">
+    
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="UTILS">
+    
+    public static void testeTransporMatriz() {
+        
+        double[][] input = new double[][]{
+            {1, 4},
+            {2, 5},
+            {3, 6}
+        };
+        double[][] output = Utils.transporMatriz(input);
+        double[][] expResult = new double[][]{
+            {1, 2, 3},
+            {4, 5, 6}
+        };
+        boolean result = true;
+        for (int i = 0; i < output.length; i++) {
+            for (int j = 0; j < output[0].length; j++) {
+                if (output[i][j] != expResult[i][j]) {
+                    result = false;
+                    break;
+                }
+            }
+            if (!result) {
+                break;
+            }
+        }
+        printTest("Transpor matriz.", result);
+    }
+    
+    public static void testeNegarArray(){
+    
+        double[] input = new double[]
+        {
+            1,2,3,-4,5
+        };
+        
+        double[] expResult = new double[]
+        {
+            -1,-2,-3,4,-5
+        };
+        
+        double[] output = Utils.negarArray(input);
+        boolean result = true;
+        
+        for (int i = 0; i < expResult.length; i++) {
+            if(expResult[i] != output[i]){
+                result = false;
+                break;
+            }
+        }
+        printTest("Negar array", result);
+        
+        
+    }
+    
+    public static void testStringContemElelmentoDeArray(){
+    
+        String[] input = {"A","B","C"};
+        String valorAProcurar = "B";
+        boolean result = Utils.stringContemElelmentoDeArray(valorAProcurar,input);
+        printTest("Test String contem elemento de array.", result);
+        
+    }
+    
+    public static void testeCalcularQuocienteColunas() {
+        
+        double[] array1 = new double[]{
+            5,
+            10,
+            3
+        };
+        
+        double[] array2 = new double[]{
+            5,
+            20,
+            15
+        };
+        double[] expResult = new double[]{
+            1.0,
+            2.0,
+            5
+        };
+        double[] output = Utils.calculaQuocienteColunas(array1, array2);
+        boolean result = true;
+        
+        for (int i = 0; i < output.length; i++) {
+            if (output[i] != expResult[i]) {
+                result = false;
+                break;
+            }
+        }
+        printTest("testeCalcularQuocienteColunas : ", result);
+    }
+    
+    public static void testeExpandirArray(){
+    
+        String[][] input = new String[5][5];
+        String[][] output = Utils.expandirArray(input);
+        boolean result = input.length + 1 == output.length 
+                && input[0].length == output[0].length;
+        printTest("Teste expandir array", result);
+    }
+    
+    public static void testeAumentarArray() {
+        int cont = 4;
+        String[] input = new String[3];
+        int expResult = 4;
+        String[] output = Utils.aumentarArray(cont, input);
+        boolean result = output.length == expResult;
+        printTest("testAumentarArray", result);
+    }
+    
+    public static void testeAumentarMatriz() {
+        int cont = 4;
+        String[][] input = new String[3][3];
+        int expResult = 4;
+        String[][] output = Utils.aumentaColunasMatriz(cont, input);
+        boolean result = output[0].length == expResult;
+        printTest("testAumentarArray", result);
+    }
+    
+    public static void testeParseDoubleSeguro() {
+        
+        boolean result = false;
+        String input = "1";
+        double expResult = 1.0;
+        double output = Utils.parseDoubleSeguro(input);
+        result = expResult == output;
+        printTest("parseDoubleSeguro", result);
+        
+        result = false;
+        input = "";
+        expResult = 0.0;
+        output = Utils.parseDoubleSeguro(input);
+        result = expResult == output;
+        printTest("parseDoubleSeguro", result);
+        
+    }
+    
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="READER">
+
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="GRAFICO">
+    
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="MAIN">
+    
+    //</editor-fold>
 }
